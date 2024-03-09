@@ -1,16 +1,22 @@
 const express = require('express');
 const argon2 = require('argon2');
+const expressJwt = require('express-jwt');
 
 const User = require('../db/models/user');
 
 const router = express.Router();
 
+const jwtMiddleware = expressJwt.expressjwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] });
 
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
     User.find().exec().then(x => res.json(x));
 });
 
-router.post('/', async (req, res, next) => {
+router.get('/me', jwtMiddleware, (req, res) => {
+    User.findById(req.auth.userId).exec().then(x => res.json(x));
+});
+
+router.post('/', async (req, res) => {
     try {
         const user = req.body;
 

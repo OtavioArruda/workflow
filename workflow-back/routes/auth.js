@@ -7,7 +7,7 @@ const User = require('../db/models/user');
 
 const router = express.Router();
 
-router.post('/login',async (req, res, next) => {
+router.post('/login', async (req, res) => {
     const user = await User.findOne({ email: req.body.email }).exec();
 
     if(await argon2.verify(user.password, req.body.password)) {
