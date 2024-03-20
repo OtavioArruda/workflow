@@ -1,6 +1,5 @@
 <template>
     <div id="body">
-        <HeaderLogin/>
         <main>
             <div class="sessao-sobre">
                 <h1>
@@ -14,7 +13,7 @@
                 </div>
                 <form>
                     <div class="inputs-texto">
-                        <label for="username">Nome de Usuário:</label>
+                        <label for="username">E-mail:</label>
                         <input type="text" id="username" name="username" required>
                         
                         <label for="password">Senha:</label>
@@ -28,7 +27,7 @@
 
                         <input type="submit" value="Entrar">
                         
-                        <a href="">
+                        <a href="" @click="DirectsRegistration">
                             Ainda não tenho uma conta
                         </a>
                     </div>
@@ -39,7 +38,12 @@
 </template>
 
 <script setup>
-import HeaderLogin from './HeaderLogin.vue';
+import { defineProps } from 'vue';
+
+const props = defineProps({
+    DirectsRegistration: Function
+})
+
 </script>
 
 <style scoped>

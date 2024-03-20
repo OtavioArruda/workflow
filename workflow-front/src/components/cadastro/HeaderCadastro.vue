@@ -2,12 +2,12 @@
   <div class="cb">
     <header>
       <img id="logo" src="../../assets/logo-tipo.png" alt="">
-      <div class="direciona-criacao">
+      <div class="direciona-login">
         <span>
-          Não possui uma conta?
+          Possui uma conta?
         </span>
-        <button id="criar-conta" @click="DirectsRegistration">
-          Criar Conta
+        <button @click="LoginDirect" id="entrar-conta">
+          Entrar
         </button>
       </div>
     </header>
@@ -18,21 +18,24 @@
 <script setup>
 import { defineProps } from 'vue';
 
-const props = defineProps({
-  DirectsRegistration: Function
+
+const props = defineProps ({
+  LoginDirect: Function
 })
 
 </script>
 
 
 <style scoped>
-.cb{
+
+.cb {
   z-index: 1;
 }
 
-header{
+header {
   width: 100%;
   display: flex;
+  top: 0;
   justify-content: space-between;
   padding: 10px 20px;
   position: fixed;
@@ -41,18 +44,18 @@ header{
   box-shadow: 0px -5px 20px black;
 }
 
-#logo{
+#logo {
   width: 80px;
 }
 
-.direciona-criacao{
+.direciona-login {
   width: 30%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 }
 
-#criar-conta{
+#entrar-conta {
   padding: 10px 15px;
   border: none;
   width: 150px;
@@ -63,15 +66,13 @@ header{
   background-color: rgb(0, 102, 25);
 }
 
-#criar-conta:hover{
+#entrar-conta:hover {
   transform: scale(1.05);
   transition: 0.5s;
 }
 
-span{
+span {
   font-weight: bold;
   font-size: 15px;
 }
-
 </style>
-
