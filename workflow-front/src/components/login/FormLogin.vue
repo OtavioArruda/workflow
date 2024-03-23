@@ -14,10 +14,10 @@
                 <form>
                     <div class="inputs-texto">
                         <label for="username">E-mail:</label>
-                        <input type="text" id="username" name="username" required>
+                        <input type="text" v-model="user" id="username" name="username" required>
                         
                         <label for="password">Senha:</label>
-                        <input type="password" id="password" name="password" required>
+                        <input type="password" v-model="pass" id="password" name="password" required>
                     </div>
                     
                     <div class="direciona-telas">
@@ -25,7 +25,7 @@
                             Esqueceu sua senha?
                         </a>
 
-                        <input type="submit" value="Entrar">
+                        <input type="submit" @click="AccessAccount" value="Entrar">
                         
                         <a href="" @click="DirectsRegistration">
                             Ainda não tenho uma conta
@@ -38,11 +38,23 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, defineModel } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const user = defineModel('user');
+const pass = defineModel('pass');
 
 const props = defineProps({
     DirectsRegistration: Function
-})
+});
+
+function AccessAccount() {
+    if (user.value !== undefined && pass.value !== undefined){
+        router.push('/principal');
+    }
+}
 
 </script>
 

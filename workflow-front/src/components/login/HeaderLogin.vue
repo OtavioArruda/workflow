@@ -42,7 +42,7 @@ header{
 }
 
 #logo{
-  width: 80px;
+  width: 70px;
 }
 
 .direciona-criacao{
