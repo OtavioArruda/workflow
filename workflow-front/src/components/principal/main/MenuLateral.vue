@@ -1,108 +1,156 @@
 <template>
-    <div id="menu">
-        <div class="sub-header-menu">
-            <div class="info-emp">
-                <span class="empresa">
-                    Empresa
-                </span>
-                <i class="fas fa-plus add-project"></i>
-            </div>
-            <i class="fa-solid fa-bars menu"></i>
-        </div>
-        <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
-
-            <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
-                <div class="user-symbol">
-                    <span class="initial-of-name">
-                        {{ directory.inicial }}
+    <div>
+        <div id="menu">
+            <div class="sub-header-menu">
+                <button class="create-project" @click="PopupCreate">
+                    <i class="fas fa-plus add-project"></i>
+                    <span class="new-project">
+                        Novo Projeto
                     </span>
-                </div>
-                <h4>
-                    {{ directory.name }}
-                </h4>
-                <div>
-                    <i class="fas fa-plus add-task"></i>
-                    <i class="fa-solid fa-angle-right expanded-task" @click="ToggleExpanded(idx)"
-                        :class="{ 'rotate-90': directorys[idx].expanded }"></i>
-                </div>
+                </button>
             </div>
-
-            <div class="area-subdirectory" :class="{ 'render-subdirectory': !directorys[idx].expanded }">
-                <div class="sub-directory" v-for="(sub_dirctory, id) in sub_directorys" :key="id">
-                    <i class="fa-regular fa-folder-open" style="color: #FFD43B;"></i>
-                    <span class="name-subdirectory">
-                        {{ sub_dirctory.name }}
-                    </span>
+            <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
+    
+                <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
+                    <h4>
+                        {{ directory.name }}
+                    </h4>
+                    <div>
+                        <i class="fas fa-plus add-task"></i>
+                        <i class="fa-solid fa-angle-down expanded-task" @click="ToggleExpanded(idx)"
+                            :class="{ 'rotate-90': directorys[idx].expanded }"></i>
+                    </div>
+                </div>
+    
+                <div class="area-subdirectory" :class="{ 'render-subdirectory': !directorys[idx].expanded }">
+                    <div class="sub-directory" v-for="(sub_dirctory, id) in directorys[idx].sub_directory" :key="id">
+                        <div class="about-tasks">
+                            <i class="fa-solid fa-folder"></i>
+                            <span class="name-subdirectory">
+                                {{ sub_dirctory.name }}
+                            </span>
+                        </div>
+                        <i class="fa-solid fa-trash"></i>
+                    </div>
                 </div>
             </div>
         </div>
+        <CreateProject/>
     </div>
 </template>
 
 <script setup>
 import '@fortawesome/fontawesome-free/css/all.css';
+import CreateProject from '@/components/principal/popups/CreateProject.vue'
 import { reactive } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 let directorys = reactive([
     {
-        'inicial': "B",
         'name': "PROJETO 1",
-        'expanded': false
+        'expanded': false,
+        'sub_directory': [
+            {
+                'name': "FRONT-END"
+            },
+            {
+                'name': "BACK-END"
+            },
+            {
+                'name': "BANCO"
+            }
+        ]
     },
     {
-        'inicial': "B",
         'name': "PROJETO 2",
-        'expanded': false
-    },
-    {
-        'inicial': "B",
-        'name': "PROJETO 2",
-        'expanded': false
+        'expanded': false,
+        'sub_directory': [
+            {
+                'name': "FRONT-END"
+            },
+            {
+                'name': "BACK-END"
+            },
+            {
+                'name': "BANCO"
+            }
+        ]
     }
 ]);
 
-let sub_directorys = reactive([
-    {
-        'name': "FRONT-END"
-    },
-    {
-        'name': "BACK-END"
-    },
-    {
-        'name': "BANCO"
-    }
-
-])
 
 function ToggleExpanded(idx) {
     directorys[idx].expanded = !directorys[idx].expanded;
 }
 
+function PopupCreate(){
+    store.state.popup_render = !store.state.popup_render
+}
+
 
 </script>
 
-<style>
+<style scoped>
 #menu {
-    width: 250px;
-    background-color: #bee0c9;
-    height: 100vh;
+    width: 275px;
+    background-color: #325b3f;
+    height: 95vh;
+    position: absolute;
+    top: 0;
+    overflow-x: hidden;
+    padding-bottom: 5vh;
+}
+#menu::-webkit-scrollbar {
+    width: 10px;
+
+}
+#menu::-webkit-scrollbar-track {
+    margin-top: 65px;
+    margin-bottom: 5px;
+}
+#menu::-webkit-scrollbar-thumb {
+    background-color: #283e37;
+    border-radius: 20px;
+    border: 3px solid black;
 }
 
+
+
 .sub-header-menu {
-    padding: 80px 20px 20px;
+    padding: 90px 20px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 
-.empresa {
-    font-size: 25px;
+.new-project {
+    font-size: 17.5px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+.create-project{
+    margin: 0 auto;
+    width: 100%;
+    padding: 10px 15px;
+    box-shadow: 5px 5px 10px black;
+    border-radius: 100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border: none;
+    background-color: #e5f7eb;
+}
+
+.create-project:hover{
+    transform: scale(1.03);
+    transition: 0.5s;
+}
+
 .rotate-90 {
-    transform: rotate(90deg);
+    transform: rotate(180deg);
     transition: 0.3s;
 }
 
@@ -111,12 +159,17 @@ function ToggleExpanded(idx) {
 }
 
 .active-directory {
-    background-color: #9fd7b1;
+    background-color: #d6e9dc !important;
 }
 
-.add-project,
+.add-project{
+    font-size: 20px;
+    margin-right: 25px;
+    margin-left: 10px;
+}
+
 .menu {
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .user-symbol {
@@ -140,9 +193,10 @@ function ToggleExpanded(idx) {
 .directory {
     display: flex;
     justify-content: space-between;
-    padding: 5px 10px;
-    margin: 5px 0px;
+    padding: 10px 15px;
+    margin-top: 15px;
     align-items: center;
+    background-color: #6fa17f;
 }
 
 .expanded-task {
@@ -150,16 +204,24 @@ function ToggleExpanded(idx) {
 }
 
 .area-subdirectory{
-    width: 60%;
     margin: 0 auto;
-    padding: 5px;
+    font-size: 15px;
+    background-color: #6fa17f;
 }
 
 .sub-directory{
     display: flex;
     justify-content: space-between;
-    padding: 5px;
-    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: #d6e9dc 1px solid;
     cursor: pointer;
+}
+
+.about-tasks{
+    width: 50%;
+}
+
+.name-subdirectory{
+    margin-left: 10px;
 }
 </style>

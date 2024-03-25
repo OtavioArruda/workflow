@@ -31,12 +31,13 @@ header {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 10px 0px;
-    position: fixed;
-    top: 0;
-    z-index: 1;
+    align-items: center;
+    padding: 7px 0px;
+    min-height: 5vh;
+    position: relative;
+    z-index: 2;
     background-color: white;
-    box-shadow: 0px -5px 20px black;
+    box-shadow: 10px 1px 20px black;
 }
 
 #logo {
@@ -45,14 +46,15 @@ header {
 }
 
 .user-symbol {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     background-color: green;
     margin-right: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .initial-of-name{
