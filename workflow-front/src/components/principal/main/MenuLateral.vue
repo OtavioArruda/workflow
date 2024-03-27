@@ -47,38 +47,7 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 
-let directorys = reactive([
-    {
-        'name': "PROJETO 1",
-        'expanded': false,
-        'sub_directory': [
-            {
-                'name': "FRONT-END"
-            },
-            {
-                'name': "BACK-END"
-            },
-            {
-                'name': "BANCO"
-            }
-        ]
-    },
-    {
-        'name': "PROJETO 2",
-        'expanded': false,
-        'sub_directory': [
-            {
-                'name': "FRONT-END"
-            },
-            {
-                'name': "BACK-END"
-            },
-            {
-                'name': "BANCO"
-            }
-        ]
-    }
-]);
+let directorys = reactive(store.state.projects);
 
 
 function ToggleExpanded(idx) {
@@ -95,9 +64,9 @@ function PopupCreate(){
 <style scoped>
 #menu {
     width: 275px;
-    background-color: #325b3f;
-    height: 95vh;
-    position: absolute;
+    background-color: #283739;
+    min-height: 95vh;
+    position: fixed;
     top: 0;
     overflow-x: hidden;
     padding-bottom: 5vh;
@@ -141,7 +110,7 @@ function PopupCreate(){
     justify-content: flex-start;
     align-items: center;
     border: none;
-    background-color: #e5f7eb;
+    background-color: #a9c52f;
 }
 
 .create-project:hover{
@@ -159,7 +128,7 @@ function PopupCreate(){
 }
 
 .active-directory {
-    background-color: #d6e9dc !important;
+    background-color: #74881c !important;
 }
 
 .add-project{
@@ -196,7 +165,7 @@ function PopupCreate(){
     padding: 10px 15px;
     margin-top: 15px;
     align-items: center;
-    background-color: #6fa17f;
+    background-color: #a9c52f;
 }
 
 .expanded-task {
@@ -206,14 +175,14 @@ function PopupCreate(){
 .area-subdirectory{
     margin: 0 auto;
     font-size: 15px;
-    background-color: #6fa17f;
+    background-color: #cbdc82;
 }
 
 .sub-directory{
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    border-bottom: #d6e9dc 1px solid;
+    border-bottom: #74881c 1px solid;
     cursor: pointer;
 }
 

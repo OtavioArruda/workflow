@@ -32,9 +32,8 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 7px 0px;
-    min-height: 5vh;
-    position: relative;
+    position: fixed;
+    min-height: 50px;
     z-index: 2;
     background-color: white;
     box-shadow: 10px 1px 20px black;
