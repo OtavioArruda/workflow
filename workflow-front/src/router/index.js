@@ -16,6 +16,6 @@ const router = createRouter({
       component: CadastroView
     }
   ]
-})
+});
 
-export default router
+export default router;
