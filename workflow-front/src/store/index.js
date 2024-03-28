@@ -1,7 +1,7 @@
-import { createStore } from 'vuex';
+import { defineStore } from 'pinia'
 
-const store = createStore({
-    state: {
+export const useGlobalsStore = defineStore('globals', {
+    state: () => ({
         popupRender: true,
         popupColumn: true,
         projects: [
@@ -36,14 +36,59 @@ const store = createStore({
                 ]
             }
         ]
-    },
+    }),
     getters: {},
-    mutations: {
-        addProject(state, newValue) {
-            state.projects.push(newValue);
+    actions: {
+        addProject(value) {
+            this.projects.push(value);
         }
-    },
-    actions: {}
-});
+    }
+}); 
 
-export default store
+// const store = createStore({
+//     state: {
+//         popupRender: true,
+//         popupColumn: true,
+//         projects: [
+//             {
+//                 'name': 'PROJETO 1',
+//                 'expanded': false,
+//                 'subDirectory': [
+//                     {
+//                         'name': 'FRONT-END'
+//                     },
+//                     {
+//                         'name': 'BACK-END'
+//                     },
+//                     {
+//                         'name': 'BANCO'
+//                     }
+//                 ]
+//             },
+//             {
+//                 'name': 'PROJETO 2',
+//                 'expanded': false,
+//                 'subDirectory': [
+//                     {
+//                         'name': 'FRONT-END'
+//                     },
+//                     {
+//                         'name': 'BACK-END'
+//                     },
+//                     {
+//                         'name': 'BANCO'
+//                     }
+//                 ]
+//             }
+//         ]
+//     },
+//     getters: {},
+//     mutations: {
+//         addProject(state, value) {
+//             state.projects.push(value);
+//         }
+//     },
+//     actions: {}
+// });
+
+// export default store
