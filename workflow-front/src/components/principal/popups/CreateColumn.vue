@@ -1,13 +1,13 @@
 <template>
-    <div id="popup-overlay" :class="{ 'active-popup': store.state.popup_render }">
+    <div id="popup-overlay" :class="{ 'active-popup': store.state.popup_column }">
         <div id="popup-add-project">
-            <input type="text" v-model="name_project" class="name-project" placeholder="Nome do projeto">
+            <input type="text" class="name-project" placeholder="Nome do projeto">
             <div class="participants">
-                <input type="text" v-model="email" placeholder="Email do participante">
+                <input type="text" placeholder="Email do participante">
             </div>
             <div class="buttons-project">
                 <button class="cancel-project" @click="CancelProject">Cancelar</button>
-                <button class="create-project" @click="CreatedProject">Criar Projeto</button>
+                <button class="create-project">Criar Projeto</button>
             </div>
         </div>
     </div>
@@ -15,27 +15,10 @@
 
 <script setup>
 import { useStore } from 'vuex';
-import { ref } from 'vue';
-
-let name_project = ref("");
-let email = ref("");
 
 const store = useStore()
 
 function CancelProject() {
-    store.state.popup_render = !store.state.popup_render
-}
-
-function CreatedProject() {
-
-    
-    let dados = {
-        "name": name_project.value,
-        "email": [
-            email.value
-        ]
-    }
-    store.commit('AddProject', dados);
     store.state.popup_render = !store.state.popup_render
 }
 

@@ -1,33 +1,260 @@
 <template>
-    <div id="main-tasks">
-        <div class="subheader-tasks">
-            <strong>
-                Projeto 1 | Frontend
-            </strong>
-            <div class="gears">
-                <div></div>
-                <i class="fa-solid fa-gear"></i>
+    <div id="principal">
+        <SubheaderTasks/>
+
+        <div id="tasks">
+            <div id="task-area" v-if="tasks.length > 0" v-for="(task, id_task) in tasks" :key="id_task">
+                <div class="info-column">
+                    <h4>
+                        {{ task.title }}
+                    </h4>
+                    <div class="actions-task">
+                        <i class="fas fa-plus add-task"></i>
+                        <i class="fa-solid fa-trash remove-task"></i>
+                    </div>
+                </div>
+                <div class="tasks-list">
+                    <div class="about-task" v-for="(about, idx_about) in task.sobre" :key="idx_about">
+                        <span class="flag">
+                            flag
+                        </span>
+                        <div class="desc">
+                            <p>
+                                {{ about.descricao }}
+                            </p>
+                        </div>
+                        <span class="term">
+                            {{ about.prazo }}
+                        </span>
+                    </div>
+                </div>
             </div>
+
+            <div>
+                <button class="create-task" @click="PopupCreate">
+                    <i class="fas fa-plus add-task"></i>
+                    <span class="new-task">
+                        Nova Coluna
+                    </span>
+                </button>
+            </div>
+
         </div>
-        
     </div>
 </template>
 
 <script setup>
+import SubheaderTasks from '../partials/SubheaderTasks.vue';
+
+const tasks = [
+    {
+        'title': "Para Fazer",
+        'sobre': [
+            {
+                'descricao': 'teste',
+                'prazo': '23/03 - 25/03',
+            },
+            {
+                'descricao': 'teste',
+                'prazo': '23/03 - 25/03',
+            },
+            {
+                'descricao': 'teste',
+                'prazo': '23/03 - 25/03',
+            },
+            {
+                'descricao': 'teste',
+                'prazo': '23/03 - 25/03',
+            },
+            {
+                'descricao': 'teste',
+                'prazo': '23/03 - 25/03',
+            },
+            
+        ]
+    },
+    {
+        'title': "Para Fazer",
+        'sobre': [
+            {
+                'descricao': 'teste',
+                'prazo': '23/03 - 25/03',
+            }
+        ]
+    },
+    {
+        'title': "Para Fazer",
+        'sobre': [
+            {
+                'descricao': 'teste',
+                'prazo': '23/03 - 25/03',
+            }
+        ]
+    },
+    {
+        'title': "Para Fazer",
+        'sobre': [
+            {
+                'descricao': 'teste',
+                'prazo': '23/03 - 25/03',
+            }
+        ]
+    },
+    {
+        'title': "Para Fazer",
+        'sobre': [
+            {
+                'descricao': 'teste',
+                'prazo': '23/03 - 25/03',
+            }
+        ]
+    },
+    {
+        'title': "Para Fazer",
+        'sobre': [
+            {
+                'descricao': 'teste',
+                'prazo': '23/03 - 25/03',
+            }
+        ]
+    },
+    {
+        'title': "Para Fazer",
+        'sobre': [
+            {
+                'descricao': 'teste',
+                'prazo': '23/03 - 25/03',
+            }
+        ]
+    },
+]
+
 </script>
 
 <style scoped>
-#main-tasks{
-    width: 100%;
+#principal{
+    max-width: 100%;
+    margin-top: 100px;
 }
 
-.subheader-tasks{
-    background-color: rgb(7, 199, 7);
-    padding: 10px 20px;
+#tasks{
     margin-left: 275px;
     display: flex;
-    justify-content: space-between;
-    font-size: 20px;
+    overflow-y: hidden;
+    padding-bottom: 5px;
+    min-height: 80vh;
 }
 
+#tasks::-webkit-scrollbar {
+    width: 5px;
+}
+
+#tasks::-webkit-scrollbar-track {
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: transparent;
+}
+#tasks::-webkit-scrollbar-thumb {
+    background-color: #283e37;
+    border-radius: 20px;
+    border: 3px solid black;
+}
+
+#task-area{
+    min-width: 250px !important; 
+    margin: 20px 0px 0px 20px;    
+    background-color: #283739;
+    border-radius: 20px;
+    max-height: 60%;
+}
+
+.tasks-list{
+    height: 80%;
+    overflow-x: hidden;
+}
+
+.tasks-list::-webkit-scrollbar {
+    width: 10px;
+
+}
+.tasks-list::-webkit-scrollbar-thumb {
+    background-color: #283e37;
+    border-radius: 20px;
+    border: 3px solid black;
+}
+
+.info-column{
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    padding: 20px;
+    font-size: 17px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.about-task{
+    background-color: white;
+    padding: 5px 10px;
+    margin: 10px;
+    border-radius: 15px;
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.actions-task{
+    display: flex;
+}
+
+.add-task{
+    margin-right: 20px;
+}
+
+.desc{
+    font-size: 18px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.term{
+    font-size: 12px;
+    position: relative;
+}
+
+.flag{
+    font-size: 12px;
+}
+
+.create-task{
+    margin: 0 auto;
+    width: 250px;
+    padding: 10px 15px;
+    box-shadow: 5px 5px 5px black;
+    border-radius: 100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border: none;
+    background-color: #a9c52f;
+    margin: 20px 20px 0px 20px;
+}
+
+.create-task:hover{
+    transform: scale(1.03);
+    transition: 0.5s;
+}
+
+.add-task{
+    font-size: 20px;
+    margin-right: 35px;
+    margin-left: 10px;
+}
+
+.new-task {
+    font-size: 17.5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
 </style>

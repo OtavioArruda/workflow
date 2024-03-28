@@ -3,7 +3,14 @@ import { RouterLink, RouterView } from 'vue-router';
 </script>
 
 <template>
-  <RouterView />
+  <div id="app">
+    <RouterView />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#app {
+  min-height: 100vh;
+  background-color: #2c5d63;
+}
+</style>
