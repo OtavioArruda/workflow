@@ -1,7 +1,7 @@
 <template>
   <div>
-    <HeaderLogin :DirectsRegistration="DirectsRegistration"/>
-    <FormLogin :DirectsRegistration="DirectsRegistration"/>
+    <HeaderLogin :directsRegistration="directsRegistration"/>
+    <FormLogin :directsRegistration="directsRegistration"/>
   </div>
 </template>
 
@@ -10,10 +10,10 @@ import FormLogin from '../components/login/FormLogin.vue';
 import HeaderLogin from '../components/login/HeaderLogin.vue';
 import { useRouter } from 'vue-router';
 
-const register_router = useRouter()
+const registerRouter = useRouter();
 
-function DirectsRegistration(){
-  register_router.push('/cadastro')
+const directsRegistration = () => {
+  registerRouter.push('/cadastro');
 }
 
 </script>

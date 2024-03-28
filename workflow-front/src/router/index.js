@@ -22,6 +22,6 @@ const router = createRouter({
       component: PrincipalView
     }
   ]
-})
+});
 
-export default router
+export default router;
