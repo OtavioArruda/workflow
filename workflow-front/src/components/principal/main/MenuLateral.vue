@@ -2,13 +2,14 @@
     <div>
         <div id="menu">
             <div class="sub-header-menu">
-                <button class="create-project" @click="PopupCreate">
+                <button class="create-project" @click="popupCreate">
                     <i class="fas fa-plus add-project"></i>
                     <span class="new-project">
                         Novo Projeto
                     </span>
                 </button>
             </div>
+
             <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
     
                 <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
@@ -17,22 +18,23 @@
                     </h4>
                     <div>
                         <i class="fas fa-plus add-task"></i>
-                        <i class="fa-solid fa-angle-down expanded-task" @click="ToggleExpanded(idx)"
+                        <i class="fa-solid fa-angle-down expanded-task" @click="toggleExpanded(idx)"
                             :class="{ 'rotate-90': directorys[idx].expanded }"></i>
                     </div>
                 </div>
     
                 <div class="area-subdirectory" :class="{ 'render-subdirectory': !directorys[idx].expanded }">
-                    <div class="sub-directory" v-for="(sub_dirctory, id) in directorys[idx].sub_directory" :key="id">
+                    <div class="sub-directory" v-for="(subDirectory, id) in directorys[idx].subDirectory" :key="id">
                         <div class="about-tasks">
                             <i class="fa-solid fa-folder"></i>
                             <span class="name-subdirectory">
-                                {{ sub_dirctory.name }}
+                                {{ subDirectory.name }}
                             </span>
                         </div>
                         <i class="fa-solid fa-trash"></i>
                     </div>
                 </div>
+
             </div>
         </div>
         <CreateProject/>
@@ -47,18 +49,15 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 
-let directorys = reactive(store.state.projects);
+const directorys = reactive(store.state.projects);
 
-
-function ToggleExpanded(idx) {
+const toggleExpanded = (idx) => {
     directorys[idx].expanded = !directorys[idx].expanded;
 }
 
-function PopupCreate(){
-    store.state.popup_render = !store.state.popup_render
+const popupCreate = () => {
+    store.state.popupRender = !store.state.popupRender;
 }
-
-
 </script>
 
 <style scoped>

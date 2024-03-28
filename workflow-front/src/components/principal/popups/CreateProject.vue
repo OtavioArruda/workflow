@@ -1,13 +1,15 @@
 <template>
-    <div id="popup-overlay" :class="{ 'active-popup': store.state.popup_render }">
+    <div id="popup-overlay" :class="{ 'active-popup': store.state.popupRender }">
         <div id="popup-add-project">
-            <input type="text" v-model="name_project" class="name-project" placeholder="Nome do projeto">
+            <input type="text" v-model="nameProject" class="name-project" placeholder="Nome do projeto">
+
             <div class="participants">
                 <input type="text" v-model="email" placeholder="Email do participante">
             </div>
+
             <div class="buttons-project">
-                <button class="cancel-project" @click="CancelProject">Cancelar</button>
-                <button class="create-project" @click="CreatedProject">Criar Projeto</button>
+                <button class="cancel-project" @click="cancelProject">Cancelar</button>
+                <button class="create-project" @click="createdProject">Criar Projeto</button>
             </div>
         </div>
     </div>
@@ -17,29 +19,27 @@
 import { useStore } from 'vuex';
 import { ref } from 'vue';
 
-let name_project = ref("");
-let email = ref("");
+const nameProject = ref('');
+const email = ref('');
 
-const store = useStore()
+const store = useStore();
 
-function CancelProject() {
-    store.state.popup_render = !store.state.popup_render
+const cancelProject = () => {
+    store.state.popupRender = !store.state.popupRender;
 }
 
-function CreatedProject() {
-
-    
-    let dados = {
-        "name": name_project.value,
-        "email": [
+const createdProject = () => {
+    const dados = {
+        'name': nameProject.value,
+        'email': [
             email.value
         ]
-    }
-    store.commit('AddProject', dados);
-    store.state.popup_render = !store.state.popup_render
+    };
+    
+    store.commit('addProject', dados);
+    
+    store.state.popupRender = !store.state.popupRender;
 }
-
-
 </script>
 
 <style scoped>

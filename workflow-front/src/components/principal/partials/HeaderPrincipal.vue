@@ -18,7 +18,6 @@ import { defineProps } from 'vue';
 const props = defineProps({
     DirectsRegistration: Function
 })
-
 </script>
 
 

@@ -1,12 +1,12 @@
 <template>
-    <div id="popup-overlay" :class="{ 'active-popup': store.state.popup_column }">
+    <div id="popup-overlay" :class="{ 'active-popup': store.state.popupColumn }">
         <div id="popup-add-project">
             <input type="text" class="name-project" placeholder="Nome do projeto">
             <div class="participants">
                 <input type="text" placeholder="Email do participante">
             </div>
             <div class="buttons-project">
-                <button class="cancel-project" @click="CancelProject">Cancelar</button>
+                <button class="cancel-project" @click="cancelProject">Cancelar</button>
                 <button class="create-project">Criar Projeto</button>
             </div>
         </div>
@@ -18,8 +18,8 @@ import { useStore } from 'vuex';
 
 const store = useStore()
 
-function CancelProject() {
-    store.state.popup_render = !store.state.popup_render
+const cancelProject = () => {
+    store.state.popupRender = !store.state.popupRender
 }
 
 

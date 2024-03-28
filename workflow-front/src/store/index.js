@@ -1,37 +1,37 @@
-import { createStore } from "vuex";
+import { createStore } from 'vuex';
 
 const store = createStore({
     state: {
-        popup_render: true,
-        popup_column: true,
+        popupRender: true,
+        popupColumn: true,
         projects: [
             {
-                'name': "PROJETO 1",
+                'name': 'PROJETO 1',
                 'expanded': false,
-                'sub_directory': [
+                'subDirectory': [
                     {
-                        'name': "FRONT-END"
+                        'name': 'FRONT-END'
                     },
                     {
-                        'name': "BACK-END"
+                        'name': 'BACK-END'
                     },
                     {
-                        'name': "BANCO"
+                        'name': 'BANCO'
                     }
                 ]
             },
             {
-                'name': "PROJETO 2",
+                'name': 'PROJETO 2',
                 'expanded': false,
-                'sub_directory': [
+                'subDirectory': [
                     {
-                        'name': "FRONT-END"
+                        'name': 'FRONT-END'
                     },
                     {
-                        'name': "BACK-END"
+                        'name': 'BACK-END'
                     },
                     {
-                        'name': "BANCO"
+                        'name': 'BANCO'
                     }
                 ]
             }
@@ -39,9 +39,9 @@ const store = createStore({
     },
     getters: {},
     mutations: {
-        AddProject(state, newValue) {
+        addProject(state, newValue) {
             state.projects.push(newValue);
-          }
+        }
     },
     actions: {}
 });

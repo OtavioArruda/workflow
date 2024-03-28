@@ -1,9 +1,9 @@
 <template>
     <div id="principal">
-        <SubheaderTasks/>
+        <SubheaderTasks />
 
         <div id="tasks">
-            <div id="task-area" v-if="tasks.length > 0" v-for="(task, id_task) in tasks" :key="id_task">
+            <div id="task-area" v-if="tasks.length > 0" v-for="(task, idTask) in tasks" :key="idTask">
                 <div class="info-column">
                     <h4>
                         {{ task.title }}
@@ -13,8 +13,9 @@
                         <i class="fa-solid fa-trash remove-task"></i>
                     </div>
                 </div>
+                
                 <div class="tasks-list">
-                    <div class="about-task" v-for="(about, idx_about) in task.sobre" :key="idx_about">
+                    <div class="about-task" v-for="(about, idxAbout) in task.sobre" :key="idxAbout">
                         <span class="flag">
                             flag
                         </span>
@@ -48,7 +49,7 @@ import SubheaderTasks from '../partials/SubheaderTasks.vue';
 
 const tasks = [
     {
-        'title': "Para Fazer",
+        'title': 'Para Fazer',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -70,11 +71,11 @@ const tasks = [
                 'descricao': 'teste',
                 'prazo': '23/03 - 25/03',
             },
-            
+
         ]
     },
     {
-        'title': "Para Fazer",
+        'title': 'Para Fazer',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -83,7 +84,7 @@ const tasks = [
         ]
     },
     {
-        'title': "Para Fazer",
+        'title': 'Para Fazer',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -92,7 +93,7 @@ const tasks = [
         ]
     },
     {
-        'title': "Para Fazer",
+        'title': 'Para Fazer',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -101,7 +102,7 @@ const tasks = [
         ]
     },
     {
-        'title': "Para Fazer",
+        'title': 'Para Fazer',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -110,7 +111,7 @@ const tasks = [
         ]
     },
     {
-        'title': "Para Fazer",
+        'title': 'Para Fazer',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -119,7 +120,7 @@ const tasks = [
         ]
     },
     {
-        'title': "Para Fazer",
+        'title': 'Para Fazer',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -132,12 +133,12 @@ const tasks = [
 </script>
 
 <style scoped>
-#principal{
+#principal {
     max-width: 100%;
     margin-top: 100px;
 }
 
-#tasks{
+#tasks {
     margin-left: 275px;
     display: flex;
     overflow-y: hidden;
@@ -154,21 +155,22 @@ const tasks = [
     margin-right: 20px;
     background-color: transparent;
 }
+
 #tasks::-webkit-scrollbar-thumb {
     background-color: #283e37;
     border-radius: 20px;
     border: 3px solid black;
 }
 
-#task-area{
-    min-width: 250px !important; 
-    margin: 20px 0px 0px 20px;    
+#task-area {
+    min-width: 250px !important;
+    margin: 20px 0px 0px 20px;
     background-color: #283739;
     border-radius: 20px;
     max-height: 60%;
 }
 
-.tasks-list{
+.tasks-list {
     height: 80%;
     overflow-x: hidden;
 }
@@ -177,13 +179,14 @@ const tasks = [
     width: 10px;
 
 }
+
 .tasks-list::-webkit-scrollbar-thumb {
     background-color: #283e37;
     border-radius: 20px;
     border: 3px solid black;
 }
 
-.info-column{
+.info-column {
     display: flex;
     justify-content: space-between;
     color: white;
@@ -193,7 +196,7 @@ const tasks = [
     border-top-right-radius: 20px;
 }
 
-.about-task{
+.about-task {
     background-color: white;
     padding: 5px 10px;
     margin: 10px;
@@ -204,31 +207,31 @@ const tasks = [
     justify-content: space-between;
 }
 
-.actions-task{
+.actions-task {
     display: flex;
 }
 
-.add-task{
+.add-task {
     margin-right: 20px;
 }
 
-.desc{
+.desc {
     font-size: 18px;
     height: 50px;
     display: flex;
     align-items: center;
 }
 
-.term{
+.term {
     font-size: 12px;
     position: relative;
 }
 
-.flag{
+.flag {
     font-size: 12px;
 }
 
-.create-task{
+.create-task {
     margin: 0 auto;
     width: 250px;
     padding: 10px 15px;
@@ -242,12 +245,12 @@ const tasks = [
     margin: 20px 20px 0px 20px;
 }
 
-.create-task:hover{
+.create-task:hover {
     transform: scale(1.03);
     transition: 0.5s;
 }
 
-.add-task{
+.add-task {
     font-size: 20px;
     margin-right: 35px;
     margin-left: 10px;
