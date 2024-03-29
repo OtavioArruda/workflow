@@ -1,5 +1,5 @@
 <template>
-    <div id="popup-overlay" :class="{ 'active-popup': store.state.popupColumn }">
+    <div id="popup-overlay" :class="{ 'active-popup': store.popupColumn }">
         <div id="popup-add-project">
             <input type="text" class="name-project" placeholder="Nome do projeto">
             <div class="participants">
@@ -14,12 +14,12 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex';
+import { useGlobalsStore } from '@/store';
 
-const store = useStore()
+const store = useGlobalsStore()
 
 const cancelProject = () => {
-    store.state.popupRender = !store.state.popupRender
+    store.popupRender = !store.popupRender
 }
 
 

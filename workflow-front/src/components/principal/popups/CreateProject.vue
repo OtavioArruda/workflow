@@ -1,5 +1,5 @@
 <template>
-    <div id="popup-overlay" :class="{ 'active-popup': store.state.popupRender }">
+    <div id="popup-overlay" :class="{ 'active-popup': store.popupRender }">
         <div id="popup-add-project">
             <input type="text" v-model="nameProject" class="name-project" placeholder="Nome do projeto">
 
@@ -16,16 +16,16 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex';
+import { useGlobalsStore } from '@/store';
 import { ref } from 'vue';
 
 const nameProject = ref('');
 const email = ref('');
 
-const store = useStore();
+const store = useGlobalsStore();
 
 const cancelProject = () => {
-    store.state.popupRender = !store.state.popupRender;
+    store.popupRender = !store.popupRender;
 }
 
 const createdProject = () => {
@@ -36,9 +36,9 @@ const createdProject = () => {
         ]
     };
     
-    store.commit('addProject', dados);
+    store.addProject(dados);
     
-    store.state.popupRender = !store.state.popupRender;
+    store.popupRender = !store.popupRender;
 }
 </script>
 

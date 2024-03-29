@@ -45,18 +45,18 @@
 import '@fortawesome/fontawesome-free/css/all.css';
 import CreateProject from '@/components/principal/popups/CreateProject.vue'
 import { reactive } from 'vue';
-import { useStore } from 'vuex';
+import { useGlobalsStore } from '@/store';
 
-const store = useStore();
+const store = useGlobalsStore();
 
-const directorys = reactive(store.state.projects);
+const directorys = reactive(store.projects);
 
 const toggleExpanded = (idx) => {
     directorys[idx].expanded = !directorys[idx].expanded;
 }
 
 const popupCreate = () => {
-    store.state.popupRender = !store.state.popupRender;
+    store.popupRender = !store.popupRender;
 }
 </script>
 
