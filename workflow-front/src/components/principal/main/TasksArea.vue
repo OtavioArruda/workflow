@@ -14,8 +14,8 @@
                     </div>
                 </div>
                 
-                <div class="tasks-list">
-                    <div class="about-task" v-for="(about, idxAbout) in task.sobre" :key="idxAbout">
+                <div id="dropzone" class="tasks-list" @dragover="dragOver" @drop="onDrop">
+                    <div id="target" class="about-task" draggable="true" @dragstart="dragStart" v-for="(about, idxAbout) in task.sobre" :key="idxAbout">
                         <span class="flag">
                             flag
                         </span>
@@ -132,6 +132,28 @@ const tasks = [
 
 </script>
 
+<script>
+export default {
+    methods: {
+        dragStart(event) {
+            event.dataTransfer.setData("text/plain", event.target.id);
+        },
+
+        dragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "move";
+        },
+
+        onDrop(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("text/plain");
+            event.target.appendChild(document.getElementById(data));
+        }
+    }
+}
+
+</script>
+
 <style scoped>
 #principal {
     max-width: 100%;
@@ -205,6 +227,7 @@ const tasks = [
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .actions-task {
