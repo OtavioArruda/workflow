@@ -24,12 +24,29 @@
 }
 
 .subheader-tasks {
-    background-color: #a9c52f;
+    background: linear-gradient(to right, #00800d, #012804, #00f128);
+    background-size: 300% 300%;
+    animation: gradients 5s ease infinite;
     min-height: 3vh;
     padding: 10px 20px;
     margin-left: 275px;
     display: flex;
     justify-content: space-between;
     font-size: 20px;
+    color: white;
+}
+
+@keyframes gradients {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 </style>

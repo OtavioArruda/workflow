@@ -109,7 +109,7 @@ const popupCreate = () => {
     justify-content: flex-start;
     align-items: center;
     border: none;
-    background-color: #a9c52f;
+    background-color: #00f128;
 }
 
 .create-project:hover{
@@ -164,7 +164,7 @@ const popupCreate = () => {
     padding: 10px 15px;
     margin-top: 15px;
     align-items: center;
-    background-color: #a9c52f;
+    background-color: #00f128;
 }
 
 .expanded-task {

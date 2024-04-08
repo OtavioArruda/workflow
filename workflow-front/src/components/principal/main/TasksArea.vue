@@ -49,7 +49,7 @@ import SubheaderTasks from '../partials/SubheaderTasks.vue';
 
 const tasks = [
     {
-        'title': 'Para Fazer',
+        'title': 'To Do',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -75,7 +75,7 @@ const tasks = [
         ]
     },
     {
-        'title': 'Para Fazer',
+        'title': 'In Progress',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -84,7 +84,7 @@ const tasks = [
         ]
     },
     {
-        'title': 'Para Fazer',
+        'title': 'Code Review',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -93,7 +93,7 @@ const tasks = [
         ]
     },
     {
-        'title': 'Para Fazer',
+        'title': 'Canceled',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -102,7 +102,7 @@ const tasks = [
         ]
     },
     {
-        'title': 'Para Fazer',
+        'title': 'Done',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -111,7 +111,7 @@ const tasks = [
         ]
     },
     {
-        'title': 'Para Fazer',
+        'title': 'Waiting',
         'sobre': [
             {
                 'descricao': 'teste',
@@ -179,16 +179,16 @@ export default {
 }
 
 #tasks::-webkit-scrollbar-thumb {
-    background-color: #283e37;
-    border-radius: 20px;
-    border: 3px solid black;
+    background-color: #a9afb0;
+    border-radius: 5px;
+    border: 3px solid #a9afb0;
 }
 
 #task-area {
     min-width: 250px !important;
     margin: 20px 0px 0px 20px;
-    background-color: #283739;
-    border-radius: 20px;
+    background-color: #a9afb0;
+    border-radius: 5px;
     max-height: 60%;
 }
 
@@ -211,8 +211,8 @@ export default {
 .info-column {
     display: flex;
     justify-content: space-between;
-    color: white;
-    padding: 20px;
+    color: #283e37;
+    padding: 8px;
     font-size: 17px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -221,13 +221,14 @@ export default {
 .about-task {
     background-color: white;
     padding: 5px 10px;
-    margin: 10px;
-    border-radius: 15px;
-    height: 75px;
+    margin: 5px;
+    border-radius: 5px;
+    height: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
+    box-shadow: 0px 1px 1px black;
 }
 
 .actions-task {
@@ -264,7 +265,7 @@ export default {
     justify-content: flex-start;
     align-items: center;
     border: none;
-    background-color: #a9c52f;
+    background-color: #00f128;
     margin: 20px 20px 0px 20px;
 }
 
