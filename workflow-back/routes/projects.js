@@ -30,16 +30,26 @@ router.post('/', jwtMiddleware, async (req, res) => {
     }
 });
 
+router.put('/:projectId', jwtMiddleware, async (req, res) => {
+    try {
+        const project = req.body;
+
+        await Project.findByIdAndUpdate(req.params.projectId, project);
+
+        res.status(200).send('Project updated successful');
+    }
+    catch(e) {
+        console.log(e);
+
+        res.status(500).send(`Project updating error, code: ${ e.code }`);
+    }
+});
+
 router.delete('/:projectId', jwtMiddleware, async (req, res) => {
     try {
-        const deleteCount = await Project.deleteOne({ _id: req.params.projectId });
+        await Project.findByIdAndDelete(req.params.projectId);
 
-        if(deleteCount) {
-            res.status(200).send('Project deleted successful');
-        }
-        else {
-            res.status(400).send('Project id not found');
-        }
+        res.status(200).send('Project deleted successful');
     }
     catch(e) {
         console.log(e);
