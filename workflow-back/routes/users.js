@@ -8,12 +8,16 @@ const router = express.Router();
 
 const jwtMiddleware = expressJwt.expressjwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] });
 
-router.get('/', (req, res) => {
-    User.find().exec().then(x => res.json(x));
+router.get('/', async (req, res) => {
+    const users = await User.find().exec();
+
+    res.json(users);
 });
 
-router.get('/me', jwtMiddleware, (req, res) => {
-    User.findById(req.auth.userId).exec().then(x => res.json(x));
+router.get('/me', jwtMiddleware, async (req, res) => {
+    const user = await User.findById(req.auth.userId).exec();
+
+    res.json(user);
 });
 
 router.post('/', async (req, res) => {
