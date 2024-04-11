@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router';
 </script>
 
 <template>
@@ -9,9 +9,5 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <style scoped>
-#app{
-  min-height: 100vh;
-  background-color: #2c5d63;
-}
 
 </style>

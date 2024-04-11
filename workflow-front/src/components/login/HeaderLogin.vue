@@ -1,16 +1,19 @@
 <template>
   <div class="cb">
+
     <header>
       <img id="logo" src="../../assets/logo-tipo.png" alt="">
+
       <div class="direciona-criacao">
-        <span>
-          Não possui uma conta?
-        </span>
-        <button id="criar-conta" @click="DirectsRegistration">
+        <span>Não possui uma conta?</span>
+
+        <button id="criar-conta" @click="directsRegistration">
           Criar Conta
         </button>
       </div>
+
     </header>
+
   </div>
 </template>
 
@@ -19,18 +22,17 @@
 import { defineProps } from 'vue';
 
 const props = defineProps({
-  DirectsRegistration: Function
+  directsRegistration: Function
 })
-
 </script>
 
 
 <style scoped>
-.cb{
+.cb {
   z-index: 1;
 }
 
-header{
+header {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -41,18 +43,18 @@ header{
   box-shadow: 0px -5px 20px black;
 }
 
-#logo{
-  width: 70px;
+#logo {
+  width: 80px;
 }
 
-.direciona-criacao{
+.direciona-criacao {
   width: 30%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 }
 
-#criar-conta{
+#criar-conta {
   padding: 10px 15px;
   border: none;
   width: 150px;
@@ -63,15 +65,14 @@ header{
   background-color: rgb(0, 102, 25);
 }
 
-#criar-conta:hover{
+#criar-conta:hover {
   transform: scale(1.05);
   transition: 0.5s;
 }
 
-span{
+span {
   font-weight: bold;
   font-size: 15px;
 }
-
 </style>
 

@@ -1,16 +1,18 @@
 <template>
   <div class="cb">
+
     <header>
       <img id="logo" src="../../assets/logo-tipo.png" alt="">
+
       <div class="direciona-login">
-        <span>
-          Possui uma conta?
-        </span>
-        <button @click="LoginDirect" id="entrar-conta">
+        <span>Possui uma conta ?</span>
+
+        <button @click="loginDirect" id="entrar-conta">
           Entrar
         </button>
       </div>
     </header>
+
   </div>
 </template>
 
@@ -18,16 +20,14 @@
 <script setup>
 import { defineProps } from 'vue';
 
-
-const props = defineProps ({
-  LoginDirect: Function
+const props = defineProps({
+  loginDirect: Function
 })
 
 </script>
 
 
 <style scoped>
-
 .cb {
   z-index: 1;
 }

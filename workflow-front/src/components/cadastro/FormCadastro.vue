@@ -4,24 +4,24 @@
             <div class="chamada-login">
                 <span>Faça seu cadastro!</span>
             </div>
+
             <form>
                 <div class="inputs-texto">
                     <label for="name">Nome:</label>
                     <input type="text" id="name" name="name" required>
-                    
+
                     <label for="username">E-mail:</label>
-                    <input type="text" id="username" name="username" required>    
-                    
+                    <input type="text" id="username" name="username" required>
+
                     <label for="password">Senha:</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                    
+
                 <div class="direciona-telas">
-
                     <input type="submit" value="Cadastrar">
-
                 </div>
             </form>
+
         </div>
     </div>
 </template>
@@ -31,26 +31,25 @@
 </script>
 
 <style scoped>
-
-#main{
+#main {
     width: 100%;
 }
 
-span{
+span {
     font-size: 35px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: bolder;
     color: rgb(0, 102, 25);
 }
 
-label{
+label {
     color: rgb(0, 102, 25);
     font-weight: bolder;
     font-size: 15px;
 }
 
 
-.chamada-login{
+.chamada-login {
     width: 100%;
     text-align: center;
 }
@@ -68,18 +67,18 @@ label{
     margin-top: 200px;
 }
 
-.inputs-texto{
+.inputs-texto {
     display: flex;
     flex-direction: column;
     margin: 10px auto;
     width: 80%;
 }
 
-form{
+form {
     display: flex;
     flex-direction: column;
 }
-  
+
 .sessao-form input[type="text"],
 .sessao-form input[type="password"] {
     width: 100%;
@@ -89,7 +88,7 @@ form{
     box-sizing: border-box;
     margin-bottom: 20px;
 }
-  
+
 .sessao-form input[type="submit"] {
     font-size: 15px;
     width: 160px;
@@ -103,7 +102,7 @@ form{
     margin: 20px 0;
 }
 
-.direciona-telas{
+.direciona-telas {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -111,10 +110,9 @@ form{
     align-items: center;
     margin-top: 30px;
 }
-  
+
 .sessao-form input[type="submit"]:hover {
     transform: scale(1.03);
     transition: 0.5s;
 }
-
 </style>
