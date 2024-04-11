@@ -1,0 +1,79 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE3OWJkYmNkY2Y4YTVhMjVlMTZlZTUiLCJpYXQiOjE3MTI4MjMyOTd9.QG_I6XJKBg5VvrDcsLugOBxV7ZzuWEHHEf3NqtPKrmE
+
+###
+
+POST http://localhost:8000/users
+content-type: application/json
+
+{
+    "name": "teste",
+    "email": "teste@teste.com",
+    "password": "123"
+}
+
+###
+
+POST http://localhost:8000/auth/login
+content-type: application/json
+
+{
+    "email": "teste@teste.com",
+    "password": "123"
+}
+
+###
+
+GET http://localhost:8000/users/me
+Authorization: Bearer {{token}}
+
+###
+
+GET http://localhost:8000/projects
+Authorization: Bearer {{token}}
+
+###
+
+POST http://localhost:8000/projects
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "projeto1"
+}
+
+###
+
+POST http://localhost:8000/folders
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "front-end",
+    "projectId": "66179f9bead69ec71fc8895f"
+}
+
+###
+
+POST http://localhost:8000/columns
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Em andamento",
+    "folderId": "6617a61b372c1c22c5527e26"
+}
+
+###
+
+PUT http://localhost:8000/columns/6617aba7cb6cf1edd97a9163
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Em andamento2"
+}
+
+###
+
+DELETE http://localhost:8000/columns/6617aba7cb6cf1edd97a9163
+Authorization: Bearer {{token}}

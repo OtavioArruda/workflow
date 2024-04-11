@@ -9,8 +9,11 @@ const jwtMiddleware = expressJwt.expressjwt({ secret: process.env.JWT_SECRET, al
 
 router.get('/', jwtMiddleware, async (req, res) => {
     const projects = await Project
-        .find({ user_id: req.auth.userId })
-        .populate('folders')
+        .find({ user: req.auth.userId })
+        .populate({
+            path: 'folders',
+            populate: { path: 'columns' }
+        })
         .exec();
 
     res.json(projects);
@@ -20,7 +23,7 @@ router.post('/', jwtMiddleware, async (req, res) => {
     try {
         const projectBody = req.body;
 
-        projectBody.user_id = req.auth.userId;
+        projectBody.user = req.auth.userId;
 
         const ret = await Project.create(projectBody);
 
