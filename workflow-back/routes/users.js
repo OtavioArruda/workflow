@@ -22,11 +22,11 @@ router.get('/me', jwtMiddleware, async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const user = req.body;
+        const userBody = req.body;
 
-        user.password = await argon2.hash(user.password);
+        userBody.password = await argon2.hash(userBody.password);
 
-        await User.create(user);
+        await User.create(userBody);
 
         res.status(201).send('User created successful');
     }

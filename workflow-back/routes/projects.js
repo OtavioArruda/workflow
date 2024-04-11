@@ -8,18 +8,23 @@ const router = express.Router();
 const jwtMiddleware = expressJwt.expressjwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] });
 
 router.get('/', jwtMiddleware, async (req, res) => {
-    const projects = await Project.find({ user_id: req.auth.userId }).exec();
+    const projects = await Project
+        .find({ user_id: req.auth.userId })
+        .populate('folders')
+        .exec();
 
     res.json(projects);
 });
 
 router.post('/', jwtMiddleware, async (req, res) => {
     try {
-        const project = req.body;
+        const projectBody = req.body;
 
-        project.user_id = req.auth.userId;
+        projectBody.user_id = req.auth.userId;
 
-        await Project.create(project);
+        const ret = await Project.create(projectBody);
+
+        console.log(ret._id);
 
         res.status(201).send('Project created successful');
     }
@@ -32,9 +37,9 @@ router.post('/', jwtMiddleware, async (req, res) => {
 
 router.put('/:projectId', jwtMiddleware, async (req, res) => {
     try {
-        const project = req.body;
+        const projectBody = req.body;
 
-        await Project.findByIdAndUpdate(req.params.projectId, project);
+        await Project.findByIdAndUpdate(req.params.projectId, projectBody);
 
         res.status(200).send('Project updated successful');
     }
