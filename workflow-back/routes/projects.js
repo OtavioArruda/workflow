@@ -12,7 +12,12 @@ router.get('/', jwtMiddleware, async (req, res) => {
         .find({ user: req.auth.userId })
         .populate({
             path: 'folders',
-            populate: { path: 'columns' }
+            populate: {
+                path: 'columns',
+                populate: {
+                    path: 'tasks'
+                }
+            }
         })
         .exec();
 

@@ -77,3 +77,30 @@ Authorization: Bearer {{token}}
 
 DELETE http://localhost:8000/columns/6617aba7cb6cf1edd97a9163
 Authorization: Bearer {{token}}
+
+###
+
+POST http://localhost:8000/tasks
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Bug cadastro",
+    "description": "Corrigir bug na tela de cadastro",
+    "columnId": "6617b0e2cb6cf1edd97a916b"
+}
+
+###
+
+PUT http://localhost:8000/tasks/6617b68a5dbe07b769084ba4
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Bug cadastro 2"
+}
+
+###
+
+DELETE http://localhost:8000/tasks/6617b68a5dbe07b769084ba4
+Authorization: Bearer {{token}}
