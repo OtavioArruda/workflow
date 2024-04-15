@@ -18,6 +18,7 @@
 <script setup>
 import { useGlobalsStore } from '@/store';
 import { ref } from 'vue';
+import axios from 'axios';
 
 const nameProject = ref('');
 const email = ref('');
@@ -28,17 +29,23 @@ const cancelProject = () => {
     store.popupRender = !store.popupRender;
 }
 
-const createdProject = () => {
-    const dados = {
-        'name': nameProject.value,
-        'email': [
-            email.value
-        ]
-    };
-    
-    store.addProject(dados);
-    
-    store.popupRender = !store.popupRender;
+const createdProject = async () => {
+
+    try {
+        store.popupRender = !store.popupRender;
+
+        const response = await axios.post(
+            'http://localhost:3000/projects',
+            dados,
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        )
+        console.log(response.data);
+    }
+    catch (error) {
+
+    }
 }
 </script>
 

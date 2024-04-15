@@ -3,10 +3,10 @@
         <SubheaderTasks />
 
         <div id="tasks">
-            <div id="task-area" v-if="tasks.length > 0" v-for="(task, idTask) in tasks" :key="idTask">
+            <div id="task-area" v-if="tasksActive.column.length > 0" v-for="(column, idx_column) in tasksActive.column" :key="idx_column">
                 <div class="info-column">
                     <h4>
-                        {{ task.title }}
+                        {{ column.name_column }}
                     </h4>
                     <div class="actions-task">
                         <i class="fas fa-plus add-task"></i>
@@ -15,17 +15,17 @@
                 </div>
                 
                 <div class="tasks-list">
-                    <div class="about-task" v-for="(about, idxAbout) in task.sobre" :key="idxAbout">
+                    <div class="about-task" v-for="(task, idx_task) in column.tasks" :key="idx_task">
                         <span class="flag">
-                            flag
+                            {{ task.name_task }}
                         </span>
                         <div class="desc">
                             <p>
-                                {{ about.descricao }}
+                                {{ task.description }}
                             </p>
                         </div>
                         <span class="term">
-                            {{ about.prazo }}
+                            {{  }}
                         </span>
                     </div>
                 </div>
@@ -46,89 +46,11 @@
 
 <script setup>
 import SubheaderTasks from '../partials/SubheaderTasks.vue';
+import { useGlobalsStore } from '@/store';
+import { toRefs } from 'vue';
 
-const tasks = [
-    {
-        'title': 'Para Fazer',
-        'sobre': [
-            {
-                'descricao': 'teste',
-                'prazo': '23/03 - 25/03',
-            },
-            {
-                'descricao': 'teste',
-                'prazo': '23/03 - 25/03',
-            },
-            {
-                'descricao': 'teste',
-                'prazo': '23/03 - 25/03',
-            },
-            {
-                'descricao': 'teste',
-                'prazo': '23/03 - 25/03',
-            },
-            {
-                'descricao': 'teste',
-                'prazo': '23/03 - 25/03',
-            },
-
-        ]
-    },
-    {
-        'title': 'Para Fazer',
-        'sobre': [
-            {
-                'descricao': 'teste',
-                'prazo': '23/03 - 25/03',
-            }
-        ]
-    },
-    {
-        'title': 'Para Fazer',
-        'sobre': [
-            {
-                'descricao': 'teste',
-                'prazo': '23/03 - 25/03',
-            }
-        ]
-    },
-    {
-        'title': 'Para Fazer',
-        'sobre': [
-            {
-                'descricao': 'teste',
-                'prazo': '23/03 - 25/03',
-            }
-        ]
-    },
-    {
-        'title': 'Para Fazer',
-        'sobre': [
-            {
-                'descricao': 'teste',
-                'prazo': '23/03 - 25/03',
-            }
-        ]
-    },
-    {
-        'title': 'Para Fazer',
-        'sobre': [
-            {
-                'descricao': 'teste',
-                'prazo': '23/03 - 25/03',
-            }
-        ]
-    },
-    {
-        'title': 'Para Fazer',
-        'sobre': [
-            {
-                'descricao': 'teste',
-                'prazo': '23/03 - 25/03',
-            }
-        ]
-    },
-]
+const store = useGlobalsStore();
+const { tasksActive, projects } = toRefs(store);
 
 </script>
 

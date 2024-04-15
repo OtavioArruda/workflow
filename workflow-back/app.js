@@ -8,8 +8,10 @@ const projectsRouter = require('./routes/projects');
 const foldersRouter = require('./routes/folders');
 const columnsRouter = require('./routes/columns');
 const tasksRouter = require('./routes/tasks');
+const cors = require('cors');
 
 const app = express();
+app.use(cors())
 
 app.use(logger('dev'));
 app.use(express.json());

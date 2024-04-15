@@ -5,16 +5,16 @@
                 <span>Faça seu cadastro!</span>
             </div>
 
-            <form>
+            <form @submit.prevent="createdUser">
                 <div class="inputs-texto">
                     <label for="name">Nome:</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" v-model="name" name="name" required>
 
-                    <label for="username">E-mail:</label>
-                    <input type="text" id="username" name="username" required>
+                    <label for="email">E-mail:</label>
+                    <input type="text" id="email" v-model="email" name="email" required>
 
                     <label for="password">Senha:</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" v-model="password" name="password" required>
                 </div>
 
                 <div class="direciona-telas">
@@ -27,12 +27,39 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import axios from 'axios';
+
+let name = ref('');
+let email = ref('');
+let password = ref('');
+
+const createdUser = async () => {    
+    try {
+        let dados = {
+            name: name.value,
+            email: email.value,
+            password: password.value
+        };
+        const response = await axios.post('http://localhost:3000/users', dados);
+
+        console.log('Usuário criado:', response.data);
+    } catch (error) {
+        console.error('Erro ao criar usuário:', error);
+    }
+
+    name.value = "";
+    email.value = "";
+    password.value = "";
+}
+
 
 </script>
 
 <style scoped>
 #main {
     width: 100%;
+    padding-top: 200px;
 }
 
 span {
@@ -64,7 +91,6 @@ label {
     margin: 0 auto;
     padding: 20px 0;
     box-shadow: 0 10px 10px rgb(178, 255, 178);
-    margin-top: 200px;
 }
 
 .inputs-texto {
