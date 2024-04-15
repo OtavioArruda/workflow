@@ -30,8 +30,12 @@ const cancelProject = () => {
 }
 
 const createdProject = async () => {
-
     try {
+
+        let dados = {
+            name: nameProject.value
+        };
+        
         store.popupRender = !store.popupRender;
 
         const response = await axios.post(
