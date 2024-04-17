@@ -8,21 +8,25 @@ const router = express.Router();
 
 const jwtMiddleware = expressJwt.expressjwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] });
 
-router.get('/', (req, res) => {
-    User.find().exec().then(x => res.json(x));
+router.get('/', async (req, res) => {
+    const users = await User.find().exec();
+
+    res.json(users);
 });
 
-router.get('/me', jwtMiddleware, (req, res) => {
-    User.findById(req.auth.userId).exec().then(x => res.json(x));
+router.get('/me', jwtMiddleware, async (req, res) => {
+    const user = await User.findById(req.auth.userId).exec();
+
+    res.json(user);
 });
 
 router.post('/', async (req, res) => {
     try {
-        const user = req.body;
+        const userBody = req.body;
 
-        user.password = await argon2.hash(user.password);
+        userBody.password = await argon2.hash(userBody.password);
 
-        await User.create(user);
+        await User.create(userBody);
 
         res.status(201).send('User created successful');
     }

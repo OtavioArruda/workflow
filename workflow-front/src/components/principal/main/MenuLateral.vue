@@ -14,21 +14,21 @@
     
                 <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
                     <h4>
-                        {{ directory.name }}
+                        {{ directory.name_project }}
                     </h4>
                     <div>
-                        <i class="fas fa-plus add-task"></i>
+                        <i class="fas fa-plus add-task" @click="createdFolder"></i>
                         <i class="fa-solid fa-angle-down expanded-task" @click="toggleExpanded(idx)"
                             :class="{ 'rotate-90': directorys[idx].expanded }"></i>
                     </div>
                 </div>
     
                 <div class="area-subdirectory" :class="{ 'render-subdirectory': !directorys[idx].expanded }">
-                    <div class="sub-directory" v-for="(subDirectory, id) in directorys[idx].subDirectory" :key="id">
-                        <div class="about-tasks">
+                    <div class="sub-directory" v-for="(subDirectory, id) in directorys[idx].folders" :key="id">
+                        <div class="about-tasks" @click="activeTasks(directory.name_project, subDirectory.name_folder, subDirectory.columns)">
                             <i class="fa-solid fa-folder"></i>
                             <span class="name-subdirectory">
-                                {{ subDirectory.name }}
+                                {{ subDirectory.name_folder }}
                             </span>
                         </div>
                         <i class="fa-solid fa-trash"></i>
@@ -57,6 +57,10 @@ const toggleExpanded = (idx) => {
 
 const popupCreate = () => {
     store.popupRender = !store.popupRender;
+}
+
+const activeTasks = (project, folder, columns) => {
+    store.updatetasksActive(project, folder, columns);
 }
 </script>
 
@@ -186,7 +190,7 @@ const popupCreate = () => {
 }
 
 .about-tasks{
-    width: 50%;
+    width: 100%;
 }
 
 .name-subdirectory{

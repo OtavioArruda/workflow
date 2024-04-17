@@ -1,7 +1,7 @@
 <template>
     <div id="main-tasks">
         <div class="subheader-tasks">
-            <strong>Projeto 1 | Frontend</strong>
+            <strong v-if="tasksActive.project !== ''"> {{ tasksActive.project }} | {{ tasksActive.folder }}</strong>
 
             <div class="gears">
                 <div></div>
@@ -13,6 +13,12 @@
 </template>
 
 <script setup>
+import { useGlobalsStore } from '@/store';
+import { toRefs } from 'vue';
+
+const store = useGlobalsStore();
+const { tasksActive } = toRefs(store);
+
 </script>
 
 <style scoped>

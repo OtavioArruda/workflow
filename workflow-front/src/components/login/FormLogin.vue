@@ -13,10 +13,10 @@
           <span>Faça seu login!</span>
         </div>
 
-        <form>
+        <form @submit.prevent="accessAccount">
           <div class="inputs-texto">
-            <label for="username">E-mail:</label>
-            <input type="text" v-model="user" id="username" name="username" required>
+            <label for="email">E-mail:</label>
+            <input type="text" v-model="email" id="email" name="email" required>
 
             <label for="password">Senha:</label>
             <input type="password" v-model="pass" id="password" name="password" required>
@@ -25,7 +25,7 @@
           <div class="direciona-telas">
             <a href="">Esqueceu sua senha?</a>
 
-            <input type="submit" @click="accessAccount" value="Entrar">
+            <input type="submit" value="Entrar">
 
             <a href="" @click="directsRegistration">Ainda não tenho uma conta</a>
           </div>
@@ -39,20 +39,38 @@
 <script setup>
 import { defineProps, defineModel } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 const router = useRouter();
 
-const user = defineModel('user');
-const pass = defineModel('pass');
+
+let email = defineModel('email');
+let pass = defineModel('pass');
 
 const props = defineProps({
   directsRegistration: Function
 });
 
-const accessAccount = () => {
-  if(user.value !== undefined && pass.value !== undefined) {
+const accessAccount = async () => {
+  try {
+
+    let login = {
+      email: email.value,
+      password: pass.value
+    }
+
+    const response = await axios.post('http://localhost:3000/auth/login', login)
+
+    localStorage.setItem('token', response.data.token);  
     router.push('/principal');
+    
+    email.value = "";
+    pass.value = "";
   }
+  catch (error) {
+    console.error('Erro ao buscar usuário:', error);
+  }
+
 }
 
 </script>
