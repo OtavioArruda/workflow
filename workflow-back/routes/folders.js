@@ -20,12 +20,21 @@ router.post('/', jwtMiddleware, async (req, res) => {
 
         project.save();
 
-        res.status(201).send('Folder created successful');
+        res.status(201).json({
+            data: {
+                folder,
+                message: 'Folder created successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Folder creation error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Folder creation error, code: ${ e.code }`
+            }
+        });
     }
 });
 
@@ -33,14 +42,23 @@ router.put('/:folderId', jwtMiddleware, async (req, res) => {
     try {
         const folderBody = req.body;
 
-        await Folder.findByIdAndUpdate(req.params.folderId, folderBody);
+        const folder = await Folder.findByIdAndUpdate(req.params.folderId, folderBody, { new: true });
 
-        res.status(200).send('Folder updated successful');
+        res.status(200).json({
+            data: {
+                folder,
+                message: 'Folder updated successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Folder updating error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Folder updating error, code: ${ e.code }`
+            }
+        });
     }
 });
 
@@ -54,12 +72,23 @@ router.delete('/:folderId', jwtMiddleware, async (req, res) => {
 
         project.save();
 
-        res.status(200).send('Folder deleted successful');
+        res.status(200).json({
+            data: {
+                folder: {
+                    _id: req.params.folderId
+                },
+                message: 'Folder deleted successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Folder deletation error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Folder deletation error, code: ${ e.code }`
+            }
+        });
     }
 });
 

@@ -20,12 +20,21 @@ router.post('/', jwtMiddleware, async (req, res) => {
 
         folder.save();
 
-        res.status(201).send('Column created successful');
+        res.status(201).json({
+            data: {
+                column,
+                message: 'Column created successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Column creation error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Column creation error, code: ${ e.code }`
+            }
+        });
     }
 });
 
@@ -33,14 +42,23 @@ router.put('/:columnId', jwtMiddleware, async (req, res) => {
     try {
         const columnBody = req.body;
 
-        await Column.findByIdAndUpdate(req.params.columnId, columnBody);
+        const column = await Column.findByIdAndUpdate(req.params.columnId, columnBody, { new: true });
 
-        res.status(200).send('Column updated successful');
+        res.status(200).json({
+            data: {
+                column,
+                message: 'Column updated successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Column updating error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Column updating error, code: ${ e.code }`
+            }
+        });
     }
 });
 
@@ -54,12 +72,23 @@ router.delete('/:columnId', jwtMiddleware, async (req, res) => {
 
         folder.save();
 
-        res.status(200).send('Column deleted successful');
+        res.status(200).json({
+            data: {
+                column: {
+                    _id: req.params.columnId
+                },
+                message: 'Column deleted successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Column deletation error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Column deletation error, code: ${ e.code }`
+            }
+        });
     }
 });
 

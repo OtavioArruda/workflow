@@ -20,12 +20,21 @@ router.post('/', jwtMiddleware, async (req, res) => {
 
         column.save();
 
-        res.status(201).send('Task created successful');
+        res.status(201).json({
+            data: {
+                task,
+                message: 'Task created successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Task creation error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Task creation error, code: ${ e.code }`
+            }
+        });
     }
 });
 
@@ -33,14 +42,23 @@ router.put('/:taskId', jwtMiddleware, async (req, res) => {
     try {
         const taskBody = req.body;
 
-        await Task.findByIdAndUpdate(req.params.taskId, taskBody);
+        const task = await Task.findByIdAndUpdate(req.params.taskId, taskBody, { new: true });
 
-        res.status(200).send('Task updated successful');
+        res.status(200).json({
+            data: {
+                task,
+                message: 'Task updated successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Task updating error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Task updating error, code: ${ e.code }`
+            }
+        });
     }
 });
 
@@ -54,12 +72,23 @@ router.delete('/:taskId', jwtMiddleware, async (req, res) => {
 
         column.save();
 
-        res.status(200).send('Task deleted successful');
+        res.status(200).json({
+            data: {
+                task: {
+                    _id: req.params.taskId
+                },
+                message: 'Task deleted successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Task deletation error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Task deletation error, code: ${ e.code }`
+            }
+        });
     }
 });
 

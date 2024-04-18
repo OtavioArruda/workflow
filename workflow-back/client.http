@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE3OWJkYmNkY2Y4YTVhMjVlMTZlZTUiLCJpYXQiOjE3MTI4MjMyOTd9.QG_I6XJKBg5VvrDcsLugOBxV7ZzuWEHHEf3NqtPKrmE
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjIwNTgzMWNlMDNmZWU0NTA2M2E1MTAiLCJpYXQiOjE3MTMzOTYyMzV9.XObTaTUzostDdv3O3zPvBAlVLftd7dlZ6ccHNKQ_XDo
 
 ###
 
@@ -18,7 +18,7 @@ content-type: application/json
 
 {
     "email": "teste@teste.com",
-    "password": "123"
+    "password": "13"
 }
 
 ###
@@ -39,6 +39,16 @@ Authorization: Bearer {{token}}
 
 {
     "name": "projeto1"
+}
+
+###
+
+PUT http://localhost:8000/projects/66205a2826ca311a1d1b1889
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "projeto4"
 }
 
 ###

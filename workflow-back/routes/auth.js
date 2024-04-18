@@ -13,10 +13,16 @@ router.post('/login', async (req, res) => {
     if(await argon2.verify(user.password, req.body.password)) {
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
 
-        res.json({ token });
+        res.json({
+            data: { token }
+        });
     }
     else {
-        res.status(401).send('Unautorized');
+        res.status(401).json({
+            error: { 
+                message: 'Unauthorized'
+            } 
+        });
     }
 });
 
