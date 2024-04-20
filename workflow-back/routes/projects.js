@@ -21,7 +21,11 @@ router.get('/', jwtMiddleware, async (req, res) => {
         })
         .exec();
 
-    res.json(projects);
+    res.json({
+        data: {
+            projects
+        }
+    });
 });
 
 router.post('/', jwtMiddleware, async (req, res) => {
@@ -30,16 +34,23 @@ router.post('/', jwtMiddleware, async (req, res) => {
 
         projectBody.user = req.auth.userId;
 
-        const ret = await Project.create(projectBody);
+        const project = await Project.create(projectBody);
 
-        console.log(ret._id);
-
-        res.status(201).send('Project created successful');
+        res.status(201).json({
+            data: {
+                project,
+                message: 'Project created successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Project creation error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Project creation error, code: ${ e.code }` 
+            }
+        });
     }
 });
 
@@ -47,14 +58,23 @@ router.put('/:projectId', jwtMiddleware, async (req, res) => {
     try {
         const projectBody = req.body;
 
-        await Project.findByIdAndUpdate(req.params.projectId, projectBody);
+        const project = await Project.findByIdAndUpdate(req.params.projectId, projectBody, { new: true });
 
-        res.status(200).send('Project updated successful');
+        res.status(200).json({
+            data: {
+                project,
+                message: 'Project updated successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Project updating error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Project updating error, code: ${ e.code }`
+            }
+        });
     }
 });
 
@@ -62,12 +82,23 @@ router.delete('/:projectId', jwtMiddleware, async (req, res) => {
     try {
         await Project.findByIdAndDelete(req.params.projectId);
 
-        res.status(200).send('Project deleted successful');
+        res.status(200).json({
+            data: {
+                project: {
+                    _id: req.params.projectId
+                },
+                message: 'Project deleted successful'
+            }
+        });
     }
     catch(e) {
         console.log(e);
 
-        res.status(500).send(`Project deletation error, code: ${ e.code }`);
+        res.status(500).json({
+            error: {
+                message: `Project deletation error, code: ${ e.code }`
+            }
+        });
     }
 });
 
