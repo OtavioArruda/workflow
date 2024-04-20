@@ -3,10 +3,10 @@
         <SubheaderTasks />
 
         <div id="tasks">
-            <div id="task-area" v-if="tasksActive.column.length > 0" v-for="(column, idx_column) in tasksActive.column" :key="idx_column">
+            <div id="task-area" v-if="tasksActive.data.length > 0" v-for="(column, idx_column) in tasksActive.data" :key="idx_column">
                 <div class="info-column">
                     <h4>
-                        {{ column.name_column }}
+                        {{ column.name }}
                     </h4>
                     <div class="actions-task">
                         <i class="fas fa-plus add-task"></i>
@@ -17,16 +17,13 @@
                 <div class="tasks-list">
                     <div class="about-task" v-for="(task, idx_task) in column.tasks" :key="idx_task">
                         <span class="flag">
-                            {{ task.name_task }}
+                            {{ task.title }}
                         </span>
                         <div class="desc">
                             <p>
                                 {{ task.description }}
                             </p>
                         </div>
-                        <span class="term">
-                            {{  }}
-                        </span>
                     </div>
                 </div>
             </div>
@@ -61,15 +58,17 @@ const { tasksActive, projects } = toRefs(store);
 }
 
 #tasks {
-    margin-left: 275px;
+    margin-left: 320px;
     display: flex;
-    overflow-y: hidden;
     padding-bottom: 5px;
-    min-height: 80vh;
+    min-height: 85vh;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    position: relative;
 }
 
 #tasks::-webkit-scrollbar {
-    width: 5px;
+    height: 10px;
 }
 
 #tasks::-webkit-scrollbar-track {
@@ -85,10 +84,10 @@ const { tasksActive, projects } = toRefs(store);
 }
 
 #task-area {
-    min-width: 250px !important;
-    margin: 20px 0px 0px 20px;
-    background-color: #283739;
-    border-radius: 20px;
+    min-width: 300px !important;
+    margin: 20px 0px 50px 20px;
+    background-color: rgb(1, 41, 0);
+    border-radius: 10px;
     max-height: 60%;
 }
 
@@ -163,7 +162,9 @@ const { tasksActive, projects } = toRefs(store);
     justify-content: flex-start;
     align-items: center;
     border: none;
-    background-color: #a9c52f;
+    font-weight: bolder;
+    color: rgb(53, 52, 52);
+    background-color: #00f128;
     margin: 20px 20px 0px 20px;
 }
 

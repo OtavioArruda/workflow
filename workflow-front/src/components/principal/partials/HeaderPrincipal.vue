@@ -33,7 +33,7 @@ header {
     align-items: center;
     position: fixed;
     min-height: 50px;
-    z-index: 2;
+    z-index: 3;
     background-color: white;
     box-shadow: 10px 1px 20px black;
 }

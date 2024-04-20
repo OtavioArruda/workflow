@@ -11,45 +11,49 @@
             </div>
 
             <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
-    
                 <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
-                    <h4>
-                        {{ directory.name_project }}
-                    </h4>
+                    <div style="display: flex;">
+                        <i class="fa-solid fa-angle-right expanded-task" style="margin-right: 15px;"
+                            @click="toggleExpanded(idx)" :class="{ 'rotate-90': directorys[idx].expanded }"></i>
+                        <h4>
+                            {{ directory.name }}
+                        </h4>
+                    </div>
                     <div>
                         <i class="fas fa-plus add-task" @click="createdFolder"></i>
-                        <i class="fa-solid fa-angle-down expanded-task" @click="toggleExpanded(idx)"
-                            :class="{ 'rotate-90': directorys[idx].expanded }"></i>
-                    </div>
-                </div>
-    
-                <div class="area-subdirectory" :class="{ 'render-subdirectory': !directorys[idx].expanded }">
-                    <div class="sub-directory" v-for="(subDirectory, id) in directorys[idx].folders" :key="id">
-                        <div class="about-tasks" @click="activeTasks(directory.name_project, subDirectory.name_folder, subDirectory.columns)">
-                            <i class="fa-solid fa-folder"></i>
-                            <span class="name-subdirectory">
-                                {{ subDirectory.name_folder }}
-                            </span>
-                        </div>
-                        <i class="fa-solid fa-trash"></i>
                     </div>
                 </div>
 
+                <transition name="slide">
+                    <div v-if="directorys[idx].expanded" class="area-subdirectory">
+                        <div class="sub-directory" v-for="(subDirectory, id) in directory.folders" :key="id">
+                            <div class="about-tasks"
+                                @click="activeTasks(subDirectory, directory.name, subDirectory.name)">
+                                <i class="fa-solid fa-folder"></i>
+                                <span class="name-subdirectory">
+                                    {{ subDirectory.name }}
+                                </span>
+                            </div>
+                            <i class="fa-solid fa-trash"></i>
+                        </div>
+                    </div>
+                </transition>
+
+
             </div>
         </div>
-        <CreateProject/>
+        <CreateProject />
     </div>
 </template>
 
 <script setup>
 import '@fortawesome/fontawesome-free/css/all.css';
 import CreateProject from '@/components/principal/popups/CreateProject.vue'
-import { reactive } from 'vue';
+import { reactive, ref, onMounted } from 'vue';
 import { useGlobalsStore } from '@/store';
 
 const store = useGlobalsStore();
-
-const directorys = reactive(store.projects);
+const directorys = reactive(store.projects[0].data.projects);
 
 const toggleExpanded = (idx) => {
     directorys[idx].expanded = !directorys[idx].expanded;
@@ -59,36 +63,53 @@ const popupCreate = () => {
     store.popupRender = !store.popupRender;
 }
 
-const activeTasks = (project, folder, columns) => {
-    store.updatetasksActive(project, folder, columns);
+const activeTasks = (data, directory, folder) => {
+    store.updatetasksActive(data.columns, directory, folder);
 }
 </script>
 
 <style scoped>
 #menu {
-    width: 275px;
-    background-color: #283739;
+    width: 320px;
+    background-color: #000000;
     min-height: 95vh;
     position: fixed;
     top: 0;
     overflow-x: hidden;
+    z-index: 2;
     padding-bottom: 5vh;
 }
+
 #menu::-webkit-scrollbar {
     width: 10px;
 
 }
+
 #menu::-webkit-scrollbar-track {
     margin-top: 65px;
     margin-bottom: 5px;
 }
+
 #menu::-webkit-scrollbar-thumb {
     background-color: #283e37;
     border-radius: 20px;
     border: 3px solid black;
 }
 
+.slide-enter-active,
+.slide-leave-active {
+    transition: transform 0.3s ease;
+}
 
+.slide-enter-from,
+.slide-leave-to {
+    transform: translateX(-100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+    transform: translateX(0);
+}
 
 .sub-header-menu {
     padding: 90px 20px 20px;
@@ -103,38 +124,37 @@ const activeTasks = (project, folder, columns) => {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.create-project{
+.create-project {
     margin: 0 auto;
-    width: 100%;
+    width: 80%;
     padding: 10px 15px;
-    box-shadow: 5px 5px 10px black;
+    box-shadow: 5px 5px 10px #133b08;
     border-radius: 100px;
+    color: #000000;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     border: none;
-    background-color: #a9c52f;
+    font-weight: bolder;
+    color: rgb(53, 52, 52);
+    background-color: #00f128;
 }
 
-.create-project:hover{
+.create-project:hover {
     transform: scale(1.03);
     transition: 0.5s;
 }
 
 .rotate-90 {
-    transform: rotate(180deg);
+    transform: rotate(90deg);
     transition: 0.3s;
 }
 
-.render-subdirectory{
+.render-subdirectory {
     display: none;
 }
 
-.active-directory {
-    background-color: #74881c !important;
-}
-
-.add-project{
+.add-project {
     font-size: 20px;
     margin-right: 25px;
     margin-left: 10px;
@@ -148,7 +168,6 @@ const activeTasks = (project, folder, columns) => {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: #04c837;
     margin-right: 20px;
     display: flex;
     justify-content: center;
@@ -165,35 +184,35 @@ const activeTasks = (project, folder, columns) => {
 .directory {
     display: flex;
     justify-content: space-between;
-    padding: 10px 15px;
-    margin-top: 15px;
+    padding: 10px;
+    color: white;
+    margin-top: 25px;
     align-items: center;
-    background-color: #a9c52f;
 }
 
 .expanded-task {
     margin-left: 10px;
 }
 
-.area-subdirectory{
+.area-subdirectory {
     margin: 0 auto;
     font-size: 15px;
-    background-color: #cbdc82;
+    color: rgb(228, 215, 215);
 }
 
-.sub-directory{
+.sub-directory {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
-    border-bottom: #74881c 1px solid;
+    padding: 10px 15px;
+    margin-left: 40px;
     cursor: pointer;
 }
 
-.about-tasks{
+.about-tasks {
     width: 100%;
 }
 
-.name-subdirectory{
+.name-subdirectory {
     margin-left: 10px;
 }
 </style>
