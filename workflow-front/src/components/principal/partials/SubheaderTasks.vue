@@ -29,15 +29,21 @@ const { tasksActive } = toRefs(store);
     z-index: 1;
 }
 
+.gears{
+    position: absolute;
+    right: 20px;
+}
+
 .subheader-tasks {
-    background: linear-gradient(to right, #00800d, #012804, #00f128);
-    background-size: 300% 300%;
-    animation: gradients 5s ease infinite;
+    background-color: #00f128;
+    color: rgb(0, 0, 0);
+    color: rgb(61, 61, 61);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     min-height: 3vh;
+    font-weight: bolder;
     padding: 10px 20px;
-    margin-left: 275px;
+    margin-left: 320px;
     display: flex;
-    justify-content: space-between;
     font-size: 20px;
     color: white;
 }

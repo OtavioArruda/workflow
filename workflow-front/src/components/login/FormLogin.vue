@@ -59,9 +59,8 @@ const accessAccount = async () => {
       password: pass.value
     }
 
-    const response = await axios.post('http://localhost:3000/auth/login', login)
-
-    localStorage.setItem('token', response.data.token);  
+    const response = await axios.post('http://localhost:3000/auth/login', login);
+    localStorage.setItem('token', response.data.data.token);  
     router.push('/principal');
     
     email.value = "";

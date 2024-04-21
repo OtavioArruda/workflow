@@ -19,8 +19,17 @@ const router = createRouter({
     {
       path: '/principal',
       name: 'principal',
-      component: PrincipalView
-    }
+      component: PrincipalView,
+      beforeEnter: (to, from, next) => {
+        if (localStorage.getItem('token') != undefined) {
+          next()
+        }
+        else{
+          next("/")
+        }
+      }
+    },
+    
   ]
 });
 
