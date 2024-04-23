@@ -8,7 +8,9 @@ export const useGlobalsStore = defineStore('globals', {
         tasksActive: {
             data: "",
             project: "",
-            folder: ""
+            folder: "",
+            id_project: "",
+            id_folder: ""
         },
         projects: []
     }),
@@ -18,10 +20,12 @@ export const useGlobalsStore = defineStore('globals', {
             this.projects.push(value);
         },
         
-        updatetasksActive(data, project, folder) {
+        updatetasksActive(data, project, folder, id_project, id_folder) {
             this.tasksActive.data = data;
             this.tasksActive.project = project;
             this.tasksActive.folder = folder;
+            this.tasksActive.id_project = id_project;
+            this.tasksActive.id_folder = id_folder;
         }
     }
 });

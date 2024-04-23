@@ -1,58 +1,63 @@
 <template>
     <div>
-        <div id="menu">
-            <div class="sub-header-menu">
-                <button class="create-project" @click="popupCreate">
-                    <i class="fas fa-plus add-project"></i>
-                    <span class="new-project">
-                        Novo Projeto
-                    </span>
-                </button>
-            </div>
-
-            <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
-                <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
-                    <div style="display: flex;">
-                        <i class="fa-solid fa-angle-right expanded-task" style="margin-right: 15px;"
-                            @click="toggleExpanded(idx)" :class="{ 'rotate-90': directorys[idx].expanded }"></i>
-                        <h4>
-                            {{ directory.name }}
-                        </h4>
-                    </div>
-                    <div>
-                        <i class="fas fa-plus add-task" @click="createdFolder"></i>
-                    </div>
+        <transition name="slide">
+            <div id="menu" :class="{ 'menu-open': isMenuOpen }">
+                <div class="sub-header-menu">
+                    <button class="create-project" @click="popupCreate">
+                        <span class="new-project">
+                            Novo Projeto
+                        </span>
+                    </button>
+                    <i class="fa-solid fa-bars" @click="toggleMenu" style="color: white; font-size: 30px;"></i>
                 </div>
-
-                <transition name="slide">
-                    <div v-if="directorys[idx].expanded" class="area-subdirectory">
-                        <div class="sub-directory" v-for="(subDirectory, id) in directory.folders" :key="id">
-                            <div class="about-tasks"
-                                @click="activeTasks(subDirectory, directory.name, subDirectory.name)">
-                                <i class="fa-solid fa-folder"></i>
-                                <span class="name-subdirectory">
-                                    {{ subDirectory.name }}
-                                </span>
-                            </div>
-                            <i class="fa-solid fa-trash"></i>
+    
+                <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
+                    <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
+                        <div style="display: flex;">
+                            <i class="fa-solid fa-angle-right expanded-task" style="margin-right: 15px;"
+                                @click="toggleExpanded(idx)" :class="{ 'rotate-90': directorys[idx].expanded }"></i>
+                            <h4>
+                                {{ directory.name }}
+                            </h4>
+                        </div>
+                        <div>
+                            <i class="fas fa-plus add-task" @click="createdFolder(directory._id)"></i>
                         </div>
                     </div>
-                </transition>
-
-
+    
+                    <transition name="slide">
+                        <div v-if="directorys[idx].expanded" class="area-subdirectory">
+                            <div class="sub-directory" v-for="(subDirectory, id) in directory.folders" :key="id">
+                                <div class="about-tasks"
+                                    @click="activeTasks(subDirectory, directory.name, subDirectory.name, directory._id, subDirectory._id)">
+                                    <i class="fa-solid fa-folder"></i>
+                                    <span class="name-subdirectory">
+                                        {{ subDirectory.name }}
+                                    </span>
+                                </div>
+                                <i class="fa-solid fa-trash" @click="deleteFolder(subDirectory._id)"></i>
+                            </div>
+                        </div>
+                    </transition>
+    
+    
+                </div>
             </div>
-        </div>
+        </transition>
         <CreateProject />
     </div>
 </template>
 
 <script setup>
 import '@fortawesome/fontawesome-free/css/all.css';
-import CreateProject from '@/components/principal/popups/CreateProject.vue'
-import { reactive, ref, onMounted } from 'vue';
+import CreateProject from '@/components/principal/popups/CreateProject.vue';
 import { useGlobalsStore } from '@/store';
+import { reactive, ref, toRefs } from 'vue';
+import axios from 'axios';
 
 const store = useGlobalsStore();
+const { tasksActive, projects } = toRefs(store);
+
 const directorys = reactive(store.projects[0].data.projects);
 
 const toggleExpanded = (idx) => {
@@ -63,8 +68,54 @@ const popupCreate = () => {
     store.popupRender = !store.popupRender;
 }
 
-const activeTasks = (data, directory, folder) => {
-    store.updatetasksActive(data.columns, directory, folder);
+const activeTasks = (data, directory, folder, id_project, id_folder) => {
+    store.updatetasksActive(data.columns, directory, folder, id_project, id_folder);
+}
+
+const createdFolder = async (id_project) => {
+    console.log(tasksActive);
+    try {
+        let dados = {
+            name: "NOVA PASTA",
+            projectId: id_project
+        }
+        console.log(dados);
+
+        const response = await axios.post(
+            'http://localhost:3000/folders',
+            dados,
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        )
+        console.log(response.data);
+        
+    } 
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const deleteFolder = async (id_folder) => {
+    try {
+        const response = await axios.delete(
+            `http://localhost:3000/folders/${id_folder}`,
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        )
+        console.log(response.data);
+        
+    } 
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+let isMenuOpen = ref(false);
+const toggleMenu = () => {
+    isMenuOpen.value = !isMenuOpen.value;
 }
 </script>
 
@@ -111,6 +162,10 @@ const activeTasks = (data, directory, folder) => {
     transform: translateX(0);
 }
 
+.menu-open {
+    transform: translateX(0);
+}
+
 .sub-header-menu {
     padding: 90px 20px 20px;
     display: flex;
@@ -118,6 +173,27 @@ const activeTasks = (data, directory, folder) => {
     align-items: center;
 }
 
+.expand-enter-active {
+    transition: max-height 0.3s ease-out;
+}
+
+.expand-enter,
+.expand-leave-active {
+    max-height: 0;
+    overflow: hidden;
+}
+
+.expand-enter-to {
+    max-height: auto;
+}
+
+.expand-leave-active {
+    transition: max-height 0.3s ease-in;
+}
+
+.expand-leave-to {
+    max-height: 0;
+}
 
 .new-project {
     font-size: 17.5px;
@@ -126,13 +202,13 @@ const activeTasks = (data, directory, folder) => {
 
 .create-project {
     margin: 0 auto;
-    width: 80%;
+    width: 70%;
     padding: 10px 15px;
     box-shadow: 5px 5px 10px #133b08;
     border-radius: 100px;
     color: #000000;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     border: none;
     font-weight: bolder;

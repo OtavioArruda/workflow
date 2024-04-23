@@ -71,7 +71,7 @@ const createdProject = async () => {
     transform: translate(-50%, -50%);
     padding: 15px 30px;
     border-radius: 10px;
-    background-color: #283739;
+    background-color: #005b1b;
     z-index: 10000;
 }
 
@@ -83,16 +83,16 @@ input {
     width: 300px;
     padding: 5px 20px;
     border-radius: 10px;
-    border: 2px solid #a9c52f;
+    border: 2px solid #09ff00;
     margin-bottom: 10px;
-    background-color: #3d4b4c;
-    color: white;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
 }
 
 
 .participants {
     min-height: 140px;
-    background-color: #3d4b4c;
+    background-color: #dcdcdc;
     border-radius: 10px;
     margin-bottom: 20px;
 }
@@ -113,7 +113,8 @@ button:hover {
     border-radius: 15px;
     border: none;
     padding: 5px 10px;
-    background-color: #a9c52f;
+    background-color: #00ff1e;
+    font-weight: bolder;
 }
 
 .cancel-project {
@@ -121,6 +122,7 @@ button:hover {
     border-radius: 15px;
     border: none;
     padding: 5px 10px;
-    background-color: #2c5d63;
+    background-color: #ffffff;
+    font-weight: bolder;
 }
 </style>
