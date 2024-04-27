@@ -45,7 +45,7 @@ const createdProject = async () => {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
         )
-        console.log(response.data);
+        store.addProject(response.data.data.project);
     }
     catch (error) {
 

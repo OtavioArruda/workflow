@@ -53,7 +53,7 @@ const createColumn = async () => {
     try {
         let dados = {
             name: "Nova Coluna",
-            folderId: tasksActive.value.id_folder
+            folderId: tasksActive.value.idFolder
         }
 
         const response = await axios.post(
@@ -71,12 +71,12 @@ const createColumn = async () => {
     }
 }
 
-const addTasks = async (id_coluna) => {
+const addTasks = async (idColumn) => {
     try {
         let dados = {
             title: "Bug cadastro",
             description: "Corrigir bug na tela de cadastro",
-            columnId: id_coluna
+            columnId: idColumn
         }
 
         const response = await axios.post(
@@ -94,10 +94,10 @@ const addTasks = async (id_coluna) => {
     }
 }
 
-const deleteColumn = async (id_column) => {
+const deleteColumn = async (idColumn) => {
     try {
         const response = await axios.delete(
-            `http://localhost:3000/columns/${id_column}`,
+            `http://localhost:3000/columns/${idColumn}`,
             {
                 headers: { Authorization: `Bearer ${store.token}` }
             }

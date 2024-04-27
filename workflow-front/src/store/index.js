@@ -9,23 +9,28 @@ export const useGlobalsStore = defineStore('globals', {
             data: "",
             project: "",
             folder: "",
-            id_project: "",
-            id_folder: ""
+            idProject: "",
+            idFolder: ""
         },
         projects: []
     }),
     getters: {},
     actions: {
         addProject(value) {
-            this.projects.push(value);
+            if (this.projects.length == 0) {
+                this.projects.push(value);
+            }
+            else{
+                this.projects[0].data.projects.push(value)
+            }
         },
         
-        updatetasksActive(data, project, folder, id_project, id_folder) {
+        updatetasksActive(data, project, folder, idProject, idFolder) {
             this.tasksActive.data = data;
             this.tasksActive.project = project;
             this.tasksActive.folder = folder;
-            this.tasksActive.id_project = id_project;
-            this.tasksActive.id_folder = id_folder;
+            this.tasksActive.idProject = idProject;
+            this.tasksActive.idFolder = idFolder;
         }
     }
 });

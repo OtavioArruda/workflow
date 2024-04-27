@@ -39,8 +39,6 @@
                             </div>
                         </div>
                     </transition>
-    
-    
                 </div>
             </div>
         </transition>
@@ -68,18 +66,17 @@ const popupCreate = () => {
     store.popupRender = !store.popupRender;
 }
 
-const activeTasks = (data, directory, folder, id_project, id_folder) => {
-    store.updatetasksActive(data.columns, directory, folder, id_project, id_folder);
+const activeTasks = (data, directory, folder, idProject, idFolder) => {
+    store.updatetasksActive(data.columns, directory, folder, idProject, idFolder);
 }
 
-const createdFolder = async (id_project) => {
+const createdFolder = async (idProject) => {
     console.log(tasksActive);
     try {
         let dados = {
             name: "NOVA PASTA",
-            projectId: id_project
+            projectId: idProject
         }
-        console.log(dados);
 
         const response = await axios.post(
             'http://localhost:3000/folders',
@@ -96,10 +93,10 @@ const createdFolder = async (id_project) => {
     }
 }
 
-const deleteFolder = async (id_folder) => {
+const deleteFolder = async (idFolder) => {
     try {
         const response = await axios.delete(
-            `http://localhost:3000/folders/${id_folder}`,
+            `http://localhost:3000/folders/${idFolder}`,
             {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
