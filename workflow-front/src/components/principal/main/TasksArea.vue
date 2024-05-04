@@ -9,8 +9,8 @@
                         {{ column.name }}
                     </h4>
                     <div class="actions-task">
-                        <i class="fas fa-plus add-task" @click="addTasks(column._id)"></i>
-                        <i class="fa-solid fa-trash remove-task" @click="deleteColumn(column._id)"></i>
+                        <i class="fas fa-plus add-task" @click="taskCreated(column._id)"></i>
+                        <i class="fa-solid fa-trash remove-task" @click="columnDelete(column._id)"></i>
                     </div>
                 </div>
                 
@@ -29,7 +29,7 @@
             </div>
 
             <div v-if="tasksActive.project !== ''">
-                <button class="create-task" @click="createColumn">
+                <button class="create-task" @click="columnCreated">
                     <span class="new-task">
                         Nova Coluna
                     </span>
@@ -43,71 +43,33 @@
 <script setup>
 import SubheaderTasks from '../partials/SubheaderTasks.vue';
 import { useGlobalsStore } from '@/store';
+import { createColumn, addTasks, deleteColumn } from '@/ajax/main-requests';
 import { toRefs } from 'vue';
-import axios from 'axios';
 
 const store = useGlobalsStore();
 const { tasksActive, projects } = toRefs(store);
 
-const createColumn = async () => {
-    try {
-        let dados = {
-            name: "Nova Coluna",
-            folderId: tasksActive.value.idFolder
-        }
+const columnCreated = () => {
+    let dados = {
+        name: "Nova Coluna",
+        folderId: tasksActive.value.idFolder
+    };
 
-        const response = await axios.post(
-            'http://localhost:3000/columns',
-            dados,
-            {
-                headers: { Authorization: `Bearer ${store.token}` }
-            }
-        )
-        console.log(response.data);
-        
-    } 
-    catch (error) {
-        console.log(error);
-    }
+    createColumn(dados, store);
 }
 
-const addTasks = async (idColumn) => {
-    try {
-        let dados = {
-            title: "Bug cadastro",
-            description: "Corrigir bug na tela de cadastro",
-            columnId: idColumn
-        }
+const taskCreated = (idColumn) => {
+    let dados = {
+        title: "Bug cadastro",
+        description: "Corrigir bug na tela de cadastro",
+        columnId: idColumn
+    };
 
-        const response = await axios.post(
-            'http://localhost:3000/tasks',
-            dados,
-            {
-                headers: { Authorization: `Bearer ${store.token}` }
-            }
-        )
-        console.log(response.data);
-        
-    } 
-    catch (error) {
-        console.log(error);
-    }
+    addTasks(dados, store);
 }
 
-const deleteColumn = async (idColumn) => {
-    try {
-        const response = await axios.delete(
-            `http://localhost:3000/columns/${idColumn}`,
-            {
-                headers: { Authorization: `Bearer ${store.token}` }
-            }
-        )
-        console.log(response.data);
-        
-    } 
-    catch (error) {
-        console.log(error);
-    }
+const columnDelete = (idColumn) => {
+    deleteColumn(idColumn, store);
 }
 
 </script>

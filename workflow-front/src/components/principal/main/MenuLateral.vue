@@ -21,7 +21,7 @@
                             </h4>
                         </div>
                         <div>
-                            <i class="fas fa-plus add-task" @click="createdFolder(directory._id)"></i>
+                            <i class="fas fa-plus add-task" @click="folderCreated(directory._id)"></i>
                         </div>
                     </div>
     
@@ -35,7 +35,7 @@
                                         {{ subDirectory.name }}
                                     </span>
                                 </div>
-                                <i class="fa-solid fa-trash" @click="deleteFolder(subDirectory._id)"></i>
+                                <i class="fa-solid fa-trash" @click="folderDelete(subDirectory._id)"></i>
                             </div>
                         </div>
                     </transition>
@@ -50,13 +50,14 @@
 import '@fortawesome/fontawesome-free/css/all.css';
 import CreateProject from '@/components/principal/popups/CreateProject.vue';
 import { useGlobalsStore } from '@/store';
+import { createdFolder, deleteFolder } from '@/ajax/main-requests';
 import { reactive, ref, toRefs } from 'vue';
-import axios from 'axios';
 
 const store = useGlobalsStore();
-const { tasksActive, projects } = toRefs(store);
+let { tasksActive, projects } = toRefs(store);
+let isMenuOpen = ref(false);
+let directorys = reactive(store.projects[0].data.projects);
 
-const directorys = reactive(store.projects[0].data.projects);
 
 const toggleExpanded = (idx) => {
     directorys[idx].expanded = !directorys[idx].expanded;
@@ -70,47 +71,18 @@ const activeTasks = (data, directory, folder, idProject, idFolder) => {
     store.updatetasksActive(data.columns, directory, folder, idProject, idFolder);
 }
 
-const createdFolder = async (idProject) => {
-    console.log(tasksActive);
-    try {
-        let dados = {
-            name: "NOVA PASTA",
-            projectId: idProject
-        }
-
-        const response = await axios.post(
-            'http://localhost:3000/folders',
-            dados,
-            {
-                headers: { Authorization: `Bearer ${store.token}` }
-            }
-        )
-        console.log(response.data);
-        
-    } 
-    catch (error) {
-        console.log(error);
+const folderCreated = (idProject) => {
+    let dados = {
+        name: "NOVA PASTA",
+        projectId: idProject
     }
+    createdFolder(dados, store)
 }
 
-const deleteFolder = async (idFolder) => {
-    try {
-        const response = await axios.delete(
-            `http://localhost:3000/folders/${idFolder}`,
-            {
-                headers: { Authorization: `Bearer ${store.token}` }
-            }
-        )
-        console.log(response.data);
-        
-    } 
-    catch (error) {
-        console.log(error);
-    }
+const folderDelete = (idFolder) => {
+    deleteFolder(idFolder, store);
 }
 
-
-let isMenuOpen = ref(false);
 const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
 }

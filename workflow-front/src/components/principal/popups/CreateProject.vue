@@ -9,7 +9,7 @@
 
             <div class="buttons-project">
                 <button class="cancel-project" @click="cancelProject">Cancelar</button>
-                <button class="create-project" @click="createdProject">Criar Projeto</button>
+                <button class="create-project" @click="projectCreated">Criar Projeto</button>
             </div>
         </div>
     </div>
@@ -18,38 +18,22 @@
 <script setup>
 import { useGlobalsStore } from '@/store';
 import { ref } from 'vue';
-import axios from 'axios';
-
-const nameProject = ref('');
-const email = ref('');
+import { createdProject } from '@/ajax/main-requests'
 
 const store = useGlobalsStore();
+let nameProject = ref('');
+let email = ref('');
 
 const cancelProject = () => {
     store.popupRender = !store.popupRender;
 }
 
-const createdProject = async () => {
-    try {
-
-        let dados = {
-            name: nameProject.value
-        };
-        
-        store.popupRender = !store.popupRender;
-
-        const response = await axios.post(
-            'http://localhost:3000/projects',
-            dados,
-            {
-                headers: { Authorization: `Bearer ${store.token}` }
-            }
-        )
-        store.addProject(response.data.data.project);
-    }
-    catch (error) {
-
-    }
+const projectCreated = () => {
+    let dados = {
+        name: nameProject.value
+    };
+    
+    createdProject(dados, store);
 }
 </script>
 

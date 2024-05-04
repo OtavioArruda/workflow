@@ -13,7 +13,7 @@
           <span>Faça seu login!</span>
         </div>
 
-        <form @submit.prevent="accessAccount">
+        <form @submit.prevent="acountAccess">
           <div class="inputs-texto">
             <label for="email">E-mail:</label>
             <input type="text" v-model="email" id="email" name="email" required>
@@ -39,7 +39,7 @@
 <script setup>
 import { defineProps, defineModel } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { accessAccount } from '@/ajax/login-requests';
 
 const router = useRouter();
 
@@ -51,24 +51,17 @@ const props = defineProps({
   directsRegistration: Function
 });
 
-const accessAccount = async () => {
-  try {
+const acountAccess = () => {
 
     let login = {
       email: email.value,
       password: pass.value
     }
 
-    const response = await axios.post('http://localhost:3000/auth/login', login);
-    localStorage.setItem('token', response.data.data.token);  
-    router.push('/principal');
+    accessAccount(login, router)
     
     email.value = "";
     pass.value = "";
-  }
-  catch (error) {
-    console.error('Erro ao buscar usuário:', error);
-  }
 
 }
 
