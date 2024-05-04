@@ -35,7 +35,7 @@
                                         {{ subDirectory.name }}
                                     </span>
                                 </div>
-                                <i class="fa-solid fa-trash" @click="folderDelete(subDirectory._id)"></i>
+                                <i class="fa-solid fa-trash" @click="folderDelete(directory._id, subDirectory._id)"></i>
                             </div>
                         </div>
                     </transition>
@@ -76,11 +76,11 @@ const folderCreated = (idProject) => {
         name: "NOVA PASTA",
         projectId: idProject
     }
-    createdFolder(dados, store)
+    createdFolder(dados, store, idProject)
 }
 
-const folderDelete = (idFolder) => {
-    deleteFolder(idFolder, store);
+const folderDelete = (idProject, idFolder) => {
+    deleteFolder(idProject, idFolder, store);
 }
 
 const toggleMenu = () => {

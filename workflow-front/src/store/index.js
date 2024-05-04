@@ -14,7 +14,6 @@ export const useGlobalsStore = defineStore('globals', {
         },
         projects: []
     }),
-    getters: {},
     actions: {
         addProject(value) {
             if (this.projects.length == 0) {
@@ -22,6 +21,32 @@ export const useGlobalsStore = defineStore('globals', {
             }
             else{
                 this.projects[0].data.projects.push(value)
+            }
+        },
+
+        addFolder(value, idProject) {
+            for (let idx = 0; idx < this.projects[0].data.projects.length; idx++) {
+                let project = this.projects[0].data.projects[idx];
+                if(project._id == idProject) {
+                    project.folders.push(value);
+                }
+            }
+        },
+
+        deleteFolder(idProject, idFolder) {
+            for (let idx = 0; idx < this.projects[0].data.projects.length; idx++) {
+
+                let project = this.projects[0].data.projects[idx];
+                if(project._id == idProject) {
+
+                    let folder = project.folders
+                    for (let idxFolder = 0; idxFolder < folder.length; idxFolder++) {
+                        if (idFolder == folder[idxFolder]._id){
+                            project.folders.splice(idxFolder, 1);
+                        }
+                        
+                    }
+                }
             }
         },
         

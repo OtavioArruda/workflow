@@ -21,9 +21,6 @@ export const accessAccount = async (login, router) => {
             );
         localStorage.setItem('token', response.data.data.token);  
         router.push('/principal');
-        
-        email.value = "";
-        pass.value = "";
     }
     catch (error) {
         console.error('Erro ao buscar usuário:', error);

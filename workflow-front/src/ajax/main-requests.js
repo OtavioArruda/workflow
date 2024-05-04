@@ -38,7 +38,7 @@ export const createdProject = async (dados, store) => {
     }
 }
 
-export const createdFolder = async (dados, store) => {
+export const createdFolder = async (dados, store, idProject) => {
     try {
 
         const response = await axios.post(
@@ -48,7 +48,9 @@ export const createdFolder = async (dados, store) => {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
         )
-        console.log(response.data);
+
+        // store.addFolder(response.data.data.folder, idProject);
+        console.log(store.addFolder(response.data.data.folder, idProject));
         
     } 
     catch (error) {
@@ -56,7 +58,7 @@ export const createdFolder = async (dados, store) => {
     }
 }
 
-export const deleteFolder = async (idFolder, store) => {
+export const deleteFolder = async (idProject, idFolder, store) => {
     try {
         const response = await axios.delete(
             `http://localhost:3000/folders/${idFolder}`,
@@ -64,7 +66,8 @@ export const deleteFolder = async (idFolder, store) => {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
         )
-        console.log(response.data);
+        
+        store.deleteFolder(idProject, idFolder);
         
     } 
     catch (error) {
