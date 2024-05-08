@@ -11,35 +11,37 @@
                     <i class="fa-solid fa-bars" @click="toggleMenu" style="color: white; font-size: 30px;"></i>
                 </div>
     
-                <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
-                    <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
-                        <div style="display: flex;">
-                            <i class="fa-solid fa-angle-right expanded-task" style="margin-right: 15px;"
-                                @click="toggleExpanded(idx)" :class="{ 'rotate-90': directorys[idx].expanded }"></i>
-                            <h4>
-                                {{ directory.name }}
-                            </h4>
-                        </div>
-                        <div>
-                            <i class="fas fa-plus add-task" @click="folderCreated(directory._id)"></i>
-                        </div>
-                    </div>
-    
-                    <transition name="slide">
-                        <div v-if="directorys[idx].expanded" class="area-subdirectory">
-                            <div class="sub-directory" v-for="(subDirectory, id) in directory.folders" :key="id">
-                                <div class="about-tasks"
-                                    @click="activeTasks(subDirectory, directory.name, subDirectory.name, directory._id, subDirectory._id)">
-                                    <i class="fa-solid fa-folder"></i>
-                                    <span class="name-subdirectory">
-                                        {{ subDirectory.name }}
-                                    </span>
-                                </div>
-                                <i class="fa-solid fa-trash" @click="folderDelete(directory._id, subDirectory._id)"></i>
+                <main>
+                    <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
+                        <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
+                            <div style="display: flex;">
+                                <i class="fa-solid fa-angle-right expanded-task" style="margin-right: 15px;"
+                                    @click="toggleExpanded(idx)" :class="{ 'rotate-90': directorys[idx].expanded }"></i>
+                                <h4>
+                                    {{ directory.name }}
+                                </h4>
+                            </div>
+                            <div>
+                                <i class="fas fa-plus add-task" @click="folderCreated(directory._id)"></i>
                             </div>
                         </div>
-                    </transition>
-                </div>
+        
+                        <transition name="slide">
+                            <div v-if="directorys[idx].expanded" class="area-subdirectory">
+                                <div class="sub-directory" v-for="(subDirectory, id) in directory.folders" :key="id">
+                                    <div class="about-tasks"
+                                        @click="activeTasks(subDirectory, directory.name, subDirectory.name, directory._id, subDirectory._id)">
+                                        <i class="fa-solid fa-folder"></i>
+                                        <span class="name-subdirectory">
+                                            {{ subDirectory.name }}
+                                        </span>
+                                    </div>
+                                    <i class="fa-solid fa-trash" @click="folderDelete(directory._id, subDirectory._id)"></i>
+                                </div>
+                            </div>
+                        </transition>
+                    </div>
+                </main>
             </div>
         </transition>
         <CreateProject />
@@ -115,6 +117,26 @@ const toggleMenu = () => {
     border-radius: 20px;
     border: 3px solid black;
 }
+main::-webkit-scrollbar {
+    width: 10px;
+
+}
+
+main::-webkit-scrollbar-track {
+    margin-bottom: 10vh;
+}
+
+main::-webkit-scrollbar-thumb {
+    background-color: #283e37;
+    border-radius: 20px;
+    border: 3px solid black;
+}
+
+main{
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: 80vh;
+}
 
 .slide-enter-active,
 .slide-leave-active {
@@ -137,6 +159,7 @@ const toggleMenu = () => {
 
 .sub-header-menu {
     padding: 90px 20px 20px;
+    height: 10vh;
     display: flex;
     justify-content: space-between;
     align-items: center;

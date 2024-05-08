@@ -37,17 +37,19 @@
             </div>
 
         </div>
+        <!-- <CreateTask /> -->
     </div>
 </template>
 
 <script setup>
 import SubheaderTasks from '../partials/SubheaderTasks.vue';
+import CreateTask from '../popups/CreateTask.vue';
 import { useGlobalsStore } from '@/store';
 import { createColumn, addTasks, deleteColumn } from '@/ajax/main-requests';
 import { toRefs } from 'vue';
 
 const store = useGlobalsStore();
-const { tasksActive, projects } = toRefs(store);
+const { tasksActive } = toRefs(store);
 
 const columnCreated = () => {
     let dados = {
@@ -55,7 +57,7 @@ const columnCreated = () => {
         folderId: tasksActive.value.idFolder
     };
 
-    createColumn(dados, store);
+    createColumn(dados, store, tasksActive.value.idProject, tasksActive.value.idFolder);
 }
 
 const taskCreated = (idColumn) => {
@@ -69,7 +71,10 @@ const taskCreated = (idColumn) => {
 }
 
 const columnDelete = (idColumn) => {
-    deleteColumn(idColumn, store);
+    let idProject = tasksActive.value.idProject;
+    let idFolder = tasksActive.value.idFolder;
+
+    deleteColumn(idProject, idFolder, idColumn, store);
 }
 
 </script>

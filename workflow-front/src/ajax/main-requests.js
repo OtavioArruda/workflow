@@ -49,8 +49,7 @@ export const createdFolder = async (dados, store, idProject) => {
             }
         )
 
-        // store.addFolder(response.data.data.folder, idProject);
-        console.log(store.addFolder(response.data.data.folder, idProject));
+        store.addFolder(response.data.data.folder, idProject);
         
     } 
     catch (error) {
@@ -75,7 +74,7 @@ export const deleteFolder = async (idProject, idFolder, store) => {
     }
 }
 
-export const createColumn = async (dados, store) => {
+export const createColumn = async (dados, store, projectId, folderId) => {
     try {
         const response = await axios.post(
             'http://localhost:3000/columns',
@@ -84,7 +83,26 @@ export const createColumn = async (dados, store) => {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
         )
-        console.log(response.data);
+        
+        store.addColumn(response.data.data.column, projectId, folderId);
+        
+    } 
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+export const deleteColumn = async (idProject, idFolder, idColumn, store) => {
+    try {
+        const response = await axios.delete(
+            `http://localhost:3000/columns/${idColumn}`,
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        )
+
+        store.deleteColumn(idProject, idFolder, idColumn);
         
     } 
     catch (error) {
@@ -98,22 +116,6 @@ export const addTasks = async (dados, store) => {
         const response = await axios.post(
             'http://localhost:3000/tasks',
             dados,
-            {
-                headers: { Authorization: `Bearer ${store.token}` }
-            }
-        )
-        console.log(response.data);
-        
-    } 
-    catch (error) {
-        console.log(error);
-    }
-}
-
-export const deleteColumn = async (idColumn, store) => {
-    try {
-        const response = await axios.delete(
-            `http://localhost:3000/columns/${idColumn}`,
             {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
