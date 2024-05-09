@@ -37,7 +37,7 @@
             </div>
 
         </div>
-        <!-- <CreateTask /> -->
+        <CreateTask />
     </div>
 </template>
 
@@ -60,14 +60,20 @@ const columnCreated = () => {
     createColumn(dados, store, tasksActive.value.idProject, tasksActive.value.idFolder);
 }
 
-const taskCreated = (idColumn) => {
-    let dados = {
-        title: "Bug cadastro",
-        description: "Corrigir bug na tela de cadastro",
-        columnId: idColumn
-    };
+// const taskCreated = (idColumn) => {
+//     let dados = {
+//         title: "Bug cadastro",
+//         description: "Corrigir bug na tela de cadastro",
+//         columnId: idColumn
+//     };
 
-    addTasks(dados, store);
+//     addTasks(dados, store);
+// }
+
+const taskCreated = (columnId) => {
+    store.popupTask = !store.popupTask;
+
+    store.idColumn = columnId;
 }
 
 const columnDelete = (idColumn) => {
