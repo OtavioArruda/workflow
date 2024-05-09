@@ -71,13 +71,14 @@ const activeTasks = (data, directory, folder) => {
 <style scoped>
 #menu {
     width: 320px;
-    background-color: #000000;
+    background-color: #171a1e;
     min-height: 95vh;
     position: fixed;
     top: 0;
     overflow-x: hidden;
     z-index: 2;
     padding-bottom: 5vh;
+    box-shadow: 0px 1px 1px gray;
 }
 
 #menu::-webkit-scrollbar {
@@ -130,7 +131,6 @@ const activeTasks = (data, directory, folder) => {
     padding: 10px 15px;
     box-shadow: 5px 5px 10px #133b08;
     border-radius: 100px;
-    color: #000000;
     display: flex;
     justify-content: flex-start;
     align-items: center;
