@@ -8,21 +8,30 @@
                             Novo Projeto
                         </span>
                     </button>
-                    <i class="fa-solid fa-bars" @click="toggleMenu" style="color: white; font-size: 30px;"></i>
+
+                    <v-icon icon="mdi-menu" color="white" size="40" @click="toggleMenu"/>
                 </div>
     
                 <main>
                     <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
                         <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
-                            <div style="display: flex;">
-                                <i class="fa-solid fa-angle-right expanded-task" style="margin-right: 15px;"
-                                    @click="toggleExpanded(idx)" :class="{ 'rotate-90': directorys[idx].expanded }"></i>
+                            <div style="display: flex; align-items: center;">
+                                    <v-icon 
+                                        icon="mdi-chevron-right"
+                                        class="toggleRightDown"
+                                        :class="{ 'rotate': directorys[idx].expanded }"
+                                        color="white"
+                                        size="30"
+                                        @click="toggleExpanded(idx)"
+                                    />
                                 <h4>
                                     {{ directory.name }}
                                 </h4>
                             </div>
                             <div>
-                                <i class="fas fa-plus add-task" @click="folderCreated(directory._id)"></i>
+                                <v-btn icon variant="text" @click="folderCreated(directory._id)">
+                                    <v-icon icon="mdi-plus" color="white" size="25"/>
+                                </v-btn>
                             </div>
                         </div>
         
@@ -36,7 +45,10 @@
                                             {{ subDirectory.name }}
                                         </span>
                                     </div>
-                                    <i class="fa-solid fa-trash" @click="folderDelete(directory._id, subDirectory._id)"></i>
+
+                                    <v-btn icon variant="text" @click="folderDelete(directory._id, subDirectory._id)">
+                                        <v-icon icon="mdi-delete" color="white" size="20"/>
+                                    </v-btn>
                                 </div>
                             </div>
                         </transition>
@@ -213,9 +225,12 @@ main{
     transition: 0.5s;
 }
 
-.rotate-90 {
+.toggleRightDown {
+    transition: transform .2s ease-in-out !important;  
+}
+
+.toggleRightDown.rotate {
     transform: rotate(90deg);
-    transition: 0.3s;
 }
 
 .render-subdirectory {
@@ -252,7 +267,8 @@ main{
 .directory {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    align-items: center;
+    padding: 0px 10px;
     color: white;
     margin-top: 25px;
     align-items: center;
@@ -271,6 +287,7 @@ main{
 .sub-directory {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px 15px;
     margin-left: 40px;
     cursor: pointer;
