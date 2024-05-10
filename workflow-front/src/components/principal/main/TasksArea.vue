@@ -9,8 +9,8 @@
                         {{ column.name }}
                     </h4>
                     <div class="actions-task">
-                        <i class="fas fa-plus add-task"></i>
-                        <i class="fa-solid fa-trash remove-task"></i>
+                        <i class="fas fa-plus add-task" @click="taskCreated(column._id)"></i>
+                        <i class="fa-solid fa-trash remove-task" @click="columnDelete(column._id)"></i>
                     </div>
                 </div>
                 
@@ -28,9 +28,8 @@
                 </div>
             </div>
 
-            <div>
-                <button class="create-task" @click="PopupCreate">
-                    <i class="fas fa-plus add-task"></i>
+            <div v-if="tasksActive.project !== ''">
+                <button class="create-task" @click="columnCreated">
                     <span class="new-task">
                         Nova Coluna
                     </span>
@@ -38,16 +37,51 @@
             </div>
 
         </div>
+        <CreateTask />
     </div>
 </template>
 
 <script setup>
 import SubheaderTasks from '../partials/SubheaderTasks.vue';
+import CreateTask from '../popups/CreateTask.vue';
 import { useGlobalsStore } from '@/store';
+import { createColumn, addTasks, deleteColumn } from '@/ajax/main-requests';
 import { toRefs } from 'vue';
 
 const store = useGlobalsStore();
-const { tasksActive, projects } = toRefs(store);
+const { tasksActive } = toRefs(store);
+
+const columnCreated = () => {
+    let dados = {
+        name: "Nova Coluna",
+        folderId: tasksActive.value.idFolder
+    };
+
+    createColumn(dados, store, tasksActive.value.idProject, tasksActive.value.idFolder);
+}
+
+// const taskCreated = (idColumn) => {
+//     let dados = {
+//         title: "Bug cadastro",
+//         description: "Corrigir bug na tela de cadastro",
+//         columnId: idColumn
+//     };
+
+//     addTasks(dados, store);
+// }
+
+const taskCreated = (columnId) => {
+    store.popupTask = !store.popupTask;
+
+    store.idColumn = columnId;
+}
+
+const columnDelete = (idColumn) => {
+    let idProject = tasksActive.value.idProject;
+    let idFolder = tasksActive.value.idFolder;
+
+    deleteColumn(idProject, idFolder, idColumn, store);
+}
 
 </script>
 
@@ -183,7 +217,7 @@ export default {
     box-shadow: 5px 5px 5px black;
     border-radius: 100px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     border: none;
     font-weight: bolder;

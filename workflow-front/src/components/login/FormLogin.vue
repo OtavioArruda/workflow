@@ -1,6 +1,6 @@
 <template>
   <div id="body">
-    <main>
+    <section class="login">
 
       <div class="sessao-sobre">
         <h1>Bem-vindo ao WorkFlow: Seu Gerenciador de Tarefas Eficiente!</h1>
@@ -13,7 +13,7 @@
           <span>Faça seu login!</span>
         </div>
 
-        <form @submit.prevent="accessAccount">
+        <form @submit.prevent="acountAccess">
           <div class="inputs-texto">
             <label for="email">E-mail:</label>
             <input type="text" v-model="email" id="email" name="email" required>
@@ -32,14 +32,27 @@
         </form>
       </div>
 
-    </main>
+    </section>
+
+    <section class="about">
+      <div>
+
+      </div>
+
+      <div id="container">
+        <div class="box" style="height: 600px; width: 80%; background: black;"></div>
+        <div class="box" style="height: 600px; width: 80%; background: red;"></div>
+        <div class="box" style="height: 600px; width: 80%; background: blue;"></div>
+      </div>
+      
+    </section>
   </div>
 </template>
 
 <script setup>
 import { defineProps, defineModel } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { accessAccount } from '@/ajax/login-requests';
 
 const router = useRouter();
 
@@ -51,31 +64,40 @@ const props = defineProps({
   directsRegistration: Function
 });
 
-const accessAccount = async () => {
-  try {
+const acountAccess = () => {
 
     let login = {
       email: email.value,
       password: pass.value
     }
 
-    const response = await axios.post('http://localhost:3000/auth/login', login);
-    localStorage.setItem('token', response.data.data.token);  
-    router.push('/principal');
+    accessAccount(login, router)
     
     email.value = "";
     pass.value = "";
-  }
-  catch (error) {
-    console.error('Erro ao buscar usuário:', error);
-  }
 
 }
+
+window.addEventListener('scroll', function() {
+  let boxes = document.querySelectorAll('.box');
+  
+  boxes.forEach(function(box) {
+    let boxTop = box.getBoundingClientRect().top;
+    let windowHeight = window.innerHeight;
+    
+    if (boxTop < windowHeight * 0.8) {
+      box.classList.add('slide-in');
+    } else {
+      box.classList.remove('slide-in');
+    }
+  });
+});
+
 
 </script>
 
 <style scoped>
-main {
+.login {
   display: flex;
   z-index: 0;
   min-height: 100vh;
@@ -88,7 +110,7 @@ main {
 }
 
 #body {
-  background: linear-gradient(to right, #012804, #00800d, #00f128);
+  background: linear-gradient(to right, #012804, #00800d, #008516);
   background-size: 300% 300%;
   animation: gradients 7.5s ease infinite;
 }
@@ -140,11 +162,12 @@ h3 {
 }
 
 .sessao-form {
-  width: 70%;
+  width: 90%;
   border: none;
   padding-bottom: 100px;
   background-color: white;
-  box-shadow: -20px 10px 10px #ffffff;
+  border-bottom-left-radius: 10px;
+  box-shadow: -5px 0px 10px #ffffff;
 }
 
 .inputs-texto {
@@ -198,6 +221,28 @@ label {
   transform: scale(1.03);
   transition: 0.5s;
 }
+
+.about{
+  margin-top: 100px;
+}
+
+.box {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.slide-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+#container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 
 
 @keyframes gradients {

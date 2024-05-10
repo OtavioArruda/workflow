@@ -1,59 +1,65 @@
 <template>
     <div>
-        <div id="menu">
-            <div class="sub-header-menu">
-                <button class="create-project" @click="popupCreate">
-                    <i class="fas fa-plus add-project"></i>
-                    <span class="new-project">
-                        Novo Projeto
-                    </span>
-                </button>
-            </div>
-
-            <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
-                <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
-                    <div style="display: flex;">
-                        <i class="fa-solid fa-angle-right expanded-task" style="margin-right: 15px;"
-                            @click="toggleExpanded(idx)" :class="{ 'rotate-90': directorys[idx].expanded }"></i>
-                        <h4>
-                            {{ directory.name }}
-                        </h4>
-                    </div>
-                    <div>
-                        <i class="fas fa-plus add-task" @click="createdFolder"></i>
-                    </div>
+        <transition name="slide">
+            <div id="menu" :class="{ 'menu-open': isMenuOpen }">
+                <div class="sub-header-menu">
+                    <button class="create-project" @click="popupCreate">
+                        <span class="new-project">
+                            Novo Projeto
+                        </span>
+                    </button>
+                    <i class="fa-solid fa-bars" @click="toggleMenu" style="color: white; font-size: 30px;"></i>
                 </div>
-
-                <transition name="slide">
-                    <div v-if="directorys[idx].expanded" class="area-subdirectory">
-                        <div class="sub-directory" v-for="(subDirectory, id) in directory.folders" :key="id">
-                            <div class="about-tasks"
-                                @click="activeTasks(subDirectory, directory.name, subDirectory.name)">
-                                <i class="fa-solid fa-folder"></i>
-                                <span class="name-subdirectory">
-                                    {{ subDirectory.name }}
-                                </span>
+    
+                <main>
+                    <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
+                        <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
+                            <div style="display: flex;">
+                                <i class="fa-solid fa-angle-right expanded-task" style="margin-right: 15px;"
+                                    @click="toggleExpanded(idx)" :class="{ 'rotate-90': directorys[idx].expanded }"></i>
+                                <h4>
+                                    {{ directory.name }}
+                                </h4>
                             </div>
-                            <i class="fa-solid fa-trash"></i>
+                            <div>
+                                <i class="fas fa-plus add-task" @click="folderCreated(directory._id)"></i>
+                            </div>
                         </div>
+        
+                        <transition name="slide">
+                            <div v-if="directorys[idx].expanded" class="area-subdirectory">
+                                <div class="sub-directory" v-for="(subDirectory, id) in directory.folders" :key="id">
+                                    <div class="about-tasks"
+                                        @click="activeTasks(subDirectory, directory.name, subDirectory.name, directory._id, subDirectory._id)">
+                                        <i class="fa-solid fa-folder"></i>
+                                        <span class="name-subdirectory">
+                                            {{ subDirectory.name }}
+                                        </span>
+                                    </div>
+                                    <i class="fa-solid fa-trash" @click="folderDelete(directory._id, subDirectory._id)"></i>
+                                </div>
+                            </div>
+                        </transition>
                     </div>
-                </transition>
-
-
+                </main>
             </div>
-        </div>
+        </transition>
         <CreateProject />
     </div>
 </template>
 
 <script setup>
 import '@fortawesome/fontawesome-free/css/all.css';
-import CreateProject from '@/components/principal/popups/CreateProject.vue'
-import { reactive, ref, onMounted } from 'vue';
+import CreateProject from '@/components/principal/popups/CreateProject.vue';
 import { useGlobalsStore } from '@/store';
+import { createdFolder, deleteFolder } from '@/ajax/main-requests';
+import { reactive, ref, toRefs } from 'vue';
 
 const store = useGlobalsStore();
-const directorys = reactive(store.projects[0].data.projects);
+let { tasksActive, projects } = toRefs(store);
+let isMenuOpen = ref(false);
+let directorys = reactive(store.projects[0].data.projects);
+
 
 const toggleExpanded = (idx) => {
     directorys[idx].expanded = !directorys[idx].expanded;
@@ -63,8 +69,24 @@ const popupCreate = () => {
     store.popupRender = !store.popupRender;
 }
 
-const activeTasks = (data, directory, folder) => {
-    store.updatetasksActive(data.columns, directory, folder);
+const activeTasks = (data, directory, folder, idProject, idFolder) => {
+    store.updatetasksActive(data.columns, directory, folder, idProject, idFolder);
+}
+
+const folderCreated = (idProject) => {
+    let dados = {
+        name: "NOVA PASTA",
+        projectId: idProject
+    }
+    createdFolder(dados, store, idProject)
+}
+
+const folderDelete = (idProject, idFolder) => {
+    deleteFolder(idProject, idFolder, store);
+}
+
+const toggleMenu = () => {
+    isMenuOpen.value = !isMenuOpen.value;
 }
 </script>
 
@@ -96,6 +118,26 @@ const activeTasks = (data, directory, folder) => {
     border-radius: 20px;
     border: 3px solid black;
 }
+main::-webkit-scrollbar {
+    width: 10px;
+
+}
+
+main::-webkit-scrollbar-track {
+    margin-bottom: 10vh;
+}
+
+main::-webkit-scrollbar-thumb {
+    background-color: #283e37;
+    border-radius: 20px;
+    border: 3px solid black;
+}
+
+main{
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: 80vh;
+}
 
 .slide-enter-active,
 .slide-leave-active {
@@ -112,13 +154,39 @@ const activeTasks = (data, directory, folder) => {
     transform: translateX(0);
 }
 
+.menu-open {
+    transform: translateX(0);
+}
+
 .sub-header-menu {
     padding: 90px 20px 20px;
+    height: 10vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+.expand-enter-active {
+    transition: max-height 0.3s ease-out;
+}
+
+.expand-enter,
+.expand-leave-active {
+    max-height: 0;
+    overflow: hidden;
+}
+
+.expand-enter-to {
+    max-height: auto;
+}
+
+.expand-leave-active {
+    transition: max-height 0.3s ease-in;
+}
+
+.expand-leave-to {
+    max-height: 0;
+}
 
 .new-project {
     font-size: 17.5px;
@@ -127,12 +195,12 @@ const activeTasks = (data, directory, folder) => {
 
 .create-project {
     margin: 0 auto;
-    width: 80%;
+    width: 70%;
     padding: 10px 15px;
     box-shadow: 5px 5px 10px #133b08;
     border-radius: 100px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     border: none;
     font-weight: bolder;

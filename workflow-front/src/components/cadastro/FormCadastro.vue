@@ -5,7 +5,7 @@
                 <span>Faça seu cadastro!</span>
             </div>
 
-            <form @submit.prevent="createdUser">
+            <form @submit.prevent="userCreated">
                 <div class="inputs-texto">
                     <label for="name">Nome:</label>
                     <input type="text" id="name" v-model="name" name="name" required>
@@ -28,25 +28,20 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import { createdUser } from '@/ajax/login-requests';
 
 let name = ref('');
 let email = ref('');
 let password = ref('');
 
-const createdUser = async () => {    
-    try {
-        let dados = {
-            name: name.value,
-            email: email.value,
-            password: password.value
-        };
-        const response = await axios.post('http://localhost:3000/users', dados);
+const userCreated = () => {    
+    let dados = {
+        name: name.value,
+        email: email.value,
+        password: password.value
+    };
 
-        console.log('Usuário criado:', response.data);
-    } catch (error) {
-        console.error('Erro ao criar usuário:', error);
-    }
+    createdUser(dados);
 
     name.value = "";
     email.value = "";
