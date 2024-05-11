@@ -2,6 +2,7 @@
     <div id="principal">
         <SubheaderTasks />
 
+        <img id="logo" src="../../../assets/empty-box.png" alt="" v-if="tasksActive.data === ''">
         <div id="tasks">
             <div id="task-area" v-if="tasksActive.data.length > 0" v-for="(column, idx_column) in tasksActive.data" :key="idx_column">
                 <div class="info-column">
@@ -113,6 +114,15 @@ export default {
     margin-top: 100px;
 }
 
+#logo {
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+}
+
 #tasks {
     margin-left: 320px;
     display: flex;
@@ -222,7 +232,7 @@ export default {
     border: none;
     font-weight: bolder;
     color: rgb(53, 52, 52);
-    background-color: #00f128;
+    background-color: #57ce8d;
     margin: 20px 20px 0px 20px;
 }
 
