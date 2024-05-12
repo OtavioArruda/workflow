@@ -20,13 +20,24 @@
                 
                 <div class="tasks-list">
                     <div class="about-task" v-for="(task, idx_task) in column.tasks" :key="idx_task">
-                        <span class="flag">
-                            {{ task.title }}
-                        </span>
+                        <div class="header-task">
+                            <span class="flag" :style="{ 'background-color': task.badges[0].color }" >
+                                {{ task.badges[0].text }}
+                            </span>
+
+                            <h5 style="margin-left: 50px; font-size: 20px">
+                                {{ task.title }}
+                            </h5>
+                        </div>
+
                         <div class="desc">
                             <p>
                                 {{ task.description }}
                             </p>
+                        </div>
+
+                        <div class="dates">
+                            <span>{{ formatDate(task.start_at) }} a {{ formatDate(task.end_at) }}</span>
                         </div>
                     </div>
                 </div>
@@ -49,7 +60,7 @@
 import SubheaderTasks from '../partials/SubheaderTasks.vue';
 import CreateTask from '../popups/CreateTask.vue';
 import { useGlobalsStore } from '@/store';
-import { createColumn, addTasks, deleteColumn } from '@/ajax/main-requests';
+import { createColumn, deleteColumn } from '@/ajax/main-requests';
 import { toRefs } from 'vue';
 
 const store = useGlobalsStore();
@@ -77,6 +88,23 @@ const columnDelete = (idColumn) => {
     deleteColumn(idProject, idFolder, idColumn, store);
 }
 
+const formatDate = (dateString) => {
+    let date = new Date(dateString);
+    
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    
+    if (day < 10) {
+        day = '0' + day;
+    }
+    if (month < 10) {
+        month = '0' + month;
+    }
+    
+    return day + '/' + month + '/' + year;
+}
+
 </script>
 
 <style scoped>
@@ -93,6 +121,12 @@ const columnDelete = (idColumn) => {
     overflow-y: hidden;
     overflow-x: scroll;
     position: relative;
+}
+
+.header-task {
+    width: 100%; 
+    display: flex; 
+    align-items: center
 }
 
 #tasks::-webkit-scrollbar {
@@ -112,7 +146,7 @@ const columnDelete = (idColumn) => {
 }
 
 #task-area {
-    min-width: 300px !important;
+    min-width: 400px !important;
     margin: 20px 0px 50px 20px;
     background-color: rgb(1, 41, 0);
     border-radius: 10px;
@@ -151,7 +185,7 @@ const columnDelete = (idColumn) => {
     padding: 5px 10px;
     margin: 10px;
     border-radius: 15px;
-    height: 75px;
+    height: 130px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -179,6 +213,14 @@ const columnDelete = (idColumn) => {
 }
 
 .flag {
+    font-size: 15px !important; 
+    color: white;
+    width: 30% !important;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.dates{
     font-size: 12px;
 }
 

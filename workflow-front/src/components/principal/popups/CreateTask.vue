@@ -50,7 +50,7 @@
     
                         <v-btn
                             text="Submit"
-                            @click="createdTask"
+                            @click="taskCreated"
                             >Criar Tarefa
                         </v-btn>
                     </div>
@@ -64,7 +64,7 @@
 import '@fortawesome/fontawesome-free/css/all.css';
 import { useGlobalsStore } from '@/store';
 import { ref } from 'vue';
-import { addTasks, searchUsers } from '@/ajax/main-requests';
+import { createdTasks, searchUsers } from '@/ajax/main-requests';
 
 const store = useGlobalsStore();
 
@@ -89,7 +89,7 @@ const addParticipant = async () => {
         for (let id = 0; id < projects.length; id++) {
             if (projects[id]._id == idProject) {
                 let listParticipants = projects[id].participants;
-
+                
                 for (let idxParticipant = 0; idxParticipant < listParticipants.length; idxParticipant++) {
                     if (user == listParticipants[idxParticipant]) {
                         participants.value.push(participantInput.value.trim());
@@ -100,6 +100,9 @@ const addParticipant = async () => {
                     }
                     
                 }
+            }
+            else{
+                rules = [() => 'Usuário não encontrado.'];
             }
         }
     } 
@@ -113,7 +116,7 @@ const taskCancel = (e) => {
     store.popupTask = !store.popupTask;
 }
 
-const createdTask = (e) => {
+const taskCreated = (e) => {
     e.preventDefault();
 
     let data = {
@@ -121,7 +124,7 @@ const createdTask = (e) => {
         description: description.value,
         start_at: start_at.value,
         end_at: end_at.value,
-        badge: [{
+        badges: [{
             text: badge.value,
             color: badge_color.value
         }],
@@ -129,8 +132,7 @@ const createdTask = (e) => {
         columnId: store.idColumn
     }
 
-    console.log(data);
-    addTasks(data, store);
+    createdTasks(data, store, store.tasksActive.idFolder, store.tasksActive.idProject, store.idColumn);
 }
 
 </script>

@@ -90,6 +90,30 @@ export const useGlobalsStore = defineStore('globals', {
                 }
             }
         },
+
+        addTask(task, idProject, idFolder, idColumn) {
+            for (let idx = 0; idx < this.projects[0].data.projects.length; idx++) {
+
+                let project = this.projects[0].data.projects[idx];
+                if(project._id == idProject) {
+
+                    let folder = project.folders
+                    for (let idxFolder = 0; idxFolder < folder.length; idxFolder++) {
+                        if (idFolder == folder[idxFolder]._id){
+                            
+                            let column = folder[0].columns;
+                            for (let idxColumn = 0; idxColumn < column.length; idxColumn++) {
+                                if (idColumn = column[idxColumn]._id) {
+                                    console.log(project.folders[idxFolder].columns[idxColumn]);
+                                    project.folders[idxFolder].columns[idxColumn].tasks.push(task);
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        },
         
         updatetasksActive(data, project, folder, idProject, idFolder) {
             this.tasksActive.data = data;

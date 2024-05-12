@@ -136,7 +136,7 @@ export const deleteColumn = async (idProject, idFolder, idColumn, store) => {
     }
 }
 
-export const addTasks = async (dados, store) => {
+export const createdTasks = async (dados, store, idFolder, idProject, idColumn) => {
     try {
 
         const response = await axios.post(
@@ -147,8 +147,8 @@ export const addTasks = async (dados, store) => {
             }
         )
         store.popupTask = !store.popupTask;
-        console.log(response.data);
         
+        store.addTask(response.data.data.task, idProject, idFolder, idColumn)        
     } 
     catch (error) {
         console.log(error);
