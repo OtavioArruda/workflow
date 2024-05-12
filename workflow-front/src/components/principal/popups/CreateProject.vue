@@ -1,41 +1,106 @@
 <template>
     <div id="popup-overlay" :class="{ 'active-popup': store.popupRender }">
         <div id="popup-add-project">
-            <input type="text" v-model="nameProject" class="name-project" placeholder="Nome do projeto">
+            <v-sheet min-width="500" class="popup-project">
+                <v-form>
+                    <div class="info-task">
+                        <v-text-field class="mr-2" v-model="nameProject" label="Nome do Projeto"></v-text-field>
+                    </div>
 
-            <div class="participants">
-                <input type="text" v-model="email" placeholder="Email do participante">
-            </div>
-
-            <div class="buttons-project">
-                <button class="cancel-project" @click="cancelProject">Cancelar</button>
-                <button class="create-project" @click="projectCreated">Criar Projeto</button>
-            </div>
+                    <div id="participants-project">
+                        <label>
+                            Adicione os participantes:
+                        </label>
+                        <v-text-field 
+                            v-model="participantInput" 
+                            @keydown.enter="addParticipant"
+                            :rules="rules"
+                        >
+                            <div v-if="email.length > 0" class="participant-tags">
+                                <v-chip
+                                    v-for="(participant, index) in email"
+                                    :key="index"
+                                    closable
+                                >
+                                    {{ participant }}
+                                </v-chip>                            
+                            </div>
+                        </v-text-field>
+                    
+                      </div>
+    
+                    <div class="buttons-project">
+                        <v-btn 
+                            @click="cancelProject"
+                            >Cancelar
+                        </v-btn>
+    
+                        <v-btn
+                            text="Submit"
+                            @click="projectCreated"
+                            >Criar Projeto
+                        </v-btn>
+                    </div>
+                </v-form>
+            </v-sheet>
         </div>
     </div>
 </template>
 
 <script setup>
+import '@fortawesome/fontawesome-free/css/all.css';
 import { useGlobalsStore } from '@/store';
 import { ref } from 'vue';
-import { createdProject } from '@/ajax/main-requests'
+import { createdProject, searchUsers } from '@/ajax/main-requests';
 
 const store = useGlobalsStore();
-let nameProject = ref('');
-let email = ref('');
+const nameProject = ref('');
+const email = ref([]);
+const participantInput = ref("");
+const participants = ref([]);
+
+let rules = [() => true];
 
 const cancelProject = () => {
     store.popupRender = !store.popupRender;
 }
 
 const projectCreated = () => {
-    let dados = {
-        name: nameProject.value
+    const data = {
+        name: nameProject.value,
+        participants: participants.value
     };
-    
-    createdProject(dados, store);
+
+    console.log(data);
+
+    createdProject(data, store);
 }
+
+const addParticipant = async () => {
+
+    if (participantInput.value.trim() !== '') {
+        try {
+            const user = await searchUsers(store, participantInput.value);
+
+            if (user !== false) {
+                email.value.push(participantInput.value.trim());
+                participants.value.push(user);
+
+                participantInput.value = '';
+                rules = [() => true];
+            } 
+            else {
+                rules = [() => 'Usuário não encontrado.'];
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+
 </script>
+
 
 <style scoped>
 #popup-overlay {
@@ -53,24 +118,18 @@ const projectCreated = () => {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 15px 30px;
+    display: flex;
     border-radius: 10px;
-    background-color: #005b1b;
     z-index: 10000;
+}
+
+.popup-project {
+    padding: 30px;
+    border-radius: 15px;
 }
 
 .active-popup {
     display: none;
-}
-
-input {
-    width: 300px;
-    padding: 5px 20px;
-    border-radius: 10px;
-    border: 2px solid #09ff00;
-    margin-bottom: 10px;
-    background-color: #ffffff;
-    color: rgb(0, 0, 0);
 }
 
 
@@ -87,26 +146,10 @@ input {
     margin-top: 10px;
 }
 
-button:hover {
-    transform: scale(1.03);
-    transition: 0.3s;
+.buttons-project {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
 }
 
-.create-project {
-    width: 140px;
-    border-radius: 15px;
-    border: none;
-    padding: 5px 10px;
-    background-color: #00ff1e;
-    font-weight: bolder;
-}
-
-.cancel-project {
-    width: 140px;
-    border-radius: 15px;
-    border: none;
-    padding: 5px 10px;
-    background-color: #ffffff;
-    font-weight: bolder;
-}
 </style>

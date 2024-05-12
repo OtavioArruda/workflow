@@ -1,41 +1,72 @@
 <template>
     <div id="popup-overlay-task" :class="{ 'active-popup': store.popupTask }">
-        <form id="popup-add-task" @submit="createdTask">
-
-            <div class="info-task">
-                <input type="text" data-type="text" v-model="title" class="title-task" placeholder="Nome da tarefa">
+        <div id="popup-add-task">
+            <v-sheet min-width="800" class="popup-task">
+                <v-form>
+                    <div class="form-task">
+                        <div class="info-task">
+                            <v-text-field class="mr-2" v-model="title" label="Nome da tarefa"></v-text-field>
+                            <v-text-field v-model="badge" label="Adicione a badge"></v-text-field>
+                        </div>
+        
+                        <div class="dates-task">
+                            <v-text-field class="mr-2" v-model="start_at" type="date" label="Data de Início"></v-text-field>
+                            <v-text-field v-model="end_at" type="date" label="Data de Término"></v-text-field>
+                        </div>
     
-                <input type="text" data-type="text" v-model="description" placeholder="Descrição da Tarefa">
-            </div>
-
-            <div class="dates-task">
-                <input type="date" v-model="start_at">
-
-                <input type="date" v-model="end_at">
-            </div>
-
-            <div class="badges-task">
-                <input type="text" data-type="text" v-model="badge" placeholder="Adicione a badge">
-                <input type="color" v-model="badge_color">
-            </div>
-
-            <div id="participants-task">
-                <input class="add-participant" v-model="participants" data-list="participants" type="text" placeholder="Adicione o participante">
-                <div class="participants"></div>
-            </div>
-
-            <div class="buttons-task">
-                <button class="btn-task" @click="taskCancel">Cancelar</button>
-                <input class="btn-task" type="submit" value="Criar Tarefa">
-            </div>
-        </form>
+                        <div id="participants-task">
+                            <label>
+                                Adicione os participantes:
+                            </label>
+                            <v-text-field 
+                                v-model="participantInput" 
+                                :rules="rules"
+                                @keydown.enter="addParticipant"
+                            >
+                                <div v-if="participants.length > 0" class="participant-tags">
+                                    <v-chip
+                                        v-for="(participant, index) in participants"
+                                        :key="index"
+                                        closable
+                                    >
+                                        {{ participant }}
+                                    </v-chip>                            
+                                </div>
+                            </v-text-field>
+                        
+                        </div>
+        
+                        <div class="badges-task">
+                            <v-color-picker hide-canvas hide-inputs width="100%" v-model="badge_color" label="Cor da Badge"></v-color-picker>
+                            <v-textarea class="mt-5" v-model="description" label="Descrição da Tarefa"></v-textarea>
+                        </div>
+                    </div>
+    
+                    <div class="buttons-task">
+                        <v-btn 
+                            @click="taskCancel"
+                            >Cancelar
+                        </v-btn>
+    
+                        <v-btn
+                            text="Submit"
+                            @click="createdTask"
+                            >Criar Tarefa
+                        </v-btn>
+                    </div>
+                </v-form>
+            </v-sheet>
+        </div>
     </div>
 </template>
 
 <script setup>
+import '@fortawesome/fontawesome-free/css/all.css';
 import { useGlobalsStore } from '@/store';
 import { ref } from 'vue';
-import { addTasks } from '@/ajax/main-requests';
+import { addTasks, searchUsers } from '@/ajax/main-requests';
+
+const store = useGlobalsStore();
 
 let title = ref("");
 let description = ref("");
@@ -43,9 +74,39 @@ let start_at = ref("");
 let end_at = ref("");
 let badge = ref("");
 let badge_color = ref("");
-let participants = ref("");
+let participants = ref([]);
+let idUser = ref([]);
+let participantInput = ref("");
+let rules = [() => true];
 
-const store = useGlobalsStore();
+const addParticipant = async () => {
+    let idProject = store.tasksActive.idProject;
+    let projects = store.projects[0].data.projects;
+
+    const user = await searchUsers(store, participantInput.value);
+
+    if (user !== false) {
+        for (let id = 0; id < projects.length; id++) {
+            if (projects[id]._id == idProject) {
+                let listParticipants = projects[id].participants;
+
+                for (let idxParticipant = 0; idxParticipant < listParticipants.length; idxParticipant++) {
+                    if (user == listParticipants[idxParticipant]) {
+                        participants.value.push(participantInput.value.trim());
+                        idUser.value.push(user);
+
+                        participantInput.value = '';
+                        rules = [() => true];       
+                    }
+                    
+                }
+            }
+        }
+    } 
+    else {
+        rules = [() => 'Usuário não encontrado.'];
+    }
+}
 
 const taskCancel = (e) => {
     e.preventDefault();
@@ -64,10 +125,11 @@ const createdTask = (e) => {
             text: badge.value,
             color: badge_color.value
         }],
-        participants: [],
+        participants: idUser.value,
         columnId: store.idColumn
     }
-        
+
+    console.log(data);
     addTasks(data, store);
 }
 
@@ -84,16 +146,18 @@ const createdTask = (e) => {
     z-index: 9999;
 }
 
+.popup-task {
+    padding: 30px;
+    border-radius: 15px;
+}
+
 #popup-add-task {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 15px 30px;
     display: flex;
-    flex-direction: column;
     border-radius: 10px;
-    background-color: #005b1b;
     z-index: 10000;
 }
 
@@ -101,30 +165,36 @@ const createdTask = (e) => {
     display: none;
 }
 
-input[data-type=text], input[type=date] {
-    width: 300px;
-    padding: 5px 20px;
-    border-radius: 10px;
-    border: 2px solid #09ff00;
-    margin-bottom: 10px;
-    background-color: #ffffff;
-    color: rgb(0, 0, 0);
-}
-
-input[data-list=participants] {
-    padding: 5px 20px;
-    border-radius: 10px;
-    border: 2px solid #09ff00;
-    background-color: #ffffff;
-    color: rgb(0, 0, 0);
-}
-
-.info-task, .dates-task, .badges-task{
+.info-task,
+.dates-task {
     display: flex;
+    align-items: center;
 }
 
-.btn-task{
+.btn-task {
     width: 200px;
+}
+
+.form-task{
+    max-height: 80vh;
+    padding: 20px;
+    overflow-y: scroll;
+}
+
+.form-task::-webkit-scrollbar {
+    width: 10px;
+
+}
+
+.form-task::-webkit-scrollbar-track {
+    margin-top: 65px;
+    margin-bottom: 5px;
+}
+
+.form-task::-webkit-scrollbar-thumb {
+    background-color: #283e37;
+    border-radius: 20px;
+    border: 3px solid black;
 }
 
 .participants {
@@ -137,19 +207,13 @@ input[data-list=participants] {
 #participants-task {
     display: flex;
     flex-direction: column;
-    width: 50%;
     margin: 0 auto;
 }
 
 .buttons-task {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
-}
-
-button:hover {
-    transform: scale(1.03);
-    transition: 0.3s;
+    margin-top: 20px;
 }
 
 .create-project {
@@ -158,15 +222,6 @@ button:hover {
     border: none;
     padding: 5px 10px;
     background-color: #00ff1e;
-    font-weight: bolder;
-}
-
-.cancel-project {
-    width: 140px;
-    border-radius: 15px;
-    border: none;
-    padding: 5px 10px;
-    background-color: #ffffff;
     font-weight: bolder;
 }
 </style>

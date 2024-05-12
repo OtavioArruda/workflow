@@ -106,12 +106,11 @@ const toggleMenu = () => {
 #menu {
     width: 320px;
     background-color: #000000;
-    min-height: 95vh;
+    min-height: 100vh;
     position: fixed;
     top: 0;
     overflow-x: hidden;
     z-index: 2;
-    padding-bottom: 5vh;
 }
 
 #menu::-webkit-scrollbar {
@@ -171,7 +170,7 @@ main{
 
 .sub-header-menu {
     padding: 90px 20px 20px;
-    height: 10vh;
+    height: 15vh;
     display: flex;
     justify-content: space-between;
     align-items: center;

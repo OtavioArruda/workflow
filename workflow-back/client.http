@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjIwNTgzMWNlMDNmZWU0NTA2M2E1MTAiLCJpYXQiOjE3MTMzOTYyMzV9.XObTaTUzostDdv3O3zPvBAlVLftd7dlZ6ccHNKQ_XDo
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFiM2UzYjIyMWUxYmY3NTZiM2NhMzUiLCJpYXQiOjE3MTU0NzI1OTN9.DZu2V78tsfm5PDG6MEbho0xY5Wc6VVLg_P8WEyMpgR4
 
 ###
 
@@ -23,7 +23,7 @@ content-type: application/json
 
 ###
 
-GET http://localhost:8000/users/me
+GET http://localhost:3000/users
 Authorization: Bearer {{token}}
 
 ###
@@ -33,12 +33,15 @@ Authorization: Bearer {{token}}
 
 ###
 
-POST http://localhost:8000/projects
+POST http://localhost:3000/projects
 content-type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "projeto1"
+    "name": "projeto1",
+    "participants": [
+        "661b3e3b221e1bf756b3ca35"
+    ]
 }
 
 ###

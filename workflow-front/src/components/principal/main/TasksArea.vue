@@ -9,8 +9,12 @@
                         {{ column.name }}
                     </h4>
                     <div class="actions-task">
-                        <i class="fas fa-plus add-task" @click="taskCreated(column._id)"></i>
-                        <i class="fa-solid fa-trash remove-task" @click="columnDelete(column._id)"></i>
+                        <v-btn icon variant="text" @click="taskCreated(column._id)">
+                            <v-icon icon="mdi-plus" color="white" size="25"/>
+                        </v-btn>
+                        <v-btn icon variant="text" @click="columnDelete(column._id)">
+                            <v-icon icon="mdi-delete" color="white" size="20"/>
+                        </v-btn>
                     </div>
                 </div>
                 
@@ -59,16 +63,6 @@ const columnCreated = () => {
 
     createColumn(dados, store, tasksActive.value.idProject, tasksActive.value.idFolder);
 }
-
-// const taskCreated = (idColumn) => {
-//     let dados = {
-//         title: "Bug cadastro",
-//         description: "Corrigir bug na tela de cadastro",
-//         columnId: idColumn
-//     };
-
-//     addTasks(dados, store);
-// }
 
 const taskCreated = (columnId) => {
     store.popupTask = !store.popupTask;
@@ -144,6 +138,7 @@ const columnDelete = (idColumn) => {
 .info-column {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     color: white;
     padding: 20px;
     font-size: 17px;
@@ -164,6 +159,7 @@ const columnDelete = (idColumn) => {
 
 .actions-task {
     display: flex;
+    align-items: center;
 }
 
 .add-task {

@@ -35,11 +35,8 @@ const { tasksActive } = toRefs(store);
 }
 
 .subheader-tasks {
-    background-color: #00f128;
     color: rgb(0, 0, 0);
-    color: rgb(61, 61, 61);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    min-height: 3vh;
     font-weight: bolder;
     padding: 10px 20px;
     margin-left: 320px;

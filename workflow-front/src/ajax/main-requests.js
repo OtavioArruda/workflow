@@ -1,6 +1,30 @@
 import axios from 'axios';
 
 
+export const searchUsers = async (store, participant) => {
+    try {
+        const resProject = await axios.get(
+            'http://localhost:3000/users',
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        );
+
+        let users = resProject.data.data;
+
+        for (let idx_user = 0; idx_user < users.length; idx_user++) {
+            if (users[idx_user].email == participant) {
+                return users[idx_user]._id;
+            }
+        }
+
+        return false;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 export const searchProjects = async (store, dataLoaded) => {
     try {
         const resProject = await axios.get(
@@ -31,10 +55,12 @@ export const createdProject = async (dados, store) => {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
         )
+
+        console.log(response.data);
         store.addProject(response.data.data.project);
     }
     catch (error) {
-
+        console.log(error);
     }
 }
 
@@ -120,6 +146,7 @@ export const addTasks = async (dados, store) => {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
         )
+        store.popupTask = !store.popupTask;
         console.log(response.data);
         
     } 
