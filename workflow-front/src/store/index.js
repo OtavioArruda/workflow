@@ -13,7 +13,9 @@ export const useGlobalsStore = defineStore('globals', {
             idProject: "",
             idFolder: ""
         },
-        projects: []
+        projects: [],
+        email: "",
+        name: ""
     }),
     actions: {
         addProject(project) {
@@ -100,7 +102,7 @@ export const useGlobalsStore = defineStore('globals', {
                     let folder = project.folders
                     for (let idxFolder = 0; idxFolder < folder.length; idxFolder++) {
                         if (idFolder == folder[idxFolder]._id){
-                            
+
                             let column = folder[0].columns;
                             for (let idxColumn = 0; idxColumn < column.length; idxColumn++) {
                                 if (idColumn = column[idxColumn]._id) {

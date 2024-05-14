@@ -146,11 +146,11 @@ const formatDate = (dateString) => {
 }
 
 #task-area {
-    min-width: 400px !important;
+    min-width: 300px !important;
     margin: 20px 0px 50px 20px;
     background-color: rgb(1, 41, 0);
     border-radius: 10px;
-    max-height: 60%;
+    max-height: 75vh;
 }
 
 .tasks-list {

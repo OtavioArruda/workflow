@@ -28,7 +28,7 @@ Authorization: Bearer {{token}}
 
 ###
 
-GET http://localhost:8000/projects
+GET http://localhost:3000/projects
 Authorization: Bearer {{token}}
 
 ###

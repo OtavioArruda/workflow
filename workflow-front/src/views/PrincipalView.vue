@@ -15,7 +15,7 @@
 import HeaderPrincipal from '../components/principal/partials/HeaderPrincipal.vue';
 import MenuLateral from '../components/principal/main/MenuLateral.vue';
 import TasksArea from '../components/principal/main/TasksArea.vue';
-import { searchProjects } from '@/ajax/main-requests';
+import { searchProjects, searchMe } from '@/ajax/main-requests';
 import { useGlobalsStore } from '@/store';
 import { ref, onBeforeMount } from 'vue';
 

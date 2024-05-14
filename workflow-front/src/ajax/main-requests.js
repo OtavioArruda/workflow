@@ -3,14 +3,14 @@ import axios from 'axios';
 
 export const searchUsers = async (store, participant) => {
     try {
-        const resProject = await axios.get(
+        const res = await axios.get(
             'http://localhost:3000/users',
             {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
         );
 
-        let users = resProject.data.data;
+        let users = res.data.data;
 
         for (let idx_user = 0; idx_user < users.length; idx_user++) {
             if (users[idx_user].email == participant) {
@@ -25,6 +25,25 @@ export const searchUsers = async (store, participant) => {
     }
 }
 
+export const searchMe = async (store) => {
+    try {
+        const res = await axios.get(
+            'http://localhost:3000/users/me',
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        );
+
+        let user = res.data.data;
+
+        return user.user
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
 export const searchProjects = async (store, dataLoaded) => {
     try {
         const resProject = await axios.get(
@@ -34,9 +53,18 @@ export const searchProjects = async (store, dataLoaded) => {
             }
         );
         if (resProject.data) {
-            let projects = resProject.data;
-            store.addProject(projects);
-            dataLoaded.value = true;
+
+            let user = await searchMe(store);
+
+            if (user != undefined) {
+                store.email = user.email;
+                store.name = user.name;
+
+                let projects = resProject.data;
+                store.addProject(projects);
+                dataLoaded.value = true;
+            }
+
         }
     }
     catch (error) {
