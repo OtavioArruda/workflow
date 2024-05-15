@@ -182,3 +182,29 @@ export const createdTasks = async (dados, store, idFolder, idProject, idColumn) 
         console.log(error);
     }
 }
+
+export const updateFolder = async (data, idFolder, store) => {
+    try {
+        const response = await axios.put(
+            `http://localhost:3000/folders/${idFolder}`,
+            data,
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        )
+
+        const btnActive = document.querySelector(`.about-tasks[data-value=${data.name}]`);
+
+        const selectTask = new MouseEvent('click', {
+            bubbles: true, 
+            cancelable: true,
+        });
+
+        btnActive.dispatchEvent(selectTask);
+        
+        console.log(response.data);
+    } 
+    catch (error) {
+        
+    }
+}

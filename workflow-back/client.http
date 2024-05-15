@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFiM2UzYjIyMWUxYmY3NTZiM2NhMzUiLCJpYXQiOjE3MTU0NzI1OTN9.DZu2V78tsfm5PDG6MEbho0xY5Wc6VVLg_P8WEyMpgR4
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFiM2UzYjIyMWUxYmY3NTZiM2NhMzUiLCJpYXQiOjE3MTU3MzI3MDl9.7HmGLINNdJBCCBx9-FKvdCAR1WbBAc5JgxRqOXtU4ds
 
 ###
 
@@ -52,6 +52,17 @@ Authorization: Bearer {{token}}
 
 {
     "name": "projeto4"
+}
+
+###
+
+PUT http://localhost:3000/folders/6643ffe989cd19065068c4c3
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "front-end",
+    "folderId": "6643ffe989cd19065068c4c3"
 }
 
 ###

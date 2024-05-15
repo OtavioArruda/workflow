@@ -8,9 +8,9 @@
                 location="end"
             >
                 <template v-slot:activator="{ props }">
-                    <div class="mr-3" style="padding: 2px 5px; cursor:pointer;" v-bind="props">
-                        <v-icon height="40" width="40">mdi-dots-vertical</v-icon>
-                    </div>
+                    <v-btn icon height="40" width="40" class="mr-3" :style="{ padding: '2px 5px', cursor: 'pointer' }" v-bind="props">
+                        <v-icon height="30" width="30">mdi-dots-vertical</v-icon>
+                    </v-btn>                    
                 </template>
         
                 <v-card style="top: 20px;" min-width="300">

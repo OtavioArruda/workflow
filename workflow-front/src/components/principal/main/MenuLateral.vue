@@ -39,14 +39,25 @@
                             <div v-if="directorys[idx].expanded" class="area-subdirectory">
                                 <div class="sub-directory" v-for="(subDirectory, id) in directory.folders" :key="id">
                                     <div class="about-tasks"
+                                        :data-value="subDirectory.name"
+                                        @dblclick="editName(subDirectory)"
                                         @click="activeTasks(subDirectory, directory.name, subDirectory.name, directory._id, subDirectory._id)">
                                         <i class="fa-solid fa-folder"></i>
-                                        <span class="name-subdirectory">
-                                            {{ subDirectory.name }}
+                                        <span class="name-subdirectory" 
+                                            :class="{ 'editable': subDirectory.editing }"
+                                        >
+                                            <span v-if="subDirectory.editing">
+                                                <input class="subdirectory-edit" v-model="subDirectory.name" 
+                                                    @blur="endEditing(subDirectory, subDirectory._id, 'blur')"
+                                                    @keyup.enter="endEditing(subDirectory, subDirectory._id, 'enter')">
+                                            </span>
+                                            <span v-else>
+                                                {{ subDirectory.name }}
+                                            </span>
                                         </span>
                                     </div>
 
-                                    <v-btn icon variant="text" @click="folderDelete(directory._id, subDirectory._id)">
+                                    <v-btn v-if="!subDirectory.editing" icon variant="text" @click="folderDelete(directory._id, subDirectory._id)">
                                         <v-icon icon="mdi-delete" color="white" size="20"/>
                                     </v-btn>
                                 </div>
@@ -64,11 +75,10 @@
 import '@fortawesome/fontawesome-free/css/all.css';
 import CreateProject from '@/components/principal/popups/CreateProject.vue';
 import { useGlobalsStore } from '@/store';
-import { createdFolder, deleteFolder } from '@/ajax/main-requests';
-import { reactive, ref, toRefs } from 'vue';
+import { createdFolder, deleteFolder, updateFolder } from '@/ajax/main-requests';
+import { reactive, ref } from 'vue';
 
 const store = useGlobalsStore();
-let { tasksActive, projects } = toRefs(store);
 let isMenuOpen = ref(false);
 let directorys = reactive(store.projects[0].data.projects);
 
@@ -100,6 +110,24 @@ const folderDelete = (idProject, idFolder) => {
 const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
 }
+
+const editName = (subDirectory) => {
+    subDirectory.editing = true;
+};
+
+const endEditing = (subDirectory, idFolder, eventType) => {
+    if (eventType === 'enter'){
+
+        subDirectory.editing = ref(false);
+        let newFolder = document.querySelector(".subdirectory-edit");
+        let data = {
+            name: newFolder.value,
+            folderId: idFolder
+        }
+
+        updateFolder(data, idFolder, store);
+    }
+};
 </script>
 
 <style scoped>
@@ -294,9 +322,27 @@ main{
 
 .about-tasks {
     width: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .name-subdirectory {
     margin-left: 10px;
+}
+
+.name-subdirectory.editable {
+    display: inline-block;
+    padding: 3px 5px;
+    border-radius: 3px;
+    color: white;
+}
+
+.subdirectory-edit{
+    color: white;
+    border: none;
+}
+
+.subdirectory-edit:focus {
+    outline: none;
 }
 </style>
