@@ -190,7 +190,7 @@ const endEditing = (column, idColumn, eventType) => {
 #task-area {
     min-width: 300px !important;
     margin: 20px 0px 50px 20px;
-    background-color: rgb(1, 41, 0);
+    background-color: rgb(85 85 85);
     border-radius: 10px;
     max-height: 75vh;
 }

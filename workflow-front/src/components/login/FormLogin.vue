@@ -23,7 +23,6 @@
           </div>
 
           <div class="direciona-telas">
-            <a href="">Esqueceu sua senha?</a>
 
             <input type="submit" value="Entrar">
 

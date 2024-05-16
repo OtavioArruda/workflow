@@ -8,8 +8,6 @@
                 <i class="fa-solid fa-gear"></i>
             </div>
         </div>
-        <hr class="horizontal-rule">
-
     </div>
 </template>
 
@@ -27,6 +25,7 @@ const { tasksActive } = toRefs(store);
     width: 100%;
     position: fixed;
     top: 50px;
+    min-height: 5vh;
     z-index: 1;
 }
 
@@ -37,10 +36,8 @@ const { tasksActive } = toRefs(store);
 
 .subheader-tasks {
     background-color: #1d2125;
-    color: rgb(0, 0, 0);
-    color: rgb(61, 61, 61);
     font-family: Arial, Verdana, Geneva, Tahoma, sans-serif;
-    min-height: 3vh;
+    height: 7vh;
     font-weight: bolder;
     padding: 10px 20px;
     margin-left: 320px;
