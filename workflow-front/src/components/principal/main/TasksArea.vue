@@ -2,6 +2,7 @@
     <div id="principal">
         <SubheaderTasks />
 
+        <img id="logo" src="../../../assets/empty-box.png" alt="" v-if="tasksActive.data === ''">
         <div id="tasks">
             <div id="task-area" v-if="tasksActive.data.length > 0" v-for="(column, idx_column) in tasksActive.data" :key="idx_column">
                 <div class="info-column">
@@ -145,6 +146,15 @@ const endEditing = (column, idColumn, eventType) => {
     margin-top: 100px;
 }
 
+#logo {
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+}
+
 #tasks {
     margin-left: 320px;
     display: flex;
@@ -172,9 +182,9 @@ const endEditing = (column, idColumn, eventType) => {
 }
 
 #tasks::-webkit-scrollbar-thumb {
-    background-color: #283e37;
-    border-radius: 20px;
-    border: 3px solid black;
+    background-color: #a9afb0;
+    border-radius: 5px;
+    border: 3px solid #a9afb0;
 }
 
 #task-area {
@@ -221,6 +231,8 @@ const endEditing = (column, idColumn, eventType) => {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    cursor: pointer;
+    box-shadow: 0px 1px 1px black;
 }
 
 .actions-task {
@@ -268,7 +280,7 @@ const endEditing = (column, idColumn, eventType) => {
     border: none;
     font-weight: bolder;
     color: rgb(53, 52, 52);
-    background-color: #00f128;
+    background-color: #57ce8d;
     margin: 20px 20px 0px 20px;
 }
 

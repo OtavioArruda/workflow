@@ -16,7 +16,7 @@
         <form @submit.prevent="acountAccess">
           <div class="inputs-texto">
             <label for="email">E-mail:</label>
-            <input type="text" v-model="email" id="email" name="email" required>
+            <input type="text" v-model="email" id="email" name="email" required placeholder="Exemplo: wf@workflow.com.br">
 
             <label for="password">Senha:</label>
             <input type="password" v-model="pass" id="password" name="password" required>
@@ -40,9 +40,54 @@
       </div>
 
       <div id="container">
-        <div class="box" style="height: 600px; width: 80%; background: black;"></div>
-        <div class="box" style="height: 600px; width: 80%; background: red;"></div>
-        <div class="box" style="height: 600px; width: 80%; background: blue;"></div>
+        <div class="box" style="height: 700px; width: 100%; background: black; margin-bottom: 12px; text-align: center;">
+          <h2 style="
+            font-size: 56px;
+            color: white;
+            margin-top: 40px;
+            font-family: Arial, Helvetica, sans-serif;">
+            Gestão de Projetos
+          </h2>
+          <p style="
+            font-size: 28px;
+            color: white;
+            padding: 20px;
+            margin-top: 4px;">
+            Organize suas tarefas em projetos personalizados para uma visão global e organizada de suas atividades.
+          </p>
+        </div>
+        <div class="box" style="height: 700px; width: 100%; background: #1d2125; margin-bottom: 12px; text-align: center;">
+          <h2 style="
+            font-size: 56px;
+            color: white;
+            margin-top: 40px;
+            font-family: Arial, Helvetica, sans-serif;">
+            Colaboração em Equipe
+          </h2>
+          <p style="
+            font-size: 28px;
+            color: white;
+            padding: 20px;
+            margin-top: 4px;">
+            Trabalhe em equipe de forma integrada, atribuindo tarefas, compartilhando arquivos e mantendo uma comunicação fluida.
+          </p>
+        </div>
+        <div class="box" style="height: 700px; width: 100%; background: #57ce8d; text-align: center;">
+          <h2 style="
+            font-size: 56px;
+            color: white;
+            margin-top: 40px;
+            font-family: Arial, Helvetica, sans-serif;">
+            Notificações e Lembretes
+          </h2>
+          <p style="
+            font-size: 28px;
+            color: white;
+            padding: 20px;
+            margin-top: 4px;">
+            Fique sempre atualizado com notificações automáticas sobre prazos, status de tarefas e novas atribuições, mantendo-se focado e produtivo.
+          </p>
+        </div>
       </div>
       
     </section>
@@ -101,6 +146,11 @@ window.addEventListener('scroll', function() {
   display: flex;
   z-index: 0;
   min-height: 100vh;
+  background: linear-gradient(to right, #225338, #5eda95, #57ce8d);
+  background-size: 300% 300%;
+  animation: gradients 7.5s ease infinite;
+  border-bottom-right-radius: 100%;
+  box-shadow: -5px 0px 10px green;
 }
 
 .avatar-trabalho {
@@ -110,25 +160,30 @@ window.addEventListener('scroll', function() {
 }
 
 #body {
-  background: linear-gradient(to right, #012804, #00800d, #008516);
-  background-size: 300% 300%;
-  animation: gradients 7.5s ease infinite;
+  background-color: #f4f5f6;
 }
 
 span {
   font-size: 35px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: bolder;
-  color: rgb(0, 102, 25);
+  color: rgb(64, 64, 64);
 }
 
 label {
-  color: rgb(0, 102, 25);
-  font-weight: bolder;
+  color: rgb(82, 89, 96);
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+
+#email::placeholder {
+  color: rgb(179, 177, 177);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
 }
 
 h1 {
-  background: linear-gradient(to right, #5ce253, #ffffff);
+  background-color: white;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 40px;
@@ -165,9 +220,9 @@ h3 {
   width: 90%;
   border: none;
   padding-bottom: 100px;
-  background-color: white;
+  background-color: #f4f5f6;
   border-bottom-left-radius: 10px;
-  box-shadow: -5px 0px 10px #ffffff;
+  box-shadow: -5px 0px 10px #f4f5f6;
 }
 
 .inputs-texto {
@@ -185,9 +240,9 @@ form {
 .sessao-form input[type="text"],
 .sessao-form input[type="password"] {
   width: 100%;
-  padding: 10px;
-  border: 2px solid #00440e;
-  border-radius: 5px;
+  padding: 12px;
+  border: 1px solid #bbbcbd;
+  border-radius: 8px;
   box-sizing: border-box;
 }
 
@@ -197,12 +252,14 @@ label {
 
 .sessao-form input[type="submit"] {
   font-size: 15px;
-  width: 160px;
-  padding: 10px 15px;
-  border-radius: 5px;
-  background-color: #ffffff;
-  color: rgb(0, 102, 25);
-  border: solid 3px rgb(0, 104, 26);
+  display: flex;
+  width: 60%;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 24px;
+  background-color: #57ce8d;
+  color: white;
+  border: solid 1px #57ce8d;
   cursor: pointer;
   font-weight: bolder;
   margin: 20px 0;
@@ -214,7 +271,6 @@ label {
   flex-direction: column;
   text-align: center;
   align-items: center;
-  margin-top: 30px;
 }
 
 .sessao-form input[type="submit"]:hover {
@@ -223,7 +279,8 @@ label {
 }
 
 .about{
-  margin-top: 100px;
+  margin-top: 200px;
+  background-color: #f4f5f6;
 }
 
 .box {

@@ -8,6 +8,7 @@
                 <i class="fa-solid fa-gear"></i>
             </div>
         </div>
+        <hr class="horizontal-rule">
 
     </div>
 </template>
@@ -35,12 +36,26 @@ const { tasksActive } = toRefs(store);
 }
 
 .subheader-tasks {
+    background-color: #1d2125;
     color: rgb(0, 0, 0);
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(61, 61, 61);
+    font-family: Arial, Verdana, Geneva, Tahoma, sans-serif;
+    min-height: 3vh;
     font-weight: bolder;
     padding: 10px 20px;
     margin-left: 320px;
     display: flex;
+    align-items: center;
     font-size: 20px;
+    color: white;
 }
+
+.horizontal-rule {
+  background-color: #A6C5E229;
+  margin: auto;
+  width: 80%;
+  border: 0;
+  height: 1px;
+}
+
 </style>

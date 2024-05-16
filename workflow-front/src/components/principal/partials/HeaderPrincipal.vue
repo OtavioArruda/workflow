@@ -86,8 +86,8 @@ header {
     position: fixed;
     min-height: 50px;
     z-index: 3;
-    background-color: white;
-    box-shadow: 10px 1px 20px black;
+    background-color: #1d2125;
+    box-shadow: 1px 1px 1px black;
 }
 
 #logo {
