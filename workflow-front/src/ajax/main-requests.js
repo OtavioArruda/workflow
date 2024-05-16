@@ -208,3 +208,20 @@ export const updateFolder = async (data, idFolder, store) => {
         
     }
 }
+
+export const updateColumn = async (data, idColumn, store) => {
+    try {
+        const response = await axios.put(
+            `http://localhost:3000/columns/${idColumn}`,
+            data,
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        )
+        
+        console.log(response.data);
+    } 
+    catch (error) {
+        
+    }
+}

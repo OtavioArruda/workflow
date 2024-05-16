@@ -5,9 +5,24 @@
         <div id="tasks">
             <div id="task-area" v-if="tasksActive.data.length > 0" v-for="(column, idx_column) in tasksActive.data" :key="idx_column">
                 <div class="info-column">
-                    <h4>
-                        {{ column.name }}
-                    </h4>
+                    <div
+                        :data-value="column.name"
+                        style="cursor: pointer;"
+                        @dblclick="editName(column)">
+                        <span class="name-column" 
+                            :class="{ 'editable': column.editing }"
+                        >
+                            <span v-if="column.editing">
+                                <input class="column-edit" v-model="column.name" 
+                                    @blur="endEditing(column, column._id, 'blur')"
+                                    @keyup.enter="endEditing(column, column._id, 'enter')">
+                            </span>
+                            <span v-else>
+                                {{ column.name }}
+                            </span>
+                        </span>
+                    </div>
+
                     <div class="actions-task">
                         <v-btn icon variant="text" @click="taskCreated(column._id)">
                             <v-icon icon="mdi-plus" color="white" size="25"/>
@@ -60,8 +75,8 @@
 import SubheaderTasks from '../partials/SubheaderTasks.vue';
 import CreateTask from '../popups/CreateTask.vue';
 import { useGlobalsStore } from '@/store';
-import { createColumn, deleteColumn } from '@/ajax/main-requests';
-import { toRefs } from 'vue';
+import { createColumn, deleteColumn, updateColumn } from '@/ajax/main-requests';
+import { toRefs, ref } from 'vue';
 
 const store = useGlobalsStore();
 const { tasksActive } = toRefs(store);
@@ -104,6 +119,23 @@ const formatDate = (dateString) => {
     
     return day + '/' + month + '/' + year;
 }
+
+const editName = (column) => {
+    column.editing = true;
+};
+
+const endEditing = (column, idColumn, eventType) => {
+    if (eventType === 'enter'){
+
+        column.editing = ref(false);
+        let newColumns = document.querySelector(".column-edit");
+
+        let data = {
+            name: newColumns.value
+        }
+        updateColumn(data, idColumn, store);
+    }
+};
 
 </script>
 
@@ -254,5 +286,22 @@ const formatDate = (dateString) => {
 .new-task {
     font-size: 17.5px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.name-column.editable {
+    display: inline-block;
+    padding: 3px 5px;
+    border-radius: 3px;
+    color: white;
+}
+
+.column-edit{
+    color: white;
+    border: none;
+    max-width: 150px;
+}
+
+.column-edit:focus {
+    outline: none;
 }
 </style>
