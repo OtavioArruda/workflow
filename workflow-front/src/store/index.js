@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 
 export const useGlobalsStore = defineStore('globals', {
     state: () => ({
-        popupRender: true,
-        popupTask: true,
+        popupRender: false,
+        popupTask: false,
         token: localStorage.getItem('token') || null,
         idColumn: "",
         tasksActive: {
