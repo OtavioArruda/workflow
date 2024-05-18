@@ -195,7 +195,7 @@ export const updateFolder = async (data, idFolder, store) => {
             }
         )
 
-        const btnActive = document.querySelector(`.about-tasks[data-value=${data.name}]`);
+        const btnActive = document.querySelector(`.about-tasks[data-value="${data.name}"]`);
 
         const selectTask = new MouseEvent('click', {
             bubbles: true, 
@@ -204,10 +204,9 @@ export const updateFolder = async (data, idFolder, store) => {
 
         btnActive.dispatchEvent(selectTask);
         
-        console.log(response.data);
     } 
     catch (error) {
-        
+        console.log(error);
     }
 }
 
