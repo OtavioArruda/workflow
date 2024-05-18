@@ -15,7 +15,8 @@ export const useGlobalsStore = defineStore('globals', {
         },
         projects: [],
         email: "",
-        name: ""
+        name: "",
+        sigla: ""
     }),
     actions: {
         addProject(project) {

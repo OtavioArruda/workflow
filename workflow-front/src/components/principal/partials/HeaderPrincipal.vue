@@ -18,7 +18,7 @@
                         <v-list-item>
                             <template v-slot:prepend>
                                 <v-btn icon="mdi-dots-vertical" height="40" width="40" class="mr-3" color="green" v-bind="props"> 
-                                    {{ sigla }} 
+                                    {{ store.sigla }} 
                                 </v-btn>
                             </template>
                             <v-list-item-title>{{ store.email }}</v-list-item-title>
@@ -53,8 +53,6 @@ import { useRouter } from 'vue-router';
 const registerRouter = useRouter();
 
 const store = useGlobalsStore();
-let sigla = (store.email[0]).toUpperCase();
-
 
 let fav = ref(true);
 let menu = ref(false);

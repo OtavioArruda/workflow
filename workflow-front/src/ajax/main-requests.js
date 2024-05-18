@@ -59,8 +59,10 @@ export const searchProjects = async (store, dataLoaded) => {
             if (user != undefined) {
                 store.email = user.email;
                 store.name = user.name;
+                store.sigla = store.email[0].toUpperCase()
 
                 let projects = resProject.data;
+
                 store.addProject(projects);
                 dataLoaded.value = true;
             }
