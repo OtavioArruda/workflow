@@ -7,5 +7,13 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 'latest'
+  },
+  rules: {
+    camelcase: "error",
+    curly: "error",
+    yoda: "error",
+    "prefer-const": "error",
+    "prefer-template": "error",
+    "no-useless-concat": "error"
   }
 }

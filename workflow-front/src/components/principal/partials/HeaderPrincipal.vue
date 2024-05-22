@@ -53,16 +53,16 @@ import { useRouter } from 'vue-router';
 const registerRouter = useRouter();
 
 const store = useGlobalsStore();
-let sigla = (store.email[0]).toUpperCase();
+const sigla = (store.email[0]).toUpperCase();
 
 
-let fav = ref(true);
-let menu = ref(false);
-let message = ref(false);
-let hints = ref(true);
+const fav = ref(true);
+const menu = ref(false);
+const message = ref(false);
+const hints = ref(true);
 
 const logout = () => {
-    menu = false;
+    menu.value = false;
     localStorage.removeItem('token');
     registerRouter.push("/")
 }

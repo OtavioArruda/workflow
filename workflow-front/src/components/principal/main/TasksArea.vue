@@ -67,7 +67,7 @@ const store = useGlobalsStore();
 const { tasksActive } = toRefs(store);
 
 const columnCreated = () => {
-    let dados = {
+    const dados = {
         name: "Nova Coluna",
         folderId: tasksActive.value.idFolder
     };
@@ -82,27 +82,27 @@ const taskCreated = (columnId) => {
 }
 
 const columnDelete = (idColumn) => {
-    let idProject = tasksActive.value.idProject;
-    let idFolder = tasksActive.value.idFolder;
+    const idProject = tasksActive.value.idProject;
+    const idFolder = tasksActive.value.idFolder;
 
     deleteColumn(idProject, idFolder, idColumn, store);
 }
 
 const formatDate = (dateString) => {
-    let date = new Date(dateString);
+    const date = new Date(dateString);
     
     let day = date.getDate();
     let month = date.getMonth() + 1;
-    let year = date.getFullYear();
+    const year = date.getFullYear();
     
     if (day < 10) {
-        day = '0' + day;
+        day = `0${  day}`;
     }
     if (month < 10) {
-        month = '0' + month;
+        month = `0${  month}`;
     }
     
-    return day + '/' + month + '/' + year;
+    return `${day  }/${  month  }/${  year}`;
 }
 
 </script>

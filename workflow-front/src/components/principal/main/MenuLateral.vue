@@ -79,8 +79,8 @@ import { createdFolder, deleteFolder, updateFolder } from '@/ajax/main-requests'
 import { reactive, ref } from 'vue';
 
 const store = useGlobalsStore();
-let isMenuOpen = ref(false);
-let directorys = reactive(store.projects[0].data.projects);
+const isMenuOpen = ref(false);
+const directorys = reactive(store.projects[0].data.projects);
 
 
 const toggleExpanded = (idx) => {
@@ -96,7 +96,7 @@ const activeTasks = (data, directory, folder, idProject, idFolder) => {
 }
 
 const folderCreated = (idProject) => {
-    let dados = {
+    const dados = {
         name: "NOVA PASTA",
         projectId: idProject
     }
@@ -119,8 +119,8 @@ const endEditing = (subDirectory, idFolder, eventType) => {
     if (eventType === 'enter'){
 
         subDirectory.editing = ref(false);
-        let newFolder = document.querySelector(".subdirectory-edit");
-        let data = {
+        const newFolder = document.querySelector(".subdirectory-edit");
+        const data = {
             name: newFolder.value,
             folderId: idFolder
         }
