@@ -69,6 +69,7 @@
 
         </div>
         <CreateTask />
+        <ConfigProject />
     </div>
 </template>
 
@@ -78,6 +79,7 @@ import CreateTask from '../popups/CreateTask.vue';
 import { useGlobalsStore } from '@/store';
 import { createColumn, deleteColumn, updateColumn } from '@/ajax/main-requests';
 import { toRefs, ref } from 'vue';
+import ConfigProject from '../popups/ConfigProject.vue';
 
 const store = useGlobalsStore();
 const { tasksActive } = toRefs(store);

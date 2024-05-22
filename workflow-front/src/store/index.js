@@ -4,6 +4,7 @@ export const useGlobalsStore = defineStore('globals', {
     state: () => ({
         popupRender: false,
         popupTask: false,
+        popupProject: false,
         token: localStorage.getItem('token') || null,
         idColumn: "",
         tasksActive: {
