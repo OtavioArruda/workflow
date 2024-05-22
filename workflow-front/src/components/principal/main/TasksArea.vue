@@ -2,12 +2,28 @@
     <div id="principal">
         <SubheaderTasks />
 
+        <img id="logo" src="../../../assets/empty-box.png" alt="" v-if="tasksActive.data === ''">
         <div id="tasks">
             <div id="task-area" v-if="tasksActive.data.length > 0" v-for="(column, idx_column) in tasksActive.data" :key="idx_column">
                 <div class="info-column">
-                    <h4>
-                        {{ column.name }}
-                    </h4>
+                    <div
+                        :data-value="column.name"
+                        style="cursor: pointer;"
+                        @dblclick="editName(column)">
+                        <span class="name-column" 
+                            :class="{ 'editable': column.editing }"
+                        >
+                            <span v-if="column.editing">
+                                <input class="column-edit" v-model="column.name" 
+                                    @blur="endEditing(column, column._id, 'blur')"
+                                    @keyup.enter="endEditing(column, column._id, 'enter')">
+                            </span>
+                            <span v-else>
+                                {{ column.name }}
+                            </span>
+                        </span>
+                    </div>
+
                     <div class="actions-task">
                         <v-btn icon variant="text" @click="taskCreated(column._id)">
                             <v-icon icon="mdi-plus" color="white" size="25"/>
@@ -60,8 +76,8 @@
 import SubheaderTasks from '../partials/SubheaderTasks.vue';
 import CreateTask from '../popups/CreateTask.vue';
 import { useGlobalsStore } from '@/store';
-import { createColumn, deleteColumn } from '@/ajax/main-requests';
-import { toRefs } from 'vue';
+import { createColumn, deleteColumn, updateColumn } from '@/ajax/main-requests';
+import { toRefs, ref } from 'vue';
 
 const store = useGlobalsStore();
 const { tasksActive } = toRefs(store);
@@ -105,12 +121,38 @@ const formatDate = (dateString) => {
     return `${day  }/${  month  }/${  year}`;
 }
 
+const editName = (column) => {
+    column.editing = true;
+};
+
+const endEditing = (column, idColumn, eventType) => {
+    if (eventType === 'enter'){
+
+        column.editing = ref(false);
+        let newColumns = document.querySelector(".column-edit");
+
+        let data = {
+            name: newColumns.value
+        }
+        updateColumn(data, idColumn, store);
+    }
+};
+
 </script>
 
 <style scoped>
 #principal {
     max-width: 100%;
     margin-top: 100px;
+}
+
+#logo {
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
 }
 
 #tasks {
@@ -140,15 +182,15 @@ const formatDate = (dateString) => {
 }
 
 #tasks::-webkit-scrollbar-thumb {
-    background-color: #283e37;
-    border-radius: 20px;
-    border: 3px solid black;
+    background-color: #a9afb0;
+    border-radius: 5px;
+    border: 3px solid #a9afb0;
 }
 
 #task-area {
     min-width: 300px !important;
     margin: 20px 0px 50px 20px;
-    background-color: rgb(1, 41, 0);
+    background-color: rgb(85 85 85);
     border-radius: 10px;
     max-height: 75vh;
 }
@@ -189,6 +231,8 @@ const formatDate = (dateString) => {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    cursor: pointer;
+    box-shadow: 0px 1px 1px black;
 }
 
 .actions-task {
@@ -236,7 +280,7 @@ const formatDate = (dateString) => {
     border: none;
     font-weight: bolder;
     color: rgb(53, 52, 52);
-    background-color: #00f128;
+    background-color: #57ce8d;
     margin: 20px 20px 0px 20px;
 }
 
@@ -254,5 +298,22 @@ const formatDate = (dateString) => {
 .new-task {
     font-size: 17.5px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.name-column.editable {
+    display: inline-block;
+    padding: 3px 5px;
+    border-radius: 3px;
+    color: white;
+}
+
+.column-edit{
+    color: white;
+    border: none;
+    max-width: 150px;
+}
+
+.column-edit:focus {
+    outline: none;
 }
 </style>

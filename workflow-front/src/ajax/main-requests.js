@@ -59,6 +59,7 @@ export const searchProjects = async (store, dataLoaded) => {
             if (user != undefined) {
                 store.email = user.email;
                 store.name = user.name;
+                store.sigla = store.email[0].toUpperCase()
 
                 store.addProject(resProject.data);
 
@@ -191,7 +192,7 @@ export const updateFolder = async (data, idFolder, store) => {
             }
         );
 
-        const btnActive = document.querySelector(`.about-tasks[data-value=${data.name}]`);
+        const btnActive = document.querySelector(`.about-tasks[data-value="${data.name}"]`);
 
         const selectTask = new MouseEvent('click', {
             bubbles: true,
@@ -199,6 +200,21 @@ export const updateFolder = async (data, idFolder, store) => {
         });
 
         btnActive.dispatchEvent(selectTask);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateColumn = async (data, idColumn, store) => {
+    try {
+        const response = await axios.put(
+            `http://localhost:3000/columns/${idColumn}`,
+            data,
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        )
 
         console.log(response.data);
     }

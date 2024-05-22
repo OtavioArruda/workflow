@@ -1,5 +1,5 @@
 <template>
-    <div id="popup-overlay" :class="{ 'active-popup': store.popupRender }">
+    <v-dialog v-model="store.popupRender">
         <div id="popup-add-project">
             <v-sheet min-width="500" class="popup-project">
                 <v-form>
@@ -44,7 +44,7 @@
                 </v-form>
             </v-sheet>
         </div>
-    </div>
+    </v-dialog>
 </template>
 
 <script setup>

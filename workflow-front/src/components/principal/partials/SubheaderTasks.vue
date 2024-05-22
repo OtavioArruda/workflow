@@ -8,7 +8,6 @@
                 <i class="fa-solid fa-gear"></i>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -26,6 +25,7 @@ const { tasksActive } = toRefs(store);
     width: 100%;
     position: fixed;
     top: 50px;
+    min-height: 5vh;
     z-index: 1;
 }
 
@@ -35,12 +35,24 @@ const { tasksActive } = toRefs(store);
 }
 
 .subheader-tasks {
-    color: rgb(0, 0, 0);
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #1d2125;
+    font-family: Arial, Verdana, Geneva, Tahoma, sans-serif;
+    height: 7vh;
     font-weight: bolder;
     padding: 10px 20px;
     margin-left: 320px;
     display: flex;
+    align-items: center;
     font-size: 20px;
+    color: white;
 }
+
+.horizontal-rule {
+  background-color: #A6C5E229;
+  margin: auto;
+  width: 80%;
+  border: 0;
+  height: 1px;
+}
+
 </style>

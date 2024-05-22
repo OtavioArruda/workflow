@@ -139,6 +139,8 @@ const endEditing = (subDirectory, idFolder, eventType) => {
     top: 0;
     overflow-x: hidden;
     z-index: 2;
+    padding-bottom: 5vh;
+    box-shadow: 0px 1px 1px gray;
 }
 
 #menu::-webkit-scrollbar {
@@ -235,16 +237,15 @@ main{
     margin: 0 auto;
     width: 70%;
     padding: 10px 15px;
-    box-shadow: 5px 5px 10px #133b08;
+    box-shadow: 5px 5px 10px #000000;
     border-radius: 100px;
-    color: #000000;
     display: flex;
     justify-content: center;
     align-items: center;
     border: none;
     font-weight: bolder;
     color: rgb(53, 52, 52);
-    background-color: #00f128;
+    background-color: #57ce8d;
 }
 
 .create-project:hover {

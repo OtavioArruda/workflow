@@ -10,15 +10,15 @@
                 <template v-slot:activator="{ props }">
                     <v-btn icon height="40" width="40" class="mr-3" :style="{ padding: '2px 5px', cursor: 'pointer' }" v-bind="props">
                         <v-icon height="30" width="30">mdi-dots-vertical</v-icon>
-                    </v-btn>                    
+                    </v-btn>
                 </template>
-        
+
                 <v-card style="top: 20px;" min-width="300">
                     <v-list>
                         <v-list-item>
                             <template v-slot:prepend>
-                                <v-btn icon="mdi-dots-vertical" height="40" width="40" class="mr-3" color="green" v-bind="props"> 
-                                    {{ sigla }} 
+                                <v-btn icon="mdi-dots-vertical" height="40" width="40" class="mr-3" color="green" v-bind="props">
+                                    {{ store.sigla }}
                                 </v-btn>
                             </template>
                             <v-list-item-title>{{ store.email }}</v-list-item-title>
@@ -31,13 +31,13 @@
                                 ></v-btn>
                             </template>
                         </v-list-item>
-                    </v-list>                    
-        
+                    </v-list>
+
                     <v-divider></v-divider>
-        
+
                     <v-card-actions style="display: flex; justify-content: center;">
                         <v-btn variant="text" @click="logout">Sair</v-btn>
-                    </v-card-actions>                    
+                    </v-card-actions>
                 </v-card>
             </v-menu>
         </header>
@@ -53,8 +53,6 @@ import { useRouter } from 'vue-router';
 const registerRouter = useRouter();
 
 const store = useGlobalsStore();
-const sigla = (store.email[0]).toUpperCase();
-
 
 const fav = ref(true);
 const menu = ref(false);
@@ -86,8 +84,8 @@ header {
     position: fixed;
     min-height: 50px;
     z-index: 3;
-    background-color: white;
-    box-shadow: 10px 1px 20px black;
+    background-color: #1d2125;
+    box-shadow: 1px 1px 1px black;
 }
 
 #logo {
@@ -120,8 +118,8 @@ header {
 
 .user-card {
     position: absolute;
-    top: 100%; 
-    right: 0; 
+    top: 100%;
+    right: 0;
     background-color: white;
     border: 1px solid #ccc;
     padding: 10px;

@@ -1,5 +1,5 @@
 <template>
-    <div id="popup-overlay-task" :class="{ 'active-popup': store.popupTask }">
+    <v-dialog v-model="store.popupTask">
         <div id="popup-add-task">
             <v-sheet min-width="800" class="popup-task">
                 <v-form>
@@ -57,7 +57,7 @@
                 </v-form>
             </v-sheet>
         </div>
-    </div>
+    </v-dialog>
 </template>
 
 <script setup>
