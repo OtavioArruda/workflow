@@ -9,26 +9,64 @@
       </div>
 
       <div class="sessao-form">
-        <div class="chamada-login">
-          <span>Faça seu login!</span>
-        </div>
+        <v-form fast-fail @submit.prevent="acountAccess">
+          <v-card
+            class="mx-auto pa-12 pb-12 chamada-login"
+            elevation="8"
+            max-width="448"
+            rounded="lg"
+          >
+            <div>
+              <span>Faça seu login!</span>
+            </div>
+            
+            <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">E-mail</div>
+      
+            <v-text-field
+              density="compact"
+              placeholder="Email address"
+              prepend-inner-icon="mdi-email-outline"
+              variant="outlined"
+              v-model="email"
+            ></v-text-field>
+      
+            <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
+              Senha
+            </div>
+      
+            <v-text-field
+              :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+              :type="visible ? 'text' : 'password'"
+              density="compact"
+              placeholder="Enter your password"
+              v-model="pass"
+              prepend-inner-icon="mdi-lock-outline"
+              variant="outlined"
+              @click:append-inner="visible = !visible"
+            ></v-text-field>
 
-        <form @submit.prevent="acountAccess">
-          <div class="inputs-texto">
-            <label for="email">E-mail:</label>
-            <input type="text" v-model="email" id="email" name="email" required placeholder="Exemplo: wf@workflow.com.br">
-
-            <label for="password">Senha:</label>
-            <input type="password" v-model="pass" id="password" name="password" required>
-          </div>
-
-          <div class="direciona-telas">
-
-            <input type="submit" value="Entrar">
-
-            <a href="" @click="directsRegistration">Ainda não tenho uma conta</a>
-          </div>
-        </form>
+            <v-card-text class="text-center">
+              <a
+                class="text-blue text-decoration-none"
+                href="#"
+                rel="noopener noreferrer"
+                target="_blank"
+                @click="directsRegistration"
+              >
+                Ainda não tenho uma conta <v-icon icon="mdi-chevron-right"></v-icon>
+              </a>
+            </v-card-text>
+      
+            <v-btn
+              v-btn class="mt-2 log-in" 
+              type="submit" 
+              block
+            >
+              Entrar
+            </v-btn>
+    
+          </v-card>
+        </v-form>
       </div>
 
     </section>
@@ -97,12 +135,21 @@
 import { defineProps, defineModel } from 'vue';
 import { useRouter } from 'vue-router';
 import { accessAccount } from '@/ajax/login-requests';
+import { ref } from 'vue';
 
 const router = useRouter();
 
 
 let email = defineModel('email');
 let pass = defineModel('pass');
+
+let show1 = ref(false);
+let password = 'Password'
+let rules = {
+  required: value => !!value || 'Required.',
+  min: v => v.length >= 8 || 'Min 8 characters',
+  emailMatch: () => (`The email and password you entered don't match`),
+};
 
 const props = defineProps({
   directsRegistration: Function
@@ -153,7 +200,7 @@ window.addEventListener('scroll', function() {
 }
 
 .avatar-trabalho {
-  margin-top: 100px;
+  margin-top: 60px;
   width: 100%;
   filter: hue-rotate(120deg);
 }
@@ -205,7 +252,7 @@ h3 {
   width: 100%;
   text-align: center;
   max-height: 100%;
-  padding: 0px 150px;
+  padding: 0px 130px;
   position: relative;
 }
 
@@ -219,9 +266,7 @@ h3 {
   width: 90%;
   border: none;
   padding-bottom: 100px;
-  background-color: #f4f5f6;
   border-bottom-left-radius: 10px;
-  box-shadow: -5px 0px 10px #f4f5f6;
 }
 
 .inputs-texto {
@@ -236,25 +281,16 @@ form {
   flex-direction: column;
 }
 
-.sessao-form input[type="text"],
-.sessao-form input[type="password"] {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #bbbcbd;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-
 label {
   margin-top: 30px;
 }
 
-.sessao-form input[type="submit"] {
+.log-in {
   font-size: 15px;
   display: flex;
-  width: 60%;
+  width: 50%;
   justify-content: center;
-  padding: 10px;
+  padding: 15px 0px;
   border-radius: 24px;
   background-color: #57ce8d;
   color: white;
@@ -272,7 +308,7 @@ label {
   align-items: center;
 }
 
-.sessao-form input[type="submit"]:hover {
+.log-in input[type="submit"]:hover {
   transform: scale(1.03);
   transition: 0.5s;
 }

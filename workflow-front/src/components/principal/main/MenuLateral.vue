@@ -1,75 +1,100 @@
 <template>
     <div>
-        <transition name="slide">
-            <div id="menu" :class="{ 'menu-open': isMenuOpen }">
-                <div class="sub-header-menu">
-                    <button class="create-project" @click="popupCreate">
-                        <span class="new-project">
-                            Novo Projeto
-                        </span>
-                    </button>
+        <v-card style="z-index: 2;">
+            <v-layout>
+                <v-navigation-drawer
+                    expand-on-hover
+                    id="menu"
+                    width="320"
+                    style="margin-top: 50px; overflow-y: hidden !important;"
+                    rail
+                >
+                
+                    <v-list density="compact" nav id="main">
+                        <v-list-item class="create-project ml-auto mr-auto mt-4 mb-4" @click="popupCreate" width="200" prepend-icon="mdi-plus" title="Novo Projeto" value="novo-projeto"></v-list-item>
+                
+                        <v-divider color="white"></v-divider>
 
-                    <v-icon icon="mdi-menu" color="white" size="40" @click="toggleMenu"/>
-                </div>
-    
-                <main>
-                    <div v-for="(directory, idx) in directorys" :key="idx" class="raiz-directory">
-                        <div class="directory" :class="{ 'active-directory': directorys[idx].expanded }">
-                            <div style="display: flex; align-items: center;">
+                        <v-list-item color="white" v-for="(directory, idx) in directorys" :key="idx">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+
+                                <div style="display: flex; align-items: center; cursor: pointer; width: 100%;" @click="toggleExpanded(idx)">
+                                    
                                     <v-icon 
                                         icon="mdi-chevron-right"
                                         class="toggleRightDown"
                                         :class="{ 'rotate': directorys[idx].expanded }"
+                                        size="25"
                                         color="white"
-                                        size="30"
-                                        @click="toggleExpanded(idx)"
                                     />
-                                <h4>
-                                    {{ directory.name }}
-                                </h4>
-                            </div>
-                            <div>
-                                <v-btn icon variant="text" @click="folderCreated(directory._id)">
-                                    <v-icon icon="mdi-plus" color="white" size="25"/>
-                                </v-btn>
-                            </div>
-                        </div>
         
-                        <transition name="slide">
-                            <div v-if="directorys[idx].expanded" class="area-subdirectory">
-                                <div class="sub-directory" v-for="(subDirectory, id) in directory.folders" :key="id">
-                                    <div class="about-tasks"
-                                        :data-value="subDirectory.name"
-                                        @dblclick="editName(subDirectory)"
-                                        @click="activeTasks(subDirectory, directory.name, subDirectory.name, directory._id, subDirectory._id)">
-                                        <i class="fa-solid fa-folder"></i>
-                                        <span class="name-subdirectory" 
-                                            :class="{ 'editable': subDirectory.editing }"
-                                        >
-                                            <span v-if="subDirectory.editing">
-                                                <input class="subdirectory-edit" v-model="subDirectory.name" 
-                                                    @blur="endEditing(subDirectory, subDirectory._id, 'blur')"
-                                                    @keyup.enter="endEditing(subDirectory, subDirectory._id, 'enter')">
-                                            </span>
-                                            <span v-else>
-                                                {{ subDirectory.name }}
-                                            </span>
-                                        </span>
-                                    </div>
-
-                                    <v-btn v-if="!subDirectory.editing" icon variant="text" @click="folderDelete(directory._id, subDirectory._id)">
-                                        <v-icon icon="mdi-delete" color="white" size="20"/>
-                                    </v-btn>
+                                    <v-list-item-title class="custom-title" :title="directory.name">
+                                        {{ directory.name }}
+                                    </v-list-item-title>
                                 </div>
+    
+                                <v-list-item>
+                                    <v-btn icon variant="text" color="white" @click="folderCreated(directory._id)">
+                                        <v-icon icon="mdi-plus" color="white" size="25"></v-icon>
+                                    </v-btn>
+                                </v-list-item>
+
                             </div>
-                        </transition>
-                    </div>
-                </main>
-            </div>
-        </transition>
+
+                            <v-expand-transition>
+                                <v-card
+                                    v-show="directorys[idx].expanded"
+                                    class="mx-auto bg-black"
+                                 >
+                                    <v-list v-for="(subDirectory, id) in directory.folders" :key="id" density="compact" nav>
+                                        <v-list-item
+                                            :data-value="subDirectory.name"
+                                            @dblclick="editName(subDirectory)"
+                                            @click="activeTasks(subDirectory, directory.name, subDirectory.name, directory._id, subDirectory._id)"
+                                            class="block-folder"
+                                        > 
+                                        
+                                            <div style="display: flex; justify-content: space-between; align-items: center">
+                                                
+                                                <v-icon icon="mdi-folder" color="white" size="20"/>
+
+                                                <v-list-item class="name-subdirectory custom-title" :class="{ 'editable': subDirectory.editing }">
+                                                    <template v-if="subDirectory.editing">
+                                                        <v-text-field width="200" variant="underlined" class="subdirectory-edit ml-5" v-model="subDirectory.name" 
+                                                        @blur="endEditing(subDirectory, subDirectory._id, 'blur')"
+                                                        @keyup.enter="endEditing(subDirectory, subDirectory._id, 'enter')"/>
+                                                    </template>
+                                                    <template v-else>
+                                                        <v-list-item-title :title="subDirectory.name">
+                                                            {{ subDirectory.name }}
+                                                        </v-list-item-title>
+                                                    </template>
+                                                </v-list-item>
+                                            
+    
+                                                <v-list-item style="position: absolute; right: 0;">
+                                                    <v-btn v-if="!subDirectory.editing" icon variant="text" @click="folderDelete(directory._id, subDirectory._id)">
+                                                        <v-icon icon="mdi-delete" color="white" size="20"></v-icon>
+                                                    </v-btn>
+                                                </v-list-item>
+                                            </div>
+
+
+                                        </v-list-item>
+                                    </v-list>
+                                </v-card>
+                                  
+                            </v-expand-transition>
+                        </v-list-item>
+                    </v-list>
+                </v-navigation-drawer>        
+            </v-layout>
+        </v-card>
         <CreateProject />
+
     </div>
 </template>
+
 
 <script setup>
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -79,7 +104,6 @@ import { createdFolder, deleteFolder, updateFolder } from '@/ajax/main-requests'
 import { reactive, ref } from 'vue';
 
 const store = useGlobalsStore();
-let isMenuOpen = ref(false);
 let directorys = reactive(store.projects[0].data.projects);
 
 
@@ -107,10 +131,6 @@ const folderDelete = (idProject, idFolder) => {
     deleteFolder(idProject, idFolder, store);
 }
 
-const toggleMenu = () => {
-    isMenuOpen.value = !isMenuOpen.value;
-}
-
 const editName = (subDirectory) => {
     subDirectory.editing = true;
 };
@@ -132,66 +152,29 @@ const endEditing = (subDirectory, idFolder, eventType) => {
 
 <style scoped>
 #menu {
-    width: 320px;
-    background-color: #000000;
-    min-height: 100vh;
-    position: fixed;
-    top: 0;
-    overflow-x: hidden;
-    z-index: 2;
-    padding-bottom: 5vh;
     box-shadow: 0px 1px 1px gray;
+    background-color: #000000;
+    overflow-y: hidden !important;
 }
 
-#menu::-webkit-scrollbar {
+.custom-drawer {
+    overflow-y: hidden !important;
+}
+
+#main::-webkit-scrollbar {
     width: 10px;
-
 }
 
-#menu::-webkit-scrollbar-track {
-    margin-top: 65px;
-    margin-bottom: 5px;
-}
-
-#menu::-webkit-scrollbar-thumb {
-    background-color: #283e37;
-    border-radius: 20px;
-    border: 3px solid black;
-}
-main::-webkit-scrollbar {
-    width: 10px;
-
-}
-
-main::-webkit-scrollbar-track {
-    margin-bottom: 10vh;
-}
-
-main::-webkit-scrollbar-thumb {
+#main::-webkit-scrollbar-thumb {
     background-color: #283e37;
     border-radius: 20px;
     border: 3px solid black;
 }
 
-main{
+#main{
     overflow-x: hidden;
-    overflow-y: scroll;
-    max-height: 80vh;
-}
-
-.slide-enter-active,
-.slide-leave-active {
-    transition: transform 0.3s ease;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-    transform: translateX(-100%);
-}
-
-.slide-enter-to,
-.slide-leave-from {
-    transform: translateX(0);
+    overflow-y: overlay;
+    max-height: 90vh;
 }
 
 .menu-open {
@@ -206,42 +189,13 @@ main{
     align-items: center;
 }
 
-.expand-enter-active {
-    transition: max-height 0.3s ease-out;
-}
-
-.expand-enter,
-.expand-leave-active {
-    max-height: 0;
-    overflow: hidden;
-}
-
-.expand-enter-to {
-    max-height: auto;
-}
-
-.expand-leave-active {
-    transition: max-height 0.3s ease-in;
-}
-
-.expand-leave-to {
-    max-height: 0;
-}
-
 .new-project {
-    font-size: 17.5px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .create-project {
-    margin: 0 auto;
-    width: 70%;
-    padding: 10px 15px;
     box-shadow: 5px 5px 10px #000000;
     border-radius: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border: none;
     font-weight: bolder;
     color: rgb(53, 52, 52);
@@ -265,50 +219,33 @@ main{
     display: none;
 }
 
-.add-project {
-    font-size: 20px;
-    margin-right: 25px;
-    margin-left: 10px;
-}
-
-.menu {
-    font-size: 20px;
-}
-
-.user-symbol {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-right: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .initial-of-name {
     font-weight: bolder;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: white;
-    font-size: 20px;
 }
 
 .directory {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-direction: row;
     padding: 0px 10px;
-    color: white;
     margin-top: 25px;
     align-items: center;
 }
 
-.expanded-task {
-    margin-left: 10px;
+.custom-title{
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 190px;
 }
 
 .area-subdirectory {
     margin: 0 auto;
-    font-size: 15px;
     color: rgb(228, 215, 215);
 }
 
@@ -317,7 +254,6 @@ main{
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
-    margin-left: 40px;
     cursor: pointer;
 }
 
@@ -327,20 +263,34 @@ main{
     align-items: center;
 }
 
-.name-subdirectory {
-    margin-left: 10px;
-}
-
 .name-subdirectory.editable {
     display: inline-block;
     padding: 3px 5px;
     border-radius: 3px;
+    font-size: 20px;
     color: white;
+}
+
+.block-folder{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 }
 
 .subdirectory-edit{
     color: white;
     border: none;
+    font-size: 20px;
+}
+
+.custom-list-item {
+    padding: 10px; 
+    font-weight: bold;
+    background-color: #57ce8d; 
+}
+
+.custom-list-item:hover {
+    background-color: #f0f0f0;
 }
 
 .subdirectory-edit:focus {

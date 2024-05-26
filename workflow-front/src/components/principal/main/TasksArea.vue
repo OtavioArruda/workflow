@@ -41,9 +41,13 @@
                                 {{ task.badges[0].text }}
                             </span>
 
-                            <h5 style="margin-left: 50px; font-size: 20px">
+                            <h5 style="font-size: 15px">
                                 {{ task.title }}
                             </h5>
+
+                            <v-btn icon variant="text">
+                                <v-icon icon="mdi-dots-vertical mdi" color="black" size="20"/>
+                            </v-btn>
                         </div>
 
                         <div class="desc">
@@ -156,7 +160,7 @@ const endEditing = (column, idColumn, eventType) => {
 }
 
 #tasks {
-    margin-left: 320px;
+    margin-left: 100px;
     display: flex;
     padding-bottom: 5px;
     min-height: 85vh;
@@ -168,7 +172,8 @@ const endEditing = (column, idColumn, eventType) => {
 .header-task {
     width: 100%; 
     display: flex; 
-    align-items: center
+    align-items: center;
+    justify-content: space-between;
 }
 
 #tasks::-webkit-scrollbar {
@@ -188,11 +193,11 @@ const endEditing = (column, idColumn, eventType) => {
 }
 
 #task-area {
-    min-width: 300px !important;
-    margin: 20px 0px 50px 20px;
+    min-width: 350px !important;
+    margin: 20px 0px 20px 20px;
     background-color: rgb(85 85 85);
     border-radius: 10px;
-    max-height: 75vh;
+    height: 77vh;
 }
 
 .tasks-list {
@@ -227,7 +232,7 @@ const endEditing = (column, idColumn, eventType) => {
     padding: 5px 10px;
     margin: 10px;
     border-radius: 15px;
-    height: 130px;
+    height: 160px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -245,7 +250,7 @@ const endEditing = (column, idColumn, eventType) => {
 }
 
 .desc {
-    font-size: 18px;
+    font-size: 15px;
     height: 50px;
     display: flex;
     align-items: center;

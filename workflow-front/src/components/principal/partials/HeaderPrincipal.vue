@@ -34,6 +34,16 @@
                     </v-list>                    
         
                     <v-divider></v-divider>
+
+                    <!-- <v-switch
+                        :model-value="true"
+                        color="indigo"
+                        label="Dark Mode"
+                        hide-details
+                        style="margin-left: 20px;"
+                    ></v-switch>
+
+                    <v-divider></v-divider> -->
         
                     <v-card-actions style="display: flex; justify-content: center;">
                         <v-btn variant="text" @click="logout">Sair</v-btn>
@@ -85,7 +95,7 @@ header {
     min-height: 50px;
     z-index: 3;
     background-color: #1d2125;
-    box-shadow: 1px 1px 1px black;
+    box-shadow: 0px 10px 10px #2c3238;
 }
 
 #logo {

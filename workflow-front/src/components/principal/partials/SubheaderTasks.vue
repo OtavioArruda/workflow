@@ -40,7 +40,7 @@ const { tasksActive } = toRefs(store);
     height: 7vh;
     font-weight: bolder;
     padding: 10px 20px;
-    margin-left: 320px;
+    margin-left: 100px;
     display: flex;
     align-items: center;
     font-size: 20px;
