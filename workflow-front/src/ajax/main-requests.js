@@ -12,7 +12,7 @@ export const searchUsers = async (store, participant) => {
 
         const users = res.data.data;
 
-        for (let idxUser = 0; idx_user < users.length; idxUser++) {
+        for (let idxUser = 0; idxUser < users.length; idxUser++) {
             if (users[idxUser].email == participant) {
                 return users[idxUser]._id;
             }
