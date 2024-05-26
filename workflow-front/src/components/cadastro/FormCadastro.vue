@@ -30,12 +30,12 @@
 import { ref } from 'vue';
 import { createdUser } from '@/ajax/login-requests';
 
-let name = ref('');
-let email = ref('');
-let password = ref('');
+const name = ref('');
+const email = ref('');
+const password = ref('');
 
 const userCreated = () => {    
-    let dados = {
+    const dados = {
         name: name.value,
         email: email.value,
         password: password.value

@@ -5,7 +5,9 @@
 
             <div class="gears">
                 <div></div>
-                <i class="fa-solid fa-gear"></i>
+                <v-btn icon variant="text" @click="configProject">
+                    <v-icon icon="mdi mdi-cog" color="white" size="25"/>
+                </v-btn>
             </div>
         </div>
     </div>
@@ -17,6 +19,10 @@ import { toRefs } from 'vue';
 
 const store = useGlobalsStore();
 const { tasksActive } = toRefs(store);
+
+const configProject = () => {
+    store.popupProject = true
+}
 
 </script>
 

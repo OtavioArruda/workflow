@@ -4,6 +4,7 @@ export const useGlobalsStore = defineStore('globals', {
     state: () => ({
         popupRender: false,
         popupTask: false,
+        popupProject: false,
         token: localStorage.getItem('token') || null,
         idColumn: "",
         tasksActive: {
@@ -30,7 +31,7 @@ export const useGlobalsStore = defineStore('globals', {
 
         addFolder(folder, idProject) {
             for (let idx = 0; idx < this.projects[0].data.projects.length; idx++) {
-                let project = this.projects[0].data.projects[idx];
+                const project = this.projects[0].data.projects[idx];
                 if(project._id == idProject) {
                     project.folders.push(folder);
                 }
@@ -40,10 +41,10 @@ export const useGlobalsStore = defineStore('globals', {
         deleteFolder(idProject, idFolder) {
             for (let idx = 0; idx < this.projects[0].data.projects.length; idx++) {
 
-                let project = this.projects[0].data.projects[idx];
+                const project = this.projects[0].data.projects[idx];
                 if(project._id == idProject) {
 
-                    let folder = project.folders
+                    const folder = project.folders
                     for (let idxFolder = 0; idxFolder < folder.length; idxFolder++) {
                         if (idFolder == folder[idxFolder]._id){
                             project.folders.splice(idxFolder, 1);
@@ -57,10 +58,10 @@ export const useGlobalsStore = defineStore('globals', {
         addColumn(column, idProject, idFolder) {
             for (let idx = 0; idx < this.projects[0].data.projects.length; idx++) {
 
-                let project = this.projects[0].data.projects[idx];
+                const project = this.projects[0].data.projects[idx];
                 if(project._id == idProject) {
 
-                    let folder = project.folders
+                    const folder = project.folders
                     for (let idxFolder = 0; idxFolder < folder.length; idxFolder++) {
                         if (idFolder == folder[idxFolder]._id){
                             project.folders[idxFolder].columns.push(column);
@@ -74,14 +75,14 @@ export const useGlobalsStore = defineStore('globals', {
         deleteColumn(idProject, idFolder, idColumn){
             for (let idx = 0; idx < this.projects[0].data.projects.length; idx++) {
 
-                let project = this.projects[0].data.projects[idx];
+                const project = this.projects[0].data.projects[idx];
                 if(project._id == idProject) {
 
-                    let folder = project.folders
+                    const folder = project.folders
                     for (let idxFolder = 0; idxFolder < folder.length; idxFolder++) {
                         if (idFolder == folder[idxFolder]._id){
 
-                            let column = project.folders[idxFolder].columns;
+                            const column = project.folders[idxFolder].columns;
                             for (let idxColumn = 0; idxColumn < column.length; idxColumn++) {
                                 if (idColumn == column[idxColumn]._id){
                                     folder[idxFolder].columns.splice(idxColumn, 1);
@@ -97,14 +98,14 @@ export const useGlobalsStore = defineStore('globals', {
         addTask(task, idProject, idFolder, idColumn) {
             for (let idx = 0; idx < this.projects[0].data.projects.length; idx++) {
 
-                let project = this.projects[0].data.projects[idx];
+                const project = this.projects[0].data.projects[idx];
                 if(project._id == idProject) {
 
-                    let folder = project.folders
+                    const folder = project.folders
                     for (let idxFolder = 0; idxFolder < folder.length; idxFolder++) {
                         if (idFolder == folder[idxFolder]._id){
 
-                            let column = folder[0].columns;
+                            const column = folder[0].columns;
                             for (let idxColumn = 0; idxColumn < column.length; idxColumn++) {
                                 if (idColumn = column[idxColumn]._id) {
                                     console.log(project.folders[idxFolder].columns[idxColumn]);

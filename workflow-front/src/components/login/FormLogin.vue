@@ -140,8 +140,8 @@ import { ref } from 'vue';
 const router = useRouter();
 
 
-let email = defineModel('email');
-let pass = defineModel('pass');
+const email = defineModel('email');
+const pass = defineModel('pass');
 
 let show1 = ref(false);
 let password = 'Password'
@@ -157,7 +157,7 @@ const props = defineProps({
 
 const acountAccess = () => {
 
-    let login = {
+    const login = {
       email: email.value,
       password: pass.value
     }
@@ -170,11 +170,11 @@ const acountAccess = () => {
 }
 
 window.addEventListener('scroll', function() {
-  let boxes = document.querySelectorAll('.box');
+  const boxes = document.querySelectorAll('.box');
   
   boxes.forEach(function(box) {
-    let boxTop = box.getBoundingClientRect().top;
-    let windowHeight = window.innerHeight;
+    const boxTop = box.getBoundingClientRect().top;
+    const windowHeight = window.innerHeight;
     
     if (boxTop < windowHeight * 0.8) {
       box.classList.add('slide-in');

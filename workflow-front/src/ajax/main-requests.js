@@ -10,11 +10,11 @@ export const searchUsers = async (store, participant) => {
             }
         );
 
-        let users = res.data.data;
+        const users = res.data.data;
 
-        for (let idx_user = 0; idx_user < users.length; idx_user++) {
-            if (users[idx_user].email == participant) {
-                return users[idx_user]._id;
+        for (let idxUser = 0; idx_user < users.length; idxUser++) {
+            if (users[idxUser].email == participant) {
+                return users[idxUser]._id;
             }
         }
 
@@ -34,7 +34,7 @@ export const searchMe = async (store) => {
             }
         );
 
-        let user = res.data.data;
+        const user = res.data.data;
 
         return user.user
     }
@@ -52,18 +52,17 @@ export const searchProjects = async (store, dataLoaded) => {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
         );
-        if (resProject.data) {
 
-            let user = await searchMe(store);
+        if (resProject.data) {
+            const user = await searchMe(store);
 
             if (user != undefined) {
                 store.email = user.email;
                 store.name = user.name;
                 store.sigla = store.email[0].toUpperCase()
 
-                let projects = resProject.data;
+                store.addProject(resProject.data);
 
-                store.addProject(projects);
                 dataLoaded.value = true;
             }
 
@@ -84,9 +83,10 @@ export const createdProject = async (dados, store) => {
             {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
-        )
+        );
 
         console.log(response.data);
+
         store.addProject(response.data.data.project);
     }
     catch (error) {
@@ -103,11 +103,10 @@ export const createdFolder = async (dados, store, idProject) => {
             {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
-        )
+        );
 
         store.addFolder(response.data.data.folder, idProject);
-        
-    } 
+    }
     catch (error) {
         console.log(error);
     }
@@ -120,11 +119,10 @@ export const deleteFolder = async (idProject, idFolder, store) => {
             {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
-        )
-        
+        );
+
         store.deleteFolder(idProject, idFolder);
-        
-    } 
+    }
     catch (error) {
         console.log(error);
     }
@@ -138,11 +136,10 @@ export const createColumn = async (dados, store, projectId, folderId) => {
             {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
-        )
-        
+        );
+
         store.addColumn(response.data.data.column, projectId, folderId);
-        
-    } 
+    }
     catch (error) {
         console.log(error);
     }
@@ -156,11 +153,11 @@ export const deleteColumn = async (idProject, idFolder, idColumn, store) => {
             {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
-        )
+        );
 
         store.deleteColumn(idProject, idFolder, idColumn);
-        
-    } 
+
+    }
     catch (error) {
         console.log(error);
     }
@@ -168,18 +165,18 @@ export const deleteColumn = async (idProject, idFolder, idColumn, store) => {
 
 export const createdTasks = async (dados, store, idFolder, idProject, idColumn) => {
     try {
-
         const response = await axios.post(
             'http://localhost:3000/tasks',
             dados,
             {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
-        )
+        );
+
         store.popupTask = !store.popupTask;
-        
-        store.addTask(response.data.data.task, idProject, idFolder, idColumn)        
-    } 
+
+        store.addTask(response.data.data.task, idProject, idFolder, idColumn);
+    }
     catch (error) {
         console.log(error);
     }
@@ -193,18 +190,17 @@ export const updateFolder = async (data, idFolder, store) => {
             {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
-        )
+        );
 
         const btnActive = document.querySelector(`.about-tasks[data-value="${data.name}"]`);
 
         const selectTask = new MouseEvent('click', {
-            bubbles: true, 
+            bubbles: true,
             cancelable: true,
         });
 
         btnActive.dispatchEvent(selectTask);
-        
-    } 
+    }
     catch (error) {
         console.log(error);
     }
@@ -219,10 +215,10 @@ export const updateColumn = async (data, idColumn, store) => {
                 headers: { Authorization: `Bearer ${store.token}` }
             }
         )
-        
+
         console.log(response.data);
-    } 
+    }
     catch (error) {
-        
+        console.log(error);
     }
 }

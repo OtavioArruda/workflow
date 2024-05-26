@@ -68,27 +68,27 @@ import { createdTasks, searchUsers } from '@/ajax/main-requests';
 
 const store = useGlobalsStore();
 
-let title = ref("");
-let description = ref("");
-let start_at = ref("");
-let end_at = ref("");
-let badge = ref("");
-let badge_color = ref("");
-let participants = ref([]);
-let idUser = ref([]);
-let participantInput = ref("");
+const title = ref("");
+const description = ref("");
+const start_at = ref("");
+const end_at = ref("");
+const badge = ref("");
+const badge_color = ref("");
+const participants = ref([]);
+const idUser = ref([]);
+const participantInput = ref("");
 let rules = [() => true];
 
 const addParticipant = async () => {
-    let idProject = store.tasksActive.idProject;
-    let projects = store.projects[0].data.projects;
+    const idProject = store.tasksActive.idProject;
+    const projects = store.projects[0].data.projects;
 
     const user = await searchUsers(store, participantInput.value);
 
     if (user !== false) {
         for (let id = 0; id < projects.length; id++) {
             if (projects[id]._id == idProject) {
-                let listParticipants = projects[id].participants;
+                const listParticipants = projects[id].participants;
                 
                 for (let idxParticipant = 0; idxParticipant < listParticipants.length; idxParticipant++) {
                     if (user == listParticipants[idxParticipant]) {
@@ -119,7 +119,7 @@ const taskCancel = (e) => {
 const taskCreated = (e) => {
     e.preventDefault();
 
-    let data = {
+    const data = {
         title: title.value,
         description: description.value,
         start_at: start_at.value,
