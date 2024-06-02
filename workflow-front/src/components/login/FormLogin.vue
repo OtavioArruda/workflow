@@ -13,7 +13,7 @@
           <v-card
             class="mx-auto pa-12 pb-12 chamada-login"
             elevation="8"
-            max-width="448"
+            max-width="500"
             rounded="lg"
           >
             <div>
@@ -50,7 +50,7 @@
                 class="text-blue text-decoration-none"
                 href="#"
                 rel="noopener noreferrer"
-                target="_blank"
+                target="_self"
                 @click="directsRegistration"
               >
                 Ainda não tenho uma conta <v-icon icon="mdi-chevron-right"></v-icon>
@@ -139,6 +139,7 @@ import { ref } from 'vue';
 
 const router = useRouter();
 
+let visible = ref(false);
 
 const email = defineModel('email');
 const pass = defineModel('pass');
@@ -245,7 +246,7 @@ h3 {
 .chamada-login {
   width: 100%;
   text-align: center;
-  margin-top: 150px;
+  margin-top: 200px;
 }
 
 .sessao-sobre {
@@ -314,7 +315,7 @@ label {
 }
 
 .about{
-  margin-top: 200px;
+  margin-top: 160px;
   background-color: #f4f5f6;
 }
 

@@ -139,9 +139,9 @@ const endEditing = (subDirectory, idFolder, eventType) => {
     if (eventType === 'enter'){
 
         subDirectory.editing = ref(false);
-        let newFolder = document.querySelector(".subdirectory-edit");
+        let newFolder = subDirectory.name;
         let data = {
-            name: newFolder.value,
+            name: newFolder,
             folderId: idFolder
         }
 

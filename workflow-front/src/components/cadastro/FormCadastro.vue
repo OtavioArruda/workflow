@@ -1,27 +1,69 @@
 <template>
     <div id="main">
         <div class="sessao-form">
-            <div class="chamada-login">
-                <span>Faça seu cadastro!</span>
-            </div>
+            <v-form fast-fail @submit.prevent="userCreated">
+                <v-card
+                    style="margin-top: 200px;"
+                    class="mx-auto pa-12 pb-12 chamada-login"
+                    elevation="8"
+                    max-width="600"
+                    rounded="lg"
+                >
+                    <div>
+                    <span>Faça seu cadastro!</span>
+                    </div>
+                    
+                    <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">E-mail</div>
+            
+                    <v-text-field
+                    density="compact"
+                    placeholder="Email"
+                    prepend-inner-icon="mdi-email-outline"
+                    variant="outlined"
+                    required
+                    :rules="emailRules"
+                    v-model="email"
+                    ></v-text-field>
 
-            <form @submit.prevent="userCreated">
-                <div class="inputs-texto">
-                    <label for="name">Nome:</label>
-                    <input type="text" id="name" v-model="name" name="name" required>
+                    <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">Nome</div>
+            
+                    <v-text-field
+                    density="compact"
+                    placeholder="Nome"
+                    prepend-inner-icon="mdi-account-outline"
+                    variant="outlined"
+                    :rules="nameRules"
+                    required
+                    v-model="name"
+                    ></v-text-field>
+            
+                    <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
+                    Senha
+                    </div>
+            
+                    <v-text-field
+                    :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                    :type="visible ? 'text' : 'password'"
+                    density="compact"
+                    placeholder="Enter your password"
+                    v-model="password"
+                    prepend-inner-icon="mdi-lock-outline"
+                    variant="outlined"
+                    required
+                    :rules="passRules"
+                    @click:append-inner="visible = !visible"
+                    ></v-text-field>
 
-                    <label for="email">E-mail:</label>
-                    <input type="text" id="email" v-model="email" name="email" required>
-
-                    <label for="password">Senha:</label>
-                    <input type="password" id="password" v-model="password" name="password" required>
-                </div>
-
-                <div class="direciona-telas">
-                    <input type="submit" value="Cadastrar">
-                </div>
-            </form>
-
+                    <v-btn
+                    v-btn class="mt-5 cadastrar" 
+                    type="submit" 
+                    block
+                    >
+                    Cadastrar
+                    </v-btn>
+            
+                </v-card>
+            </v-form>
         </div>
     </div>
 </template>
@@ -30,9 +72,62 @@
 import { ref } from 'vue';
 import { createdUser } from '@/ajax/login-requests';
 
+let visible = ref(false);
+
 const name = ref('');
 const email = ref('');
 const password = ref('');
+
+let validates = {
+    name: ref(false),
+    email: ref(false),
+    pass: ref(false)
+}
+
+const nameRules = [
+    value => {
+        if (value) {
+            validates.name = true;
+            return true;
+        }
+
+        validates.name = false;
+        return 'Nome requerido.';
+    },
+];
+
+const passRules = [
+    value => {
+        if (value) {
+            validates.pass = true;
+            return true
+        }
+
+        validates.pass = false;
+        return 'Senha requerida.';
+    },
+];
+
+const emailRules = [
+    value => {
+        if (value) {
+            validates.email = true;
+            return true;
+        }
+
+        validates.email = false;
+        return 'E-mail requerido.';
+    },
+    value => {
+        if (/.+@.+\..+/.test(value)) {
+            validates.email = true;
+            return true;
+        }
+
+        validates.email = false;
+        return 'E-mail inválido.';
+    },
+];
 
 const userCreated = () => {    
     const dados = {
@@ -41,11 +136,13 @@ const userCreated = () => {
         password: password.value
     };
 
-    createdUser(dados);
+    if(validates.name && validates.pass && validates.email) {
+        createdUser(dados);
 
-    name.value = "";
-    email.value = "";
-    password.value = "";
+        name.value = "";
+        email.value = "";
+        password.value = "";
+    }
 }
 
 
@@ -54,18 +151,16 @@ const userCreated = () => {
 <style scoped>
 #main {
     width: 100%;
-    padding-top: 200px;
+    background-color: white;
 }
 
 span {
     font-size: 35px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: bolder;
-    color: rgb(0, 102, 25);
 }
 
 label {
-    color: rgb(0, 102, 25);
     font-weight: bolder;
     font-size: 15px;
 }
@@ -77,15 +172,25 @@ label {
 }
 
 .sessao-form {
-    width: 600px;
-    border: none;
-    border-radius: 10px;
-    padding-bottom: 100px;
-    background-color: white;
-    box-shadow: -20px 10px 10px #ffffff;
-    margin: 0 auto;
-    padding: 20px 0;
-    box-shadow: 0 10px 10px rgb(178, 255, 178);
+    width: 100%;
+    height: 100vh;
+    background-color: #57ce8d;
+    border-bottom-right-radius: 100%;
+}
+
+.cadastrar{
+    font-size: 15px;
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    padding: 15px 0px;
+    border-radius: 24px;
+    background-color: #57ce8d;
+    color: white;
+    border: solid 1px #57ce8d;
+    cursor: pointer;
+    font-weight: bolder;
+    margin: 20px 0;
 }
 
 .inputs-texto {
@@ -100,28 +205,6 @@ form {
     flex-direction: column;
 }
 
-.sessao-form input[type="text"],
-.sessao-form input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #00440e;
-    border-radius: 5px;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-
-.sessao-form input[type="submit"] {
-    font-size: 15px;
-    width: 160px;
-    padding: 10px 15px;
-    border-radius: 5px;
-    background-color: #ffffff;
-    color: rgb(0, 102, 25);
-    border: solid 3px rgb(0, 104, 26);
-    cursor: pointer;
-    font-weight: bolder;
-    margin: 20px 0;
-}
 
 .direciona-telas {
     width: 100%;
@@ -130,10 +213,5 @@ form {
     text-align: center;
     align-items: center;
     margin-top: 30px;
-}
-
-.sessao-form input[type="submit"]:hover {
-    transform: scale(1.03);
-    transition: 0.5s;
 }
 </style>

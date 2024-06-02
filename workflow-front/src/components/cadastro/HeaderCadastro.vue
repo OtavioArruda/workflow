@@ -35,12 +35,11 @@ const props = defineProps({
 header {
   width: 100%;
   display: flex;
-  top: 0;
   justify-content: space-between;
   padding: 10px 20px;
   position: fixed;
   z-index: 1;
-  background-color: white;
+  background-color: #1d2125;
   box-shadow: 0px -5px 20px black;
 }
 
@@ -60,10 +59,11 @@ header {
   border: none;
   width: 150px;
   font-size: 15px;
+  font-weight: bolder;
   border-radius: 5px;
-  color: white;
-  box-shadow: 3px 3px 10px rgb(0, 145, 92);
-  background-color: rgb(0, 102, 25);
+  color: rgb(53, 52, 52);
+  box-shadow: 3px 3px 10px black;
+  background-color: #57ce8d;
 }
 
 #entrar-conta:hover {
@@ -74,5 +74,6 @@ header {
 span {
   font-weight: bold;
   font-size: 15px;
+  color: white;
 }
 </style>

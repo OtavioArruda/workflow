@@ -135,11 +135,12 @@ const endEditing = (column, idColumn, eventType) => {
     if (eventType === 'enter'){
 
         column.editing = ref(false);
-        let newColumns = document.querySelector(".column-edit");
+        let newColumns = column.name;
 
         let data = {
-            name: newColumns.value
+            name: newColumns
         }
+
         updateColumn(data, idColumn, store);
     }
 };
