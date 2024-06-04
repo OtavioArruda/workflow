@@ -16,12 +16,33 @@
 <script setup>
 import { useGlobalsStore } from '@/store';
 import { toRefs } from 'vue';
+import { searchParticipants } from '@/ajax/main-requests';
 
 const store = useGlobalsStore();
 const { tasksActive } = toRefs(store);
 
-const configProject = () => {
-    store.popupProject = true
+const configProject = async () => {
+    try {
+        store.popupProject = true;
+        let participants = store.projectActive.participants;
+
+        for (let idxUser = 0; idxUser < participants.length; idxUser++) {
+            const idUser = participants[idxUser];
+            
+            const user = await searchParticipants(store, idUser);
+            
+            if (user !== false) {
+                store.participants.push(user.email);
+            } 
+            else {
+                rules = [() => 'Usuário não encontrado.'];
+            }
+        }
+
+    } 
+    catch (error) {
+        console.error(error);
+    }
 }
 
 </script>

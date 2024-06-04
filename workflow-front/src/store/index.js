@@ -7,6 +7,8 @@ export const useGlobalsStore = defineStore('globals', {
         popupProject: false,
         token: localStorage.getItem('token') || null,
         idColumn: "",
+        projectActive: "",
+        participants: [],
         tasksActive: {
             data: "",
             project: "",
@@ -125,6 +127,10 @@ export const useGlobalsStore = defineStore('globals', {
             this.tasksActive.folder = folder;
             this.tasksActive.idProject = idProject;
             this.tasksActive.idFolder = idFolder;
+        },
+
+        updateProjectActive(data) {
+            this.projectActive = data
         }
     }
 });

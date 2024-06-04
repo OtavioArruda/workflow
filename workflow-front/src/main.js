@@ -11,6 +11,7 @@ import * as directives from 'vuetify/directives';
 
 import App from './App.vue';
 import router from './router';
+import Notifications from '@kyvg/vue3-notification'
 
 const vuetify = createVuetify({
     components,
@@ -28,6 +29,7 @@ const pinia = createPinia();
 
 const app = createApp(App);
 
+app.use(Notifications)
 app.use(vuetify);
 app.use(pinia);
 app.use(router);

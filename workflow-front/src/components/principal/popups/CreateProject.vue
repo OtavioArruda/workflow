@@ -45,6 +45,7 @@
             </v-sheet>
         </div>
     </v-dialog>
+    <notifications position="top right" classes="notify" />
 </template>
 
 <script setup>
@@ -52,12 +53,16 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { useGlobalsStore } from '@/store';
 import { ref } from 'vue';
 import { createdProject, searchUsers } from '@/ajax/main-requests';
+import { useNotification } from "@kyvg/vue3-notification";
+
+const notification = useNotification()
 
 const store = useGlobalsStore();
 const nameProject = ref('');
 const email = ref([]);
 const participantInput = ref("");
 const participants = ref([]);
+
 
 let rules = [() => true];
 
@@ -73,7 +78,15 @@ const projectCreated = () => {
 
     console.log(data);
 
-    createdProject(data, store);
+    const created = createdProject(data, store);
+    if (created) {
+        notification.notify({
+            title: "Sucesso!",
+            text: "Projeto criado!",
+            duration: 3000,
+            position: 'top right',
+        });
+    }
 }
 
 const addParticipant = async () => {

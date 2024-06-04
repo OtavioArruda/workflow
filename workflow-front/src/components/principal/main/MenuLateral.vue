@@ -116,6 +116,13 @@ const popupCreate = () => {
 }
 
 const activeTasks = (data, directory, folder, idProject, idFolder) => {
+    let projectActive = store.projects[0].data.projects;
+    for (let idx_project = 0; idx_project < projectActive.length; idx_project++) {
+        const idsProjects = projectActive[idx_project]._id;
+        if (idProject == idsProjects) {
+            store.updateProjectActive(projectActive[idx_project]);
+        }
+    }
     store.updatetasksActive(data.columns, directory, folder, idProject, idFolder);
 }
 

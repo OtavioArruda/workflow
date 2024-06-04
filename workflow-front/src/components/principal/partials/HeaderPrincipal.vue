@@ -8,8 +8,8 @@
                 location="end"
             >
                 <template v-slot:activator="{ props }">
-                    <v-btn icon height="40" width="40" class="mr-3" :style="{ padding: '2px 5px', cursor: 'pointer' }" v-bind="props">
-                        <v-icon height="30" width="30">mdi-dots-vertical</v-icon>
+                    <v-btn icon height="40" width="40" class="mr-3" color="#1d2125" :style="{ padding: '2px 5px', cursor: 'pointer' }" v-bind="props">
+                        <v-icon height="30" width="30" color="white">mdi-dots-vertical</v-icon>
                     </v-btn>
                 </template>
 

@@ -25,6 +25,54 @@ export const searchUsers = async (store, participant) => {
     }
 }
 
+export const searchParticipants = async (store, participant) => {
+    try {
+        const res = await axios.get(
+            'http://localhost:3000/users',
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        );
+
+        const users = res.data.data;
+
+        for (let idxUser = 0; idxUser < users.length; idxUser++) {
+            if (users[idxUser]._id == participant) {
+                return users[idxUser];
+            }
+        }
+
+        return false;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+export const searchEmails = async (store, participant) => {
+    try {
+        const res = await axios.get(
+            'http://localhost:3000/users',
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        );
+
+        const users = res.data.data;
+
+        for (let idxUser = 0; idxUser < users.length; idxUser++) {
+            if (users[idxUser].email == participant) {
+                return users[idxUser]._id;
+            }
+        }
+
+        return false;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 export const searchMe = async (store) => {
     try {
         const res = await axios.get(
@@ -85,9 +133,9 @@ export const createdProject = async (dados, store) => {
             }
         );
 
-        console.log(response.data);
-
         store.addProject(response.data.data.project);
+        return response.data;
+
     }
     catch (error) {
         console.log(error);
