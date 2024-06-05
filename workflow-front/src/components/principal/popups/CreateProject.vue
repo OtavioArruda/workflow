@@ -45,24 +45,29 @@
             </v-sheet>
         </div>
     </v-dialog>
-    <notifications position="top right" classes="notify" />
+    <v-alert class="alert-top" v-if="state.successMessage" type="success" color="success" icon="$success">
+        Projeto Criado
+    </v-alert>
+    <v-alert class="alert-top" v-if="state.errorMessage" type="error" color="error" icon="$error">
+        Erro ao criar projeto
+    </v-alert>
 </template>
 
 <script setup>
 import '@fortawesome/fontawesome-free/css/all.css';
 import { useGlobalsStore } from '@/store';
-import { ref } from 'vue';
+import { ref, reactive, nextTick } from 'vue';
 import { createdProject, searchUsers } from '@/ajax/main-requests';
-import { useNotification } from "@kyvg/vue3-notification";
-
-const notification = useNotification()
 
 const store = useGlobalsStore();
 const nameProject = ref('');
 const email = ref([]);
 const participantInput = ref("");
 const participants = ref([]);
-
+const state = reactive({
+    successMessage: false,
+    errorMessage: false
+});
 
 let rules = [() => true];
 
@@ -70,23 +75,35 @@ const cancelProject = () => {
     store.popupRender = !store.popupRender;
 }
 
-const projectCreated = () => {
+const projectCreated = async () => {
     const data = {
         name: nameProject.value,
         participants: participants.value
     };
 
-    console.log(data);
+    try {
+        const createdTask = await createdProject(data, store);
 
-    const created = createdProject(data, store);
-    if (created) {
-        notification.notify({
-            title: "Sucesso!",
-            text: "Projeto criado!",
-            duration: 3000,
-            position: 'top right',
-        });
+        if (createdTask.data) {
+            state.successMessage = true;
+            state.errorMessage = false;
+            setTimeout(() => {
+                state.successMessage = false;
+            }, 3000);
+        } 
+
+    } catch (error) {
+        state.successMessage = false;
+        state.errorMessage = true;
+        setTimeout(() => {
+            state.errorMessage = false;
+        }, 3000);
     }
+}
+
+const executeProjectCreated = async () => {
+    await projectCreated();
+    await nextTick();
 }
 
 const addParticipant = async () => {
@@ -165,4 +182,16 @@ const addParticipant = async () => {
     margin-top: 30px;
 }
 
+.custom-notification {
+    margin-top: 20px;
+}
+
+.alert-top {
+  position: fixed;
+  top: 20px;
+  left: 85%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: 20%;
+}
 </style>

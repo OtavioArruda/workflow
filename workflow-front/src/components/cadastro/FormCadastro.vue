@@ -1,7 +1,7 @@
 <template>
     <div id="main">
         <div class="sessao-form">
-            <v-form fast-fail @submit.prevent="userCreated">
+            <v-form fast-fail @submit.prevent="executeUserCreated">
                 <v-card
                     style="margin-top: 200px;"
                     class="mx-auto pa-12 pb-12 chamada-login"
@@ -65,18 +65,31 @@
                 </v-card>
             </v-form>
         </div>
+        <v-alert class="alert-top" v-if="state.successMessage" type="success" color="success" icon="$success">
+            Usuário Criado
+        </v-alert>
+        <v-alert class="alert-top" v-if="state.errorMessage" type="error" color="error" icon="$error">
+            Erro ao criar Usuário
+        </v-alert>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive, nextTick } from 'vue';
 import { createdUser } from '@/ajax/login-requests';
+import { useRouter } from 'vue-router';
 
 let visible = ref(false);
 
 const name = ref('');
 const email = ref('');
 const password = ref('');
+const state = reactive({
+    successMessage: false,
+    errorMessage: false
+});
+const router = useRouter();
+
 
 let validates = {
     name: ref(false),
@@ -129,22 +142,43 @@ const emailRules = [
     },
 ];
 
-const userCreated = () => {    
+const userCreated = async () => {  
     const dados = {
         name: name.value,
         email: email.value,
         password: password.value
     };
 
-    if(validates.name && validates.pass && validates.email) {
-        createdUser(dados);
+    try {
+        if(validates.name && validates.pass && validates.email) {
+            const response = await createdUser(dados);
+            if (response.data) {
+                state.successMessage = true;
+                state.errorMessage = false;
+                setTimeout(() => {
+                    state.successMessage = false;
+                    router.push('/');
+                }, 3000);
+            }
 
-        name.value = "";
-        email.value = "";
-        password.value = "";
-    }
+            name.value = "";
+            email.value = "";
+            password.value = "";
+        }
+        
+    } catch (error) {
+        state.successMessage = false;
+        state.errorMessage = true;
+        setTimeout(() => {
+            state.errorMessage = false;
+        }, 3000);
+    }  
 }
 
+const executeUserCreated = async () => {
+    await userCreated();
+    await nextTick();
+}
 
 </script>
 
@@ -213,5 +247,14 @@ form {
     text-align: center;
     align-items: center;
     margin-top: 30px;
+}
+
+.alert-top {
+  position: fixed;
+  top: 20px;
+  left: 85%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: 20%;
 }
 </style>

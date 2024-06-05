@@ -134,7 +134,7 @@ export const createdProject = async (dados, store) => {
         );
 
         store.addProject(response.data.data.project);
-        return response.data;
+        return response;
 
     }
     catch (error) {
@@ -224,6 +224,8 @@ export const createdTasks = async (dados, store, idFolder, idProject, idColumn) 
         store.popupTask = !store.popupTask;
 
         store.addTask(response.data.data.task, idProject, idFolder, idColumn);
+
+        return response;
     }
     catch (error) {
         console.log(error);

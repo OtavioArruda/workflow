@@ -7,7 +7,7 @@ export const createdUser = async (dados) => {
             dados
         );
 
-        console.log('Usuário criado:', response.data);
+        return response.data;
     } catch (error) {
         console.error('Erro ao criar usuário:', error);
     }

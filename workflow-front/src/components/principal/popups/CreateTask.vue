@@ -50,7 +50,7 @@
     
                         <v-btn
                             text="Submit"
-                            @click="taskCreated"
+                            @click="executeTaskCreated"
                             >Criar Tarefa
                         </v-btn>
                     </div>
@@ -58,12 +58,18 @@
             </v-sheet>
         </div>
     </v-dialog>
+    <v-alert class="alert-top" v-if="state.successMessage" type="success" color="success" icon="$success">
+        Tarefa Criada
+    </v-alert>
+    <v-alert class="alert-top" v-if="state.errorMessage" type="error" color="error" icon="$error">
+        Erro ao criar tarefa
+    </v-alert>
 </template>
 
 <script setup>
 import '@fortawesome/fontawesome-free/css/all.css';
 import { useGlobalsStore } from '@/store';
-import { ref } from 'vue';
+import { ref, reactive, nextTick } from 'vue';
 import { createdTasks, searchUsers } from '@/ajax/main-requests';
 
 const store = useGlobalsStore();
@@ -77,6 +83,10 @@ const badge_color = ref("");
 const participants = ref([]);
 const idUser = ref([]);
 const participantInput = ref("");
+const state = reactive({
+    successMessage: false,
+    errorMessage: false
+});
 let rules = [() => true];
 
 const addParticipant = async () => {
@@ -116,26 +126,47 @@ const taskCancel = (e) => {
     store.popupTask = !store.popupTask;
 }
 
-const taskCreated = (e) => {
-    e.preventDefault();
-
-    const data = {
-        title: title.value,
-        description: description.value,
-        start_at: start_at.value,
-        end_at: end_at.value,
-        badges: [{
-            text: badge.value,
-            color: badge_color.value
-        }],
-        participants: idUser.value,
-        columnId: store.idColumn
+const taskCreated = async() => {
+    try {
+        const data = {
+            title: title.value,
+            description: description.value,
+            start_at: start_at.value,
+            end_at: end_at.value,
+            badges: [{
+                text: badge.value,
+                color: badge_color.value
+            }],
+            participants: idUser.value,
+            columnId: store.idColumn
+        }
+    
+        const created = await createdTasks(data, store, store.tasksActive.idFolder, store.tasksActive.idProject, store.idColumn);
+        if (created.data) {
+            state.successMessage = true;
+            state.errorMessage = false;
+            setTimeout(() => {
+                state.successMessage = false;
+            }, 3000);
+        } 
+        
+    } catch (error) {
+        state.successMessage = false;
+        state.errorMessage = true;
+        setTimeout(() => {
+            state.errorMessage = false;
+        }, 3000);
     }
 
-    createdTasks(data, store, store.tasksActive.idFolder, store.tasksActive.idProject, store.idColumn);
+}
+
+const executeTaskCreated = async () => {
+    await taskCreated();
+    await nextTick();
 }
 
 </script>
+
 
 <style scoped>
 #popup-overlay-task {
@@ -225,5 +256,14 @@ const taskCreated = (e) => {
     padding: 5px 10px;
     background-color: #00ff1e;
     font-weight: bolder;
+}
+
+.alert-top {
+  position: fixed;
+  top: 20px;
+  left: 85%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: 20%;
 }
 </style>
