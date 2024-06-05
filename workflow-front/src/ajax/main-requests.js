@@ -232,6 +232,23 @@ export const createdTasks = async (dados, store, idFolder, idProject, idColumn) 
     }
 }
 
+export const updateProject = async (data, idProject, store) => {
+    try {
+        const response = await axios.put(
+            `http://localhost:3000/projects/${idProject}`,
+            data,
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        );
+
+        return response;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 export const updateFolder = async (data, idFolder, store) => {
     try {
         const response = await axios.put(
