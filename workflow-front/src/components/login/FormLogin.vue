@@ -128,6 +128,10 @@
       </div>
       
     </section>
+
+    <v-alert class="alert-top" v-if="state.successMessage" type="error" color="error" icon="$error">
+        Login ou senha Incorretos
+    </v-alert>
   </div>
 </template>
 
@@ -135,7 +139,10 @@
 import { defineProps, defineModel } from 'vue';
 import { useRouter } from 'vue-router';
 import { accessAccount } from '@/ajax/login-requests';
-import { ref } from 'vue';
+import { ref, reactive, nextTick } from 'vue';
+const state = reactive({
+    successMessage: false,
+});
 
 const router = useRouter();
 
@@ -144,30 +151,30 @@ let visible = ref(false);
 const email = defineModel('email');
 const pass = defineModel('pass');
 
-let show1 = ref(false);
-let password = 'Password'
-let rules = {
-  required: value => !!value || 'Required.',
-  min: v => v.length >= 8 || 'Min 8 characters',
-  emailMatch: () => (`The email and password you entered don't match`),
-};
-
 const props = defineProps({
   directsRegistration: Function
 });
 
-const acountAccess = () => {
-
+const acountAccess = async () => {
+  try {
     const login = {
       email: email.value,
       password: pass.value
     }
-
-    accessAccount(login, router)
-    
-    email.value = "";
-    pass.value = "";
-
+  
+    let access = await accessAccount(login, router);
+  
+    if (access.data) {
+      email.value = "";
+      pass.value = "";
+    }
+  } 
+  catch (error) {
+    state.successMessage = true;
+      setTimeout(() => {
+        state.successMessage = false;
+    }, 3000);
+  }
 }
 
 window.addEventListener('scroll', function() {
@@ -184,6 +191,12 @@ window.addEventListener('scroll', function() {
     }
   });
 });
+
+
+const executeProjectCreated = async () => {
+    await projectCreated();
+    await nextTick();
+}
 
 
 </script>

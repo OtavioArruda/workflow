@@ -8,22 +8,15 @@
 
             <v-card>
                 <v-toolbar>
-                <v-btn
-                    icon="mdi-close"
-                    @click="store.popupProject = false"
-                ></v-btn>
-
-                <v-toolbar-title>Configurações</v-toolbar-title>
-
-                <v-spacer></v-spacer>
-
-                <v-toolbar-items>
                     <v-btn
-                    text="Salvar"
-                    variant="text"
-                    @click="editProject"
+                        icon="mdi-close"
+                        @click="store.popupProject = false; store.participants = [];"
                     ></v-btn>
-                </v-toolbar-items>
+
+                    <v-toolbar-title>Configurações</v-toolbar-title>
+
+                    <v-spacer></v-spacer>
+
                 </v-toolbar>
 
                 <v-list
@@ -32,7 +25,7 @@
                 >
                 <v-list-subheader class="ml-2">Configurações do Projeto</v-list-subheader>
 
-                <v-form style="max-width: 80%; margin-left: 20px;">
+                <v-form>
                     <v-text-field 
                     label="Nome do Projeto"
                     v-model="store.projectActive.name"
@@ -42,7 +35,6 @@
                         Participantes:
                     </label>
                     <v-text-field 
-                        disabled
                         v-model="participantInput" 
                         @keydown.enter="addParticipant"
                         :rules="rules"
@@ -57,24 +49,43 @@
                             </v-chip>                            
                         </div>
                     </v-text-field>
+
+
+                    <v-list style="display: flex; justify-content: space-around">
+                        <v-btn
+                        text="Salvar"
+                        color="green"
+                        variant="text"
+                        @click="editProject"
+                        ></v-btn>
+
+                        <v-btn
+                        text="Excluir"
+                        color="red"
+                        variant="text"
+                        @click="projectDelete"
+                        ></v-btn>
+                    </v-list>
                 </v-form>
 
                 <v-divider></v-divider>
 
-                <v-list-subheader class="ml-2">Suas tarefas</v-list-subheader>
-
-                <v-list>
-                    
-                </v-list>
                 </v-list>
             </v-card>
         </v-dialog>
 
         <v-alert class="alert-top" v-if="state.successMessage" type="success" color="success" icon="$success">
-            Projeto Alterado
+            Projeto Alterado com sucesso.
         </v-alert>
         <v-alert class="alert-top" v-if="state.errorMessage" type="error" color="error" icon="$error">
             Erro ao alterar projeto
+        </v-alert>
+
+        <v-alert class="alert-delete-top" v-if="state.successDeleteMessage" type="success" color="error" icon="$success">
+            Projeto Excluído com sucesso.
+        </v-alert>
+        <v-alert class="alert-delete-top" v-if="state.errorDeleteMessage" type="error" color="error" icon="$error">
+            Erro ao excluir projeto.
         </v-alert>
     </div>
 </template>
@@ -82,7 +93,7 @@
 <script setup>
 import { useGlobalsStore } from '@/store';
 import { ref, reactive, nextTick } from 'vue';
-import { searchUsers, updateProject } from '@/ajax/main-requests';
+import { searchUsers, updateProject, deleteProject } from '@/ajax/main-requests';
 
 const participantInput = ref("");
 const participants = ref([]);
@@ -90,7 +101,9 @@ const store = useGlobalsStore();
 const email = ref(store.participants);
 const state = reactive({
     successMessage: false,
-    errorMessage: false
+    errorMessage: false,
+    successDeleteMessage: false,
+    errorDeleteMessage: false
 });
 
 
@@ -104,7 +117,6 @@ const addParticipant = async () => {
 
             if (user !== false) {
                 email.value.push(participantInput.value.trim());
-                participants.value.push(user);
 
                 participantInput.value = '';
                 rules = [() => true];
@@ -120,13 +132,23 @@ const addParticipant = async () => {
 }
 
 const editProject = async () => {
+
     try {
-        const idProject = store.projectActive._id;
+        for (let idxEmail = 0; idxEmail < email.value.length; idxEmail++) {
+            const parti = email.value[idxEmail];
+            const user = await searchUsers(store, parti);
+            participants.value.push(user);
+        }
 
         const data = {
-            name: store.projectActive.name
+            name: store.projectActive.name,
+            participants: participants.value
         }
-        store.popupProject = false
+        const idProject = store.projectActive._id;
+
+        store.popupProject = false;
+        store.participants = [];
+
         const edit = await updateProject(data, idProject, store);
         if (edit.data) {
             state.successMessage = true;
@@ -145,6 +167,29 @@ const editProject = async () => {
     }
 }
 
+const projectDelete = async () => {
+    try {
+        const response = await deleteProject(store.projectActive._id, store);
+
+        if (response.data) {
+            store.popupProject = false;
+            state.successDeleteMessage = true;
+            state.errorDeleteMessage = false;
+
+            location.reload();
+            setTimeout(() => {
+                state.successDeleteMessage = false;
+            }, 3000);
+        } 
+
+    } catch (error) {
+        state.successDeleteMessage = false;
+        state.errorDeleteMessage = true;
+        setTimeout(() => {
+            state.errorDeleteMessage = false;
+        }, 3000);
+    }
+};
 
 const executeProjectCreated = async () => {
     await projectCreated();
@@ -162,5 +207,14 @@ const executeProjectCreated = async () => {
   transform: translateX(-50%);
   z-index: 9999;
   width: 20%;
+}
+
+.alert-delete-top {
+    position: fixed;
+    top: 20px;
+    left: 85%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 20%;
 }
 </style>

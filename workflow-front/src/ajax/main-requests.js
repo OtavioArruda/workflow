@@ -160,6 +160,22 @@ export const createdFolder = async (dados, store, idProject) => {
     }
 }
 
+export const deleteProject = async (idProject, store) => {
+    try {
+        const response = await axios.delete(
+            `http://localhost:3000/projects/${idProject}`,
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        );
+
+        return response;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 export const deleteFolder = async (idProject, idFolder, store) => {
     try {
         const response = await axios.delete(
@@ -170,6 +186,44 @@ export const deleteFolder = async (idProject, idFolder, store) => {
         );
 
         store.deleteFolder(idProject, idFolder);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteTask = async (idProject, idFolder, idColumn, idTask, store) => {
+    try {
+        const response = await axios.delete(
+            `http://localhost:3000/tasks/${idTask}`,
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        );
+
+        store.deleteTaskState(idProject, idFolder, idColumn, idTask);
+
+        if (response.data) {
+            return response;
+        }
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateTasks = async (data, idTask, store) => {
+    try {
+        const response = await axios.put(
+            `http://localhost:3000/tasks/${idTask}`,
+            data,
+            {
+                headers: { Authorization: `Bearer ${store.token}` }
+            }
+        );
+
+        return response;
     }
     catch (error) {
         console.log(error);
@@ -233,6 +287,7 @@ export const createdTasks = async (dados, store, idFolder, idProject, idColumn) 
 }
 
 export const updateProject = async (data, idProject, store) => {
+
     try {
         const response = await axios.put(
             `http://localhost:3000/projects/${idProject}`,

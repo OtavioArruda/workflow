@@ -45,9 +45,18 @@
                                 {{ task.title }}
                             </h5>
 
-                            <v-btn icon variant="text">
-                                <v-icon icon="mdi-dots-vertical mdi" color="black" size="20"/>
-                            </v-btn>
+                            <v-menu>
+                                <template v-slot:activator="{ props }">
+                                    <v-btn icon="mdi-dots-vertical mdi" v-bind="props"></v-btn>
+                                </template>
+
+                                <v-list>
+                                <v-list-item>
+                                    <v-list-item-title style="cursor: pointer;" @click="taskUpdate(task._id)">Editar</v-list-item-title>
+                                    <v-list-item-title style="cursor: pointer;" @click="taskDelete(task._id, column._id)">Excluir</v-list-item-title>
+                                </v-list-item>
+                                </v-list>
+                            </v-menu>
                         </div>
 
                         <div class="desc">
@@ -74,14 +83,16 @@
         </div>
         <CreateTask />
         <ConfigProject />
+        <UpdateTask />
     </div>
 </template>
 
 <script setup>
 import SubheaderTasks from '../partials/SubheaderTasks.vue';
 import CreateTask from '../popups/CreateTask.vue';
+import UpdateTask from '../popups/UpdateTask.vue';
 import { useGlobalsStore } from '@/store';
-import { createColumn, deleteColumn, updateColumn } from '@/ajax/main-requests';
+import { createColumn, deleteColumn, updateColumn, deleteTask } from '@/ajax/main-requests';
 import { toRefs, ref } from 'vue';
 import ConfigProject from '../popups/ConfigProject.vue';
 
@@ -108,6 +119,11 @@ const columnDelete = (idColumn) => {
     const idFolder = tasksActive.value.idFolder;
 
     deleteColumn(idProject, idFolder, idColumn, store);
+}
+
+const taskUpdate = (idTask) => {
+    store.idTask = idTask
+    store.popupTaskUpdate = true;
 }
 
 const formatDate = (dateString) => {
@@ -144,6 +160,10 @@ const endEditing = (column, idColumn, eventType) => {
         updateColumn(data, idColumn, store);
     }
 };
+
+const taskDelete = (idTask, idColumn) => {
+    deleteTask(tasksActive.value.idProject, tasksActive.value.idFolder, idColumn, idTask, store);
+}
 
 </script>
 

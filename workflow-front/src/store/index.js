@@ -5,8 +5,10 @@ export const useGlobalsStore = defineStore('globals', {
         popupRender: false,
         popupTask: false,
         popupProject: false,
+        popupTaskUpdate: false,
         token: localStorage.getItem('token') || null,
         idColumn: "",
+        idTask: "",
         projectActive: "",
         participants: [],
         tasksActive: {
@@ -112,6 +114,35 @@ export const useGlobalsStore = defineStore('globals', {
                                 if (idColumn = column[idxColumn]._id) {
                                     console.log(project.folders[idxFolder].columns[idxColumn]);
                                     project.folders[idxFolder].columns[idxColumn].tasks.push(task);
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        },
+
+        deleteTaskState(idProject, idFolder, idColumn, idTask){
+            for (let idx = 0; idx < this.projects[0].data.projects.length; idx++) {
+
+                const project = this.projects[0].data.projects[idx];
+                if(project._id == idProject) {
+
+                    const folder = project.folders
+                    for (let idxFolder = 0; idxFolder < folder.length; idxFolder++) {
+                        if (idFolder == folder[idxFolder]._id){
+
+                            const column = project.folders[idxFolder].columns;
+                            for (let idxColumn = 0; idxColumn < column.length; idxColumn++) {
+                                if (idColumn == column[idxColumn]._id){
+                                    
+                                    const task = project.folders[idxFolder].columns[idxColumn].tasks;
+                                    for (let idxTask = 0; idxTask < task.length; idxTask++) {
+                                        if (idTask == task[idxTask]._id){
+                                            column[idxColumn].tasks.splice(idxTask, 1);
+                                        }
+                                    }
                                 }
                             }
                         }

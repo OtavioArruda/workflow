@@ -5,7 +5,7 @@
 
             <div class="gears">
                 <div></div>
-                <v-btn icon variant="text" @click="configProject">
+                <v-btn v-if="tasksActive.project !== ''" icon variant="text" @click="configProject">
                     <v-icon icon="mdi mdi-cog" color="white" size="25"/>
                 </v-btn>
             </div>

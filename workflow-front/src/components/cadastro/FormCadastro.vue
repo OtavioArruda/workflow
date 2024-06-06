@@ -157,7 +157,6 @@ const userCreated = async () => {
                 state.errorMessage = false;
                 setTimeout(() => {
                     state.successMessage = false;
-                    router.push('/');
                 }, 3000);
             }
 

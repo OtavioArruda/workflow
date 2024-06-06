@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="store.popupTask">
+    <v-dialog v-model="store.popupTaskUpdate">
         <div id="popup-add-task">
             <v-sheet min-width="800" class="popup-task">
                 <v-form>
@@ -50,8 +50,8 @@
     
                         <v-btn
                             text="Submit"
-                            @click="executeTaskCreated"
-                            >Criar Tarefa
+                            @click="executeTaskUpdate"
+                            >Confirmar
                         </v-btn>
                     </div>
                 </v-form>
@@ -59,10 +59,10 @@
         </div>
     </v-dialog>
     <v-alert class="alert-top" v-if="state.successMessage" type="success" color="success" icon="$success">
-        Tarefa Criada
+        Tarefa Alterada
     </v-alert>
     <v-alert class="alert-top" v-if="state.errorMessage" type="error" color="error" icon="$error">
-        Erro ao criar tarefa
+        Erro ao alterar tarefa
     </v-alert>
 </template>
 
@@ -70,7 +70,7 @@
 import '@fortawesome/fontawesome-free/css/all.css';
 import { useGlobalsStore } from '@/store';
 import { ref, reactive, nextTick } from 'vue';
-import { createdTasks, searchUsers } from '@/ajax/main-requests';
+import { updateTasks, searchUsers } from '@/ajax/main-requests';
 
 const store = useGlobalsStore();
 
@@ -126,7 +126,7 @@ const taskCancel = (e) => {
     store.popupTask = !store.popupTask;
 }
 
-const taskCreated = async() => {
+const taskUpdate = async() => {
     try {
         const data = {
             title: title.value,
@@ -141,8 +141,8 @@ const taskCreated = async() => {
             columnId: store.idColumn
         }
     
-        const created = await createdTasks(data, store, store.tasksActive.idFolder, store.tasksActive.idProject, store.idColumn);
-        if (created.data) {
+        const update = await updateTasks(data, store.idTask, store);
+        if (update.data) {
             state.successMessage = true;
             state.errorMessage = false;
             setTimeout(() => {
@@ -160,8 +160,8 @@ const taskCreated = async() => {
 
 }
 
-const executeTaskCreated = async () => {
-    await taskCreated();
+const executeTaskUpdate = async () => {
+    await taskUpdate();
     await nextTick();
 }
 
