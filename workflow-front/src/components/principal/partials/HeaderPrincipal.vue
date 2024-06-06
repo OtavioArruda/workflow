@@ -82,7 +82,7 @@ header {
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    min-height: 50px;
+    padding: 10px 20px;
     z-index: 3;
     background-color: #1d2125;
     box-shadow: 1px 1px 1px black;

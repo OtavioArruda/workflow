@@ -99,20 +99,19 @@ export const useGlobalsStore = defineStore('globals', {
             }
         },
 
-        addTask(task, idProject, idFolder, idColumn) {
+        addTask(task, idProj, idFol, idCol) {
             for (let idx = 0; idx < this.projects[0].data.projects.length; idx++) {
-
+                
                 const project = this.projects[0].data.projects[idx];
-                if(project._id == idProject) {
-
+                if(project._id == idProj) {
+                    
                     const folder = project.folders
                     for (let idxFolder = 0; idxFolder < folder.length; idxFolder++) {
-                        if (idFolder == folder[idxFolder]._id){
-
-                            const column = folder[0].columns;
+                        if (idFol == folder[idxFolder]._id){
+                            
+                            const column = folder[idxFolder].columns;
                             for (let idxColumn = 0; idxColumn < column.length; idxColumn++) {
-                                if (idColumn = column[idxColumn]._id) {
-                                    console.log(project.folders[idxFolder].columns[idxColumn]);
+                                if (idCol == column[idxColumn]._id) {
                                     project.folders[idxFolder].columns[idxColumn].tasks.push(task);
                                 }
                             }

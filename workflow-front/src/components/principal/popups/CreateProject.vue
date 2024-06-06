@@ -37,7 +37,7 @@
     
                         <v-btn
                             text="Submit"
-                            @click="projectCreated"
+                            @click="executeProjectCreated"
                             >Criar Projeto
                         </v-btn>
                     </div>

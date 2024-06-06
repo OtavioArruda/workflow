@@ -1,8 +1,8 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFiM2UzYjIyMWUxYmY3NTZiM2NhMzUiLCJpYXQiOjE3MTU3MzI3MDl9.7HmGLINNdJBCCBx9-FKvdCAR1WbBAc5JgxRqOXtU4ds
+@token = woefinwoenfowinfowinfo.eyJ1c2VySWQiOiI2NjFiM2UzYjIyMWUxYmY3NTZiM2NhMzUiLCJpYXQiOjE3MTU3MzI3MDl9.7HmGLINNdJBCCBx9-FKvdCAR1WbBAc5JgxRqOXtU4ds
 
 ###
 
-POST http://localhost:8000/users
+POST http://localhost:3000/users
 content-type: application/json
 
 {
@@ -13,7 +13,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:8000/auth/login
+POST http://localhost:3000/auth/login
 content-type: application/json
 
 {
@@ -46,7 +46,7 @@ Authorization: Bearer {{token}}
 
 ###
 
-PUT http://localhost:8000/projects/66205a2826ca311a1d1b1889
+PUT http://localhost:3000/projects/66205a2826ca311a1d1b1889
 content-type: application/json
 Authorization: Bearer {{token}}
 
@@ -67,7 +67,7 @@ Authorization: Bearer {{token}}
 
 ###
 
-POST http://localhost:8000/folders
+POST http://localhost:3000/folders
 content-type: application/json
 Authorization: Bearer {{token}}
 
@@ -78,7 +78,7 @@ Authorization: Bearer {{token}}
 
 ###
 
-POST http://localhost:8000/columns
+POST http://localhost:3000/columns
 content-type: application/json
 Authorization: Bearer {{token}}
 
@@ -89,7 +89,7 @@ Authorization: Bearer {{token}}
 
 ###
 
-PUT http://localhost:8000/columns/6617aba7cb6cf1edd97a9163
+PUT http://localhost:3000/columns/6617aba7cb6cf1edd97a9163
 content-type: application/json
 Authorization: Bearer {{token}}
 
@@ -99,12 +99,12 @@ Authorization: Bearer {{token}}
 
 ###
 
-DELETE http://localhost:8000/columns/6617aba7cb6cf1edd97a9163
+DELETE http://localhost:3000/columns/6617aba7cb6cf1edd97a9163
 Authorization: Bearer {{token}}
 
 ###
 
-POST http://localhost:8000/tasks
+POST http://localhost:3000/tasks
 content-type: application/json
 Authorization: Bearer {{token}}
 
@@ -116,7 +116,7 @@ Authorization: Bearer {{token}}
 
 ###
 
-PUT http://localhost:8000/tasks/6617b68a5dbe07b769084ba4
+PUT http://localhost:3000/tasks/6617b68a5dbe07b769084ba4
 content-type: application/json
 Authorization: Bearer {{token}}
 
@@ -126,5 +126,5 @@ Authorization: Bearer {{token}}
 
 ###
 
-DELETE http://localhost:8000/tasks/6617b68a5dbe07b769084ba4
+DELETE http://localhost:3000/tasks/6617b68a5dbe07b769084ba4
 Authorization: Bearer {{token}}

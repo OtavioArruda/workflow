@@ -23,21 +23,23 @@ const { tasksActive } = toRefs(store);
 
 const configProject = async () => {
     try {
-        store.popupProject = true;
+        
         let participants = store.projectActive.participants;
-
+        let stateParticipants = []
         for (let idxUser = 0; idxUser < participants.length; idxUser++) {
             const idUser = participants[idxUser];
             
             const user = await searchParticipants(store, idUser);
             
             if (user !== false) {
-                store.participants.push(user.email);
+                stateParticipants.push(user.email);
             } 
             else {
                 rules = [() => 'Usuário não encontrado.'];
             }
         }
+        store.participants = stateParticipants
+        store.popupProject = true;
 
     } 
     catch (error) {
@@ -51,7 +53,7 @@ const configProject = async () => {
 #main-tasks {
     width: 100%;
     position: fixed;
-    top: 50px;
+    top: 60px;
     min-height: 5vh;
     z-index: 1;
 }
@@ -62,16 +64,16 @@ const configProject = async () => {
 }
 
 .subheader-tasks {
-    background-color: #1d2125;
+    background-color: #979595;
     font-family: Arial, Verdana, Geneva, Tahoma, sans-serif;
     height: 7vh;
     font-weight: bolder;
-    padding: 10px 20px;
+    padding: 20px;
     margin-left: 100px;
     display: flex;
     align-items: center;
     font-size: 20px;
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
 .horizontal-rule {

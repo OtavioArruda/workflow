@@ -41,7 +41,7 @@
                                 {{ task.badges[0].text }}
                             </span>
 
-                            <h5 style="font-size: 15px">
+                            <h5 class="title">
                                 {{ task.title }}
                             </h5>
 
@@ -52,17 +52,15 @@
 
                                 <v-list>
                                 <v-list-item>
-                                    <v-list-item-title style="cursor: pointer;" @click="taskUpdate(task._id)">Editar</v-list-item-title>
-                                    <v-list-item-title style="cursor: pointer;" @click="taskDelete(task._id, column._id)">Excluir</v-list-item-title>
+                                    <v-list-item style="cursor: pointer;" @click="taskUpdate(column._id, task._id)">Editar</v-list-item>
+                                    <v-list-item style="cursor: pointer;" @click="taskDelete(task._id, column._id)">Excluir</v-list-item>
                                 </v-list-item>
                                 </v-list>
                             </v-menu>
                         </div>
 
                         <div class="desc">
-                            <p>
-                                {{ task.description }}
-                            </p>
+                            <textarea style="resize: none; width: 100%;" rows="2" disabled class="disabled-textarea">{{ task.description }}</textarea>
                         </div>
 
                         <div class="dates">
@@ -121,7 +119,22 @@ const columnDelete = (idColumn) => {
     deleteColumn(idProject, idFolder, idColumn, store);
 }
 
-const taskUpdate = (idTask) => {
+const taskUpdate = (idColumn, idTask) => {
+    const columns = tasksActive.value.data;
+    for (let idx_col = 0; idx_col < columns.length; idx_col++) {
+        if (idColumn == columns[idx_col]._id) {
+            let tasks = columns[idx_col].tasks;
+
+            for (let idx_task = 0; idx_task < tasks.length; idx_task++) {
+                if (idTask == tasks[idx_task]._id) {
+                    console.log(tasks[idx_task]);
+                }
+                
+            }
+        }
+        
+    }
+
     store.idTask = idTask
     store.popupTaskUpdate = true;
 }
@@ -170,7 +183,7 @@ const taskDelete = (idTask, idColumn) => {
 <style scoped>
 #principal {
     max-width: 100%;
-    margin-top: 100px;
+    margin-top: 120px;
 }
 
 #logo {
@@ -210,9 +223,9 @@ const taskDelete = (idTask, idColumn) => {
 }
 
 #tasks::-webkit-scrollbar-thumb {
-    background-color: #a9afb0;
+    background-color: #353535;
     border-radius: 5px;
-    border: 3px solid #a9afb0;
+    border: 3px solid #383838;
 }
 
 #task-area {
@@ -270,13 +283,6 @@ const taskDelete = (idTask, idColumn) => {
 
 .add-task {
     margin-right: 20px;
-}
-
-.desc {
-    font-size: 15px;
-    height: 50px;
-    display: flex;
-    align-items: center;
 }
 
 .term {
@@ -343,5 +349,39 @@ const taskDelete = (idTask, idColumn) => {
 
 .column-edit:focus {
     outline: none;
+}
+
+.title,
+.flag {
+    font-size: 20px;
+    width: 70px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.desc {
+    font-size: 15px;
+    width: 100%;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-align: center;
+    text-overflow: ellipsis;
+}
+
+.disabled-textarea::-webkit-scrollbar {
+    width: 10px;
+}
+
+.disabled-textarea::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+.disabled-textarea::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.disabled-textarea::-webkit-scrollbar-thumb:hover {
+    background: #555; 
 }
 </style>

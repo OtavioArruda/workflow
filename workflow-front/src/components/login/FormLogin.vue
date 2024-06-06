@@ -9,7 +9,7 @@
       </div>
 
       <div class="sessao-form">
-        <v-form fast-fail @submit.prevent="acountAccess">
+        <v-form fast-fail @submit.prevent="executeProjectLogin">
           <v-card
             class="mx-auto pa-12 pb-12 chamada-login"
             elevation="8"
@@ -115,14 +115,14 @@
             color: white;
             margin-top: 40px;
             font-family: Arial, Helvetica, sans-serif;">
-            Notificações e Lembretes
+            Definição de prazos
           </h2>
           <p style="
             font-size: 28px;
             color: white;
             padding: 20px;
             margin-top: 4px;">
-            Fique sempre atualizado com notificações automáticas sobre prazos, status de tarefas e novas atribuições, mantendo-se focado e produtivo.
+            Fique sempre atualizado sobre prazos, status de tarefas e novas atribuições, mantendo-se focado e produtivo.
           </p>
         </div>
       </div>
@@ -145,11 +145,18 @@ const state = reactive({
 });
 
 const router = useRouter();
-
 let visible = ref(false);
 
 const email = defineModel('email');
 const pass = defineModel('pass');
+
+let show1 = ref(false);
+let password = 'Password'
+let rules = {
+  required: value => !!value || 'Required.',
+  min: v => v.length >= 8 || 'Min 8 characters',
+  emailMatch: () => (`The email and password you entered don't match`),
+};
 
 const props = defineProps({
   directsRegistration: Function
@@ -161,12 +168,12 @@ const acountAccess = async () => {
       email: email.value,
       password: pass.value
     }
-  
-    let access = await accessAccount(login, router);
-  
+
+    const access = await accessAccount(login, router);
+    
     if (access.data) {
-      email.value = "";
-      pass.value = "";
+    email.value = "";
+    pass.value = "";
     }
   } 
   catch (error) {
@@ -174,6 +181,7 @@ const acountAccess = async () => {
       setTimeout(() => {
         state.successMessage = false;
     }, 3000);
+    location.reload();
   }
 }
 
@@ -193,9 +201,9 @@ window.addEventListener('scroll', function() {
 });
 
 
-const executeProjectCreated = async () => {
-    await projectCreated();
-    await nextTick();
+const executeProjectLogin = async () => {
+  await acountAccess();
+  await nextTick();
 }
 
 

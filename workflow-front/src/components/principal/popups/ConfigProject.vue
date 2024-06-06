@@ -10,7 +10,7 @@
                 <v-toolbar>
                     <v-btn
                         icon="mdi-close"
-                        @click="store.popupProject = false; store.participants = [];"
+                        @click="store.popupProject = false;"
                     ></v-btn>
 
                     <v-toolbar-title>Configurações</v-toolbar-title>
@@ -39,13 +39,13 @@
                         @keydown.enter="addParticipant"
                         :rules="rules"
                     >
-                        <div v-if="email.length > 0" class="participant-tags">
+                        <div v-if="store.participants.length > 0" class="participant-tags">
                             <v-chip
-                                v-for="(participant, index) in email"
+                                v-for="(participant, index) in store.participants"
                                 :key="index"
-                                closable
                             >
                                 {{ participant }}
+                                <v-icon class="m-2 ml-1" @click="removeParticipant(index)">mdi-close-circle</v-icon>
                             </v-chip>                            
                         </div>
                     </v-text-field>
@@ -56,7 +56,7 @@
                         text="Salvar"
                         color="green"
                         variant="text"
-                        @click="editProject"
+                        @click="executeProjectCreated"
                         ></v-btn>
 
                         <v-btn
@@ -98,7 +98,6 @@ import { searchUsers, updateProject, deleteProject } from '@/ajax/main-requests'
 const participantInput = ref("");
 const participants = ref([]);
 const store = useGlobalsStore();
-const email = ref(store.participants);
 const state = reactive({
     successMessage: false,
     errorMessage: false,
@@ -116,7 +115,7 @@ const addParticipant = async () => {
             const user = await searchUsers(store, participantInput.value);
 
             if (user !== false) {
-                email.value.push(participantInput.value.trim());
+                store.participants.push(participantInput.value.trim());
 
                 participantInput.value = '';
                 rules = [() => true];
@@ -134,8 +133,9 @@ const addParticipant = async () => {
 const editProject = async () => {
 
     try {
-        for (let idxEmail = 0; idxEmail < email.value.length; idxEmail++) {
-            const parti = email.value[idxEmail];
+        for (let idxEmail = 0; idxEmail < store.participants.length; idxEmail++) {
+            const parti = store.participants[idxEmail];
+            console.log(parti);
             const user = await searchUsers(store, parti);
             participants.value.push(user);
         }
@@ -147,7 +147,6 @@ const editProject = async () => {
         const idProject = store.projectActive._id;
 
         store.popupProject = false;
-        store.participants = [];
 
         const edit = await updateProject(data, idProject, store);
         if (edit.data) {
@@ -192,10 +191,16 @@ const projectDelete = async () => {
 };
 
 const executeProjectCreated = async () => {
-    await projectCreated();
+    await editProject();
     await nextTick();
 }
 
+const removeParticipant = (index) => {
+    const participant = store.participants[index];
+    if (participant) {
+        store.participants.splice(index, 1);
+    }
+}
 
 </script>
 

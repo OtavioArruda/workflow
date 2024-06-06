@@ -122,7 +122,6 @@ const addParticipant = async () => {
 }
 
 const taskCancel = (e) => {
-    e.preventDefault();
     store.popupTask = !store.popupTask;
 }
 
@@ -148,6 +147,7 @@ const taskCreated = async() => {
             setTimeout(() => {
                 state.successMessage = false;
             }, 3000);
+
         } 
         
     } catch (error) {

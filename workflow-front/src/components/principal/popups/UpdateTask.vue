@@ -123,7 +123,7 @@ const addParticipant = async () => {
 
 const taskCancel = (e) => {
     e.preventDefault();
-    store.popupTask = !store.popupTask;
+    store.popupTaskUpdate = !store.popupTask;
 }
 
 const taskUpdate = async() => {
@@ -143,11 +143,13 @@ const taskUpdate = async() => {
     
         const update = await updateTasks(data, store.idTask, store);
         if (update.data) {
+            store.popupTaskUpdate = false
             state.successMessage = true;
             state.errorMessage = false;
             setTimeout(() => {
                 state.successMessage = false;
             }, 3000);
+            location.reload();
         } 
         
     } catch (error) {
