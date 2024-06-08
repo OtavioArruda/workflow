@@ -227,20 +227,15 @@ const taskDelete = (idTask, idColumn) => {
     deleteTask(tasksActive.value.idProject, tasksActive.value.idFolder, idColumn, idTask, store);
 }
 
-const onMove = async () => {
+const onMove = () => {
     console.log(store.projectActive.folders[0]._id);
 
     for(const column of store.projectActive.folders[0].columns) {
         console.log(column);
 
-        await updateColumn(column, column._id, store);
-
-        // if(res && res.status == 200) {
-        //     return true;
-        // }
-        // else {
-        //     return false;
-        // }
+        setTimeout(() => {
+            updateColumn(column, column._id, store);
+        }, 500);
     }
 }
 
