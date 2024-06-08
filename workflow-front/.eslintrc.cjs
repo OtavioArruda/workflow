@@ -29,8 +29,7 @@ module.exports = {
       'if': { 'after': false },
       'while': { 'after': false },
       'catch': { 'after': false },
-      'switch': { 'after': false },
-      'from': { 'after': false },
+      'switch': { 'after': false }
     }}]
   }
 }

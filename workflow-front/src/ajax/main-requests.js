@@ -12,15 +12,15 @@ export const searchUsers = async (store, participant) => {
 
         const users = res.data.data;
 
-        for (let idxUser = 0; idxUser < users.length; idxUser++) {
-            if (users[idxUser].email == participant) {
+        for(let idxUser = 0; idxUser < users.length; idxUser++) {
+            if(users[idxUser].email == participant) {
                 return users[idxUser]._id;
             }
         }
 
         return false;
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -36,15 +36,15 @@ export const searchParticipants = async (store, participant) => {
 
         const users = res.data.data;
 
-        for (let idxUser = 0; idxUser < users.length; idxUser++) {
-            if (users[idxUser]._id == participant) {
+        for(let idxUser = 0; idxUser < users.length; idxUser++) {
+            if(users[idxUser]._id == participant) {
                 return users[idxUser];
             }
         }
 
         return false;
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -60,15 +60,15 @@ export const searchEmails = async (store, participant) => {
 
         const users = res.data.data;
 
-        for (let idxUser = 0; idxUser < users.length; idxUser++) {
-            if (users[idxUser].email == participant) {
+        for(let idxUser = 0; idxUser < users.length; idxUser++) {
+            if(users[idxUser].email == participant) {
                 return users[idxUser]._id;
             }
         }
 
         return false;
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -86,7 +86,7 @@ export const searchMe = async (store) => {
 
         return user.user
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -101,10 +101,10 @@ export const searchProjects = async (store, dataLoaded) => {
             }
         );
 
-        if (resProject.data) {
+        if(resProject.data) {
             const user = await searchMe(store);
 
-            if (user != undefined) {
+            if(user != undefined) {
                 store.email = user.email;
                 store.name = user.name;
                 store.idUser = user._id;
@@ -113,7 +113,7 @@ export const searchProjects = async (store, dataLoaded) => {
                 const projectsMe = resProject.data.data.projects;
                 let idsProjectsMe = [];
                 
-                for (let idxProject = 0; idxProject < projectsMe.length; idxProject++) {
+                for(let idxProject = 0; idxProject < projectsMe.length; idxProject++) {
                     const idProject = projectsMe[idxProject]._id;
                     idsProjectsMe.push(idProject)
                 }
@@ -128,13 +128,13 @@ export const searchProjects = async (store, dataLoaded) => {
                 const projects = response.data.data.projects;
                 
                 let project = ''
-                for (let idxProj = 0; idxProj < projects.length; idxProj++) {
+                for(let idxProj = 0; idxProj < projects.length; idxProj++) {
                     project = projects[idxProj];
-                    if (!idsProjectsMe.includes(project._id)) {
+                    if(!idsProjectsMe.includes(project._id)) {
                         const participants = project.participants;
-                        for (let idxPart = 0; idxPart < participants.length; idxPart++) {
+                        for(let idxPart = 0; idxPart < participants.length; idxPart++) {
                             const participant = participants[idxPart];
-                            if (store.idUser == participant) {
+                            if(store.idUser == participant) {
                                 let state = resProject.data.data.projects;
                                 state.push(project)
                             }
@@ -149,7 +149,7 @@ export const searchProjects = async (store, dataLoaded) => {
 
         }
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -170,7 +170,7 @@ export const createdProject = async (dados, store) => {
         return response;
 
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -188,7 +188,7 @@ export const createdFolder = async (dados, store, idProject) => {
 
         store.addFolder(response.data.data.folder, idProject);
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -204,7 +204,7 @@ export const deleteProject = async (idProject, store) => {
 
         return response;
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -220,7 +220,7 @@ export const deleteFolder = async (idProject, idFolder, store) => {
 
         store.deleteFolder(idProject, idFolder);
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -236,12 +236,12 @@ export const deleteTask = async (idProject, idFolder, idColumn, idTask, store) =
 
         store.deleteTaskState(idProject, idFolder, idColumn, idTask);
 
-        if (response.data) {
+        if(response.data) {
             return response;
         }
 
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -258,7 +258,7 @@ export const updateTasks = async (data, idTask, store) => {
 
         return response;
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -275,7 +275,7 @@ export const createColumn = async (dados, store, projectId, folderId) => {
 
         store.addColumn(response.data.data.column, projectId, folderId);
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -293,7 +293,7 @@ export const deleteColumn = async (idProject, idFolder, idColumn, store) => {
         store.deleteColumn(idProject, idFolder, idColumn);
 
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -314,7 +314,7 @@ export const createdTasks = async (dados, store, idFolder, idProject, idColumn) 
 
         return response;
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -332,8 +332,10 @@ export const updateProject = async (data, idProject, store) => {
 
         return response;
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
+
+        return false;
     }
 }
 
@@ -356,7 +358,7 @@ export const updateFolder = async (data, idFolder, store) => {
 
         btnActive.dispatchEvent(selectTask);
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -371,9 +373,11 @@ export const updateColumn = async (data, idColumn, store) => {
             }
         )
 
-        console.log(response.data);
+        // console.log(response.data);
+
+        return response;
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }

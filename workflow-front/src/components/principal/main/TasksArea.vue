@@ -35,41 +35,55 @@
                 </div>
 
                 <div class="tasks-list">
-                    <div class="about-task" v-for="(task, idxTask) in column.tasks" :key="idxTask">
-                        <div class="header-task">
-                            <span class="flag" :title="task.badges[0].text" :style="{ 'background-color': task.badges[0].color }" >
-                                {{ task.badges[0].text }}
-                            </span>
+                    <draggable
+                        :list="column.tasks"
+                        group="tasks"
+                        item-key="id"
+                        animation="200"
+                        :move="onMove"
+                    >
+                        <template #item="{ element }">
+                            <div>
+                                <div class="about-task">
 
-                            <h5 class="title" :title="task.title">
-                                {{ task.title }}
-                            </h5>
+                                    <div class="header-task" :key="element._id">
+                                        <span class="flag" :title="element.badges[0].text" :style="{ 'background-color': element.badges[0].color }" >
+                                            {{ element.badges[0].text }}
+                                        </span>
 
-                            <v-menu>
-                                <template v-slot:activator="{ props }">
-                                    <v-btn icon="mdi-dots-vertical mdi" v-bind="props"></v-btn>
-                                </template>
+                                        <h5 class="title" :title="element.title">
+                                            {{ element.title }}
+                                        </h5>
 
-                                <v-list>
-                                <v-list-item>
-                                    <v-list-item style="cursor: pointer;" @click="taskUpdate(column._id, task._id)">Editar</v-list-item>
-                                    <v-list-item style="cursor: pointer;" @click="taskDelete(task._id, column._id)">Excluir</v-list-item>
-                                </v-list-item>
-                                </v-list>
-                            </v-menu>
-                        </div>
+                                        <v-menu>
+                                            <template v-slot:activator="{ props }">
+                                                <v-btn icon="mdi-dots-vertical mdi" v-bind="props"></v-btn>
+                                            </template>
 
-                        <div class="desc">
-                            <textarea style="resize: none; width: 100%;" rows="2" disabled class="disabled-textarea">{{ task.description }}</textarea>
-                        </div>
+                                            <v-list>
+                                            <v-list-item>
+                                                <v-list-item style="cursor: pointer;" @click="taskUpdate(column._id, element._id)">Editar</v-list-item>
+                                                <v-list-item style="cursor: pointer;" @click="taskDelete(element._id, column._id)">Excluir</v-list-item>
+                                            </v-list-item>
+                                            </v-list>
+                                        </v-menu>
+                                    </div>
 
-                        <div style="display: flex; justify-content: space-between;">
-                            <div class="dates">
-                                <span>{{ formatDate(task.start_at) }} a {{ formatDate(task.end_at) }}</span>
+                                    <div class="desc">
+                                        <textarea style="resize: none; width: 100%;" rows="2" disabled class="disabled-textarea">{{ element.description }}</textarea>
+                                    </div>
+
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <div class="dates">
+                                            <span>{{ formatDate(element.start_at) }} a {{ formatDate(element.end_at) }}</span>
+                                        </div>
+                                        <v-icon v-if="element.participants.includes(store.idUser)" icon="mdi-information" color="green"></v-icon>
+                                    </div>
+                                </div>
                             </div>
-                            <v-icon v-if="task.participants.includes(store.idUser)" icon="mdi-information" color="green"></v-icon>
-                        </div>
-                    </div>
+                        </template>
+                    </draggable>
+
                 </div>
             </div>
 
@@ -90,16 +104,24 @@
 </template>
 
 <script setup>
-import SubheaderTasks from'../partials/SubheaderTasks.vue';
-import CreateTask from'../popups/CreateTask.vue';
-import UpdateTask from'../popups/UpdateTask.vue';
-import { useGlobalsStore } from'@/store';
-import { createColumn, deleteColumn, updateColumn, deleteTask, searchParticipants } from'@/ajax/main-requests';
-import { toRefs, ref } from'vue';
-import ConfigProject from'../popups/ConfigProject.vue';
+import SubheaderTasks from '../partials/SubheaderTasks.vue';
+import CreateTask from '../popups/CreateTask.vue';
+import UpdateTask from '../popups/UpdateTask.vue';
+import { useGlobalsStore } from '@/store';
+import { createColumn, deleteColumn, updateColumn, deleteTask, searchParticipants, updateProject, updateFolder } from '@/ajax/main-requests';
+import { toRefs, ref, onMounted } from 'vue';
+import ConfigProject from '../popups/ConfigProject.vue';
+import draggable from 'vuedraggable';
 
 const store = useGlobalsStore();
 const { tasksActive } = toRefs(store);
+
+// onMounted(() => {
+//   store.$subscribe((mutation, state) => {
+//     console.log(mutation);
+//     console.log(state);
+//   });
+// })
 
 const columnCreated = () => {
     const dados = {
@@ -203,6 +225,23 @@ const endEditing = (column, idColumn, eventType) => {
 
 const taskDelete = (idTask, idColumn) => {
     deleteTask(tasksActive.value.idProject, tasksActive.value.idFolder, idColumn, idTask, store);
+}
+
+const onMove = async () => {
+    console.log(store.projectActive.folders[0]._id);
+
+    for(const column of store.projectActive.folders[0].columns) {
+        console.log(column);
+
+        await updateColumn(column, column._id, store);
+
+        // if(res && res.status == 200) {
+        //     return true;
+        // }
+        // else {
+        //     return false;
+        // }
+    }
 }
 
 </script>
