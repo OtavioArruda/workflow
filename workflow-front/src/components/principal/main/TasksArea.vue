@@ -10,11 +10,11 @@
                         :data-value="column.name"
                         style="cursor: pointer;"
                         @dblclick="editName(column)">
-                        <span class="name-column" 
+                        <span class="name-column"
                             :class="{ 'editable': column.editing }"
                         >
                             <span v-if="column.editing">
-                                <input class="column-edit" v-model="column.name" 
+                                <input class="column-edit" v-model="column.name"
                                     @blur="endEditing(column, column._id, 'blur')"
                                     @keyup.enter="endEditing(column, column._id, 'enter')">
                             </span>
@@ -33,7 +33,7 @@
                         </v-btn>
                     </div>
                 </div>
-                
+
                 <div class="tasks-list">
                     <div class="about-task" v-for="(task, idx_task) in column.tasks" :key="idx_task">
                         <div class="header-task">
@@ -128,17 +128,17 @@ const taskUpdate = async (idColumn, idTask) => {
         for (let idx_col = 0; idx_col < columns.length; idx_col++) {
             if (idColumn == columns[idx_col]._id) {
                 let tasks = columns[idx_col].tasks;
-    
+
                 for (let idx_task = 0; idx_task < tasks.length; idx_task++) {
                     if (idTask == tasks[idx_task]._id) {
                         store.task = tasks[idx_task];
                     }
-                    
+
                 }
             }
-            
+
         }
-    
+
         let participantsTask = store.task.participants;
         let stateParticipants = [];
         for (let idx_participant = 0; idx_participant < participantsTask.length; idx_participant++) {
@@ -147,7 +147,7 @@ const taskUpdate = async (idColumn, idTask) => {
             console.log(user);
             if (user !== false) {
                 stateParticipants.push(user.email);
-            } 
+            }
             else {
                 rules = [() => 'Usuário não encontrado.'];
             }
@@ -155,8 +155,8 @@ const taskUpdate = async (idColumn, idTask) => {
         store.participantsTask = stateParticipants;
         store.idTask = idTask
         store.popupTaskUpdate = true;
-        
-    } 
+
+    }
     catch (error) {
         console.log(error);
     }
@@ -164,18 +164,18 @@ const taskUpdate = async (idColumn, idTask) => {
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
-    
+
     let day = date.getDate();
     let month = date.getMonth() + 1;
     const year = date.getFullYear();
-    
+
     if (day < 10) {
         day = `0${  day}`;
     }
     if (month < 10) {
         month = `0${  month}`;
     }
-    
+
     return `${day  }/${  month  }/${  year}`;
 }
 
@@ -229,8 +229,8 @@ const taskDelete = (idTask, idColumn) => {
 }
 
 .header-task {
-    width: 100%; 
-    display: flex; 
+    width: 100%;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
@@ -314,7 +314,7 @@ const taskDelete = (idTask, idColumn) => {
 }
 
 .flag {
-    font-size: 15px !important; 
+    font-size: 15px !important;
     color: white;
     width: 30% !important;
     text-align: center;
@@ -378,16 +378,16 @@ const taskDelete = (idTask, idColumn) => {
 .flag {
     font-size: 20px;
     width: 70px;
-    white-space: nowrap; 
-    overflow: hidden; 
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .desc {
     font-size: 15px;
     width: 100%;
-    white-space: nowrap; 
-    overflow: hidden; 
+    white-space: nowrap;
+    overflow: hidden;
     text-align: center;
     text-overflow: ellipsis;
 }
@@ -397,7 +397,7 @@ const taskDelete = (idTask, idColumn) => {
 }
 
 .disabled-textarea::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+    background: #f1f1f1;
 }
 
 .disabled-textarea::-webkit-scrollbar-thumb {
@@ -405,6 +405,6 @@ const taskDelete = (idTask, idColumn) => {
 }
 
 .disabled-textarea::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+    background: #555;
 }
 </style>
