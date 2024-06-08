@@ -9,6 +9,7 @@ export const useGlobalsStore = defineStore('globals', {
         token: localStorage.getItem('token') || null,
         idColumn: "",
         idTask: "",
+        idUser: "",
         projectActive: "",
         participants: [],
         tasksActive: {
@@ -19,6 +20,8 @@ export const useGlobalsStore = defineStore('globals', {
             idFolder: ""
         },
         projects: [],
+        participantsTask: [],
+        task: "",
         email: "",
         name: "",
         sigla: ""

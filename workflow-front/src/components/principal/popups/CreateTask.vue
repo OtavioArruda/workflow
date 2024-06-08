@@ -148,6 +148,14 @@ const taskCreated = async() => {
                 state.successMessage = false;
             }, 3000);
 
+            title.value = "";
+            description.value = "";
+            start_at.value = "";
+            end_at.value = "";
+            badge.value = "";
+            badge_color.value = "";
+            idUser.value = "";
+            store.idColumn = "";
         } 
         
     } catch (error) {

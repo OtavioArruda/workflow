@@ -31,7 +31,7 @@
                     v-model="store.projectActive.name"
                     ></v-text-field>
 
-                    <label>
+                    <label class="ml-3">
                         Participantes:
                     </label>
                     <v-text-field 
@@ -155,6 +155,7 @@ const editProject = async () => {
             setTimeout(() => {
                 state.successMessage = false;
             }, 3000);
+            location.reload();
         } 
 
     } catch (error) {

@@ -28,6 +28,28 @@ router.get('/', jwtMiddleware, async (req, res) => {
     });
 });
 
+router.get('/all', async (req, res) => {
+    try {
+        const projects = await Project.find().populate({
+            path: 'folders',
+            populate: {
+                path: 'columns',
+                populate: {
+                    path: 'tasks'
+                }
+            }
+        }).exec();
+        
+        res.json({
+            data: {
+                projects
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 router.post('/', jwtMiddleware, async (req, res) => {
     try {
         const projectBody = req.body;

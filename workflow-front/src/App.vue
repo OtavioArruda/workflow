@@ -11,6 +11,6 @@ import { RouterLink, RouterView } from 'vue-router';
 <style scoped>
 #app {
   min-height: 100vh;
-  background-color: #979595;
+  background-color: #1d2125;
 }
 </style>

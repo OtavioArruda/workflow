@@ -62,7 +62,8 @@ const hints = ref(true);
 const logout = () => {
     menu.value = false;
     localStorage.removeItem('token');
-    registerRouter.push("/")
+    registerRouter.push("/");
+    location.reload();
 }
 
 const props = defineProps({

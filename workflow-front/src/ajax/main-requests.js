@@ -107,7 +107,40 @@ export const searchProjects = async (store, dataLoaded) => {
             if (user != undefined) {
                 store.email = user.email;
                 store.name = user.name;
-                store.sigla = store.email[0].toUpperCase()
+                store.idUser = user._id;
+                store.sigla = store.email[0].toUpperCase();
+
+                const projectsMe = resProject.data.data.projects;
+                let idsProjectsMe = [];
+                
+                for (let idxProject = 0; idxProject < projectsMe.length; idxProject++) {
+                    const idProject = projectsMe[idxProject]._id;
+                    idsProjectsMe.push(idProject)
+                }
+
+                const response = await axios.get(
+                    'http://localhost:3000/projects/all',
+                    {
+                        headers: { Authorization: `Bearer ${store.token}` }
+                    }
+                );
+
+                const projects = response.data.data.projects;
+                
+                let project = ''
+                for (let idxProj = 0; idxProj < projects.length; idxProj++) {
+                    project = projects[idxProj];
+                    if (!idsProjectsMe.includes(project._id)) {
+                        const participants = project.participants;
+                        for (let idxPart = 0; idxPart < participants.length; idxPart++) {
+                            const participant = participants[idxPart];
+                            if (store.idUser == participant) {
+                                let state = resProject.data.data.projects;
+                                state.push(project)
+                            }
+                        }
+                    }
+                }
 
                 store.addProject(resProject.data);
 

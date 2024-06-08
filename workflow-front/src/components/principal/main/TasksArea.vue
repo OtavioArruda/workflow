@@ -18,7 +18,7 @@
                                     @blur="endEditing(column, column._id, 'blur')"
                                     @keyup.enter="endEditing(column, column._id, 'enter')">
                             </span>
-                            <span v-else>
+                            <span v-else :title="column.name">
                                 {{ column.name }}
                             </span>
                         </span>
@@ -37,11 +37,11 @@
                 <div class="tasks-list">
                     <div class="about-task" v-for="(task, idx_task) in column.tasks" :key="idx_task">
                         <div class="header-task">
-                            <span class="flag" :style="{ 'background-color': task.badges[0].color }" >
+                            <span class="flag" :title="task.badges[0].text" :style="{ 'background-color': task.badges[0].color }" >
                                 {{ task.badges[0].text }}
                             </span>
 
-                            <h5 class="title">
+                            <h5 class="title" :title="task.title">
                                 {{ task.title }}
                             </h5>
 
@@ -63,8 +63,11 @@
                             <textarea style="resize: none; width: 100%;" rows="2" disabled class="disabled-textarea">{{ task.description }}</textarea>
                         </div>
 
-                        <div class="dates">
-                            <span>{{ formatDate(task.start_at) }} a {{ formatDate(task.end_at) }}</span>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div class="dates">
+                                <span>{{ formatDate(task.start_at) }} a {{ formatDate(task.end_at) }}</span>
+                            </div>
+                            <v-icon v-if="task.participants.includes(store.idUser)" icon="mdi-information" color="green"></v-icon>
                         </div>
                     </div>
                 </div>
@@ -90,7 +93,7 @@ import SubheaderTasks from '../partials/SubheaderTasks.vue';
 import CreateTask from '../popups/CreateTask.vue';
 import UpdateTask from '../popups/UpdateTask.vue';
 import { useGlobalsStore } from '@/store';
-import { createColumn, deleteColumn, updateColumn, deleteTask } from '@/ajax/main-requests';
+import { createColumn, deleteColumn, updateColumn, deleteTask, searchParticipants } from '@/ajax/main-requests';
 import { toRefs, ref } from 'vue';
 import ConfigProject from '../popups/ConfigProject.vue';
 
@@ -119,24 +122,44 @@ const columnDelete = (idColumn) => {
     deleteColumn(idProject, idFolder, idColumn, store);
 }
 
-const taskUpdate = (idColumn, idTask) => {
-    const columns = tasksActive.value.data;
-    for (let idx_col = 0; idx_col < columns.length; idx_col++) {
-        if (idColumn == columns[idx_col]._id) {
-            let tasks = columns[idx_col].tasks;
-
-            for (let idx_task = 0; idx_task < tasks.length; idx_task++) {
-                if (idTask == tasks[idx_task]._id) {
-                    console.log(tasks[idx_task]);
+const taskUpdate = async (idColumn, idTask) => {
+    try {
+        const columns = tasksActive.value.data;
+        for (let idx_col = 0; idx_col < columns.length; idx_col++) {
+            if (idColumn == columns[idx_col]._id) {
+                let tasks = columns[idx_col].tasks;
+    
+                for (let idx_task = 0; idx_task < tasks.length; idx_task++) {
+                    if (idTask == tasks[idx_task]._id) {
+                        store.task = tasks[idx_task];
+                    }
+                    
                 }
-                
+            }
+            
+        }
+    
+        let participantsTask = store.task.participants;
+        let stateParticipants = [];
+        for (let idx_participant = 0; idx_participant < participantsTask.length; idx_participant++) {
+            const idUser = participantsTask[idx_participant];
+            const user = await searchParticipants(store, idUser);
+            console.log(user);
+            if (user !== false) {
+                stateParticipants.push(user.email);
+            } 
+            else {
+                rules = [() => 'Usuário não encontrado.'];
             }
         }
+        store.participantsTask = stateParticipants;
+        store.idTask = idTask
+        store.popupTaskUpdate = true;
         
+    } 
+    catch (error) {
+        console.log(error);
     }
-
-    store.idTask = idTask
-    store.popupTaskUpdate = true;
 }
 
 const formatDate = (dateString) => {

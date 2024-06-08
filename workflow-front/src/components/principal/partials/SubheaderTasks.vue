@@ -64,7 +64,7 @@ const configProject = async () => {
 }
 
 .subheader-tasks {
-    background-color: #979595;
+    background-color: #1d2125;
     font-family: Arial, Verdana, Geneva, Tahoma, sans-serif;
     height: 7vh;
     font-weight: bolder;

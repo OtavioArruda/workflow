@@ -5,8 +5,8 @@
                 <v-form>
                     <div class="form-task">
                         <div class="info-task">
-                            <v-text-field class="mr-2" v-model="title" label="Nome da tarefa"></v-text-field>
-                            <v-text-field v-model="badge" label="Adicione a badge"></v-text-field>
+                            <v-text-field class="mr-2" v-model="store.task.title" label="Nome da tarefa"></v-text-field>
+                            <v-text-field v-model="store.task.badges[0].text" label="Adicione a badge"></v-text-field>
                         </div>
         
                         <div class="dates-task">
@@ -23,13 +23,13 @@
                                 :rules="rules"
                                 @keydown.enter="addParticipant"
                             >
-                                <div v-if="participants.length > 0" class="participant-tags">
+                                <div v-if="store.participantsTask.length > 0" class="participant-tags">
                                     <v-chip
-                                        v-for="(participant, index) in participants"
+                                        v-for="(participant, index) in store.participantsTask"
                                         :key="index"
-                                        closable
                                     >
                                         {{ participant }}
+                                        <v-icon class="m-2 ml-1" @click="removeParticipant(index)">mdi-close-circle</v-icon>
                                     </v-chip>                            
                                 </div>
                             </v-text-field>
@@ -37,8 +37,8 @@
                         </div>
         
                         <div class="badges-task">
-                            <v-color-picker hide-inputs width="100%" v-model="badge_color" label="Cor da Badge"></v-color-picker>
-                            <v-textarea class="mt-5" v-model="description" label="Descrição da Tarefa"></v-textarea>
+                            <v-color-picker hide-inputs width="100%" v-model="store.task.badges[0].color" label="Cor da Badge"></v-color-picker>
+                            <v-textarea class="mt-5" v-model="store.task.description" label="Descrição da Tarefa"></v-textarea>
                         </div>
                     </div>
     
@@ -73,20 +73,16 @@ import { ref, reactive, nextTick } from 'vue';
 import { updateTasks, searchUsers } from '@/ajax/main-requests';
 
 const store = useGlobalsStore();
-
-const title = ref("");
-const description = ref("");
 const start_at = ref(Date.now());
 const end_at = ref(Date.now());
-const badge = ref("");
-const badge_color = ref("");
-const participants = ref([]);
+let participants = ref([]);
 const idUser = ref([]);
 const participantInput = ref("");
 const state = reactive({
     successMessage: false,
     errorMessage: false
 });
+
 let rules = [() => true];
 
 const addParticipant = async () => {
@@ -102,7 +98,7 @@ const addParticipant = async () => {
                 
                 for (let idxParticipant = 0; idxParticipant < listParticipants.length; idxParticipant++) {
                     if (user == listParticipants[idxParticipant]) {
-                        participants.value.push(participantInput.value.trim());
+                        store.participantsTask.push(participantInput.value.trim());
                         idUser.value.push(user);
 
                         participantInput.value = '';
@@ -123,21 +119,27 @@ const addParticipant = async () => {
 
 const taskCancel = (e) => {
     e.preventDefault();
-    store.popupTaskUpdate = !store.popupTask;
+    store.popupTaskUpdate = !store.popupTaskUpdate;
 }
 
 const taskUpdate = async() => {
     try {
+        for (let idxEmail = 0; idxEmail < store.participantsTask.length; idxEmail++) {
+            const parti = store.participantsTask[idxEmail];
+            const user = await searchUsers(store, parti);
+            participants.value.push(user);
+        }
+
         const data = {
-            title: title.value,
-            description: description.value,
+            title: store.task.title,
+            description: store.taskdescription,
             start_at: start_at.value,
             end_at: end_at.value,
             badges: [{
-                text: badge.value,
-                color: badge_color.value
+                text: store.task.badges[0].text,
+                color: store.task.badges[0].color
             }],
-            participants: idUser.value,
+            participants: participants.value,
             columnId: store.idColumn
         }
     
@@ -165,6 +167,13 @@ const taskUpdate = async() => {
 const executeTaskUpdate = async () => {
     await taskUpdate();
     await nextTick();
+}
+
+const removeParticipant = (index) => {
+    const participant = store.participantsTask[index];
+    if (participant) {
+        store.participantsTask.splice(index, 1);
+    }
 }
 
 </script>
