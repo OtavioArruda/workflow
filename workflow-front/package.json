@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",
+    "@stylistic/eslint-plugin": "^2.1.0",
     "@vitejs/plugin-vue": "^5.0.3",
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",

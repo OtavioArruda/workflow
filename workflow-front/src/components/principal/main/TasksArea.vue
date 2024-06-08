@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="tasks-list">
-                    <div class="about-task" v-for="(task, idx_task) in column.tasks" :key="idx_task">
+                    <div class="about-task" v-for="(task, idxTask) in column.tasks" :key="idxTask">
                         <div class="header-task">
                             <span class="flag" :title="task.badges[0].text" :style="{ 'background-color': task.badges[0].color }" >
                                 {{ task.badges[0].text }}
@@ -82,6 +82,7 @@
             </div>
 
         </div>
+
         <CreateTask />
         <ConfigProject />
         <UpdateTask />
@@ -89,20 +90,20 @@
 </template>
 
 <script setup>
-import SubheaderTasks from '../partials/SubheaderTasks.vue';
-import CreateTask from '../popups/CreateTask.vue';
-import UpdateTask from '../popups/UpdateTask.vue';
-import { useGlobalsStore } from '@/store';
-import { createColumn, deleteColumn, updateColumn, deleteTask, searchParticipants } from '@/ajax/main-requests';
-import { toRefs, ref } from 'vue';
-import ConfigProject from '../popups/ConfigProject.vue';
+import SubheaderTasks from'../partials/SubheaderTasks.vue';
+import CreateTask from'../popups/CreateTask.vue';
+import UpdateTask from'../popups/UpdateTask.vue';
+import { useGlobalsStore } from'@/store';
+import { createColumn, deleteColumn, updateColumn, deleteTask, searchParticipants } from'@/ajax/main-requests';
+import { toRefs, ref } from'vue';
+import ConfigProject from'../popups/ConfigProject.vue';
 
 const store = useGlobalsStore();
 const { tasksActive } = toRefs(store);
 
 const columnCreated = () => {
     const dados = {
-        name: "Nova Coluna",
+        name: 'Nova Coluna',
         folderId: tasksActive.value.idFolder
     };
 
@@ -125,39 +126,42 @@ const columnDelete = (idColumn) => {
 const taskUpdate = async (idColumn, idTask) => {
     try {
         const columns = tasksActive.value.data;
-        for (let idx_col = 0; idx_col < columns.length; idx_col++) {
-            if (idColumn == columns[idx_col]._id) {
-                let tasks = columns[idx_col].tasks;
+        for(let idxCol = 0; idxCol < columns.length; idxCol++) {
+            if(idColumn == columns[idxCol]._id) {
+                const tasks = columns[idxCol].tasks;
 
-                for (let idx_task = 0; idx_task < tasks.length; idx_task++) {
-                    if (idTask == tasks[idx_task]._id) {
-                        store.task = tasks[idx_task];
+                for(let idxTask = 0; idxTask < tasks.length; idxTask++) {
+                    if(idTask == tasks[idxTask]._id) {
+                        store.task = tasks[idxTask];
                     }
-
                 }
             }
 
         }
 
-        let participantsTask = store.task.participants;
-        let stateParticipants = [];
-        for (let idx_participant = 0; idx_participant < participantsTask.length; idx_participant++) {
-            const idUser = participantsTask[idx_participant];
+        const participantsTask = store.task.participants;
+        const stateParticipants = [];
+
+        for(let idxParticipant = 0; idxParticipant < participantsTask.length; idxParticipant++) {
+            const idUser = participantsTask[idxParticipant];
             const user = await searchParticipants(store, idUser);
+
             console.log(user);
-            if (user !== false) {
+
+            if(user !== false) {
                 stateParticipants.push(user.email);
             }
             else {
-                rules = [() => 'Usuário não encontrado.'];
+                // ???????????????
+                // rules = [() => 'Usuário não encontrado.'];
             }
         }
+
         store.participantsTask = stateParticipants;
         store.idTask = idTask
         store.popupTaskUpdate = true;
-
     }
-    catch (error) {
+    catch(error) {
         console.log(error);
     }
 }
@@ -169,10 +173,10 @@ const formatDate = (dateString) => {
     let month = date.getMonth() + 1;
     const year = date.getFullYear();
 
-    if (day < 10) {
+    if(day < 10) {
         day = `0${  day}`;
     }
-    if (month < 10) {
+    if(month < 10) {
         month = `0${  month}`;
     }
 
@@ -184,12 +188,12 @@ const editName = (column) => {
 };
 
 const endEditing = (column, idColumn, eventType) => {
-    if (eventType === 'enter'){
-
+    if(eventType === 'enter') {
         column.editing = ref(false);
-        let newColumns = column.name;
 
-        let data = {
+        const newColumns = column.name;
+
+        const data = {
             name: newColumns
         }
 
